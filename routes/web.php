@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('dashboard.index');
 });
+
+Route::get('/dashbord', function () {
+    return view('dashboard.index');
+});
+
+Route::get('/dashbord2', function () {
+    return view('dashboard.index2');
+});
