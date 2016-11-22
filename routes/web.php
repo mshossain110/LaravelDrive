@@ -22,3 +22,7 @@ Route::get('/dashbord', function () {
 Route::get('/dashbord2', function () {
     return view('dashboard.index2');
 });
+
+Route::get('/dashbord3', function () {
+    return view('dashboard.index3');
+});
