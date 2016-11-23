@@ -12,17 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('dashboard.index');
+    return view('admin.dashboard.index');
 });
 
 Route::get('/dashbord', function () {
-    return view('dashboard.index');
+    return view('admin.dashboard.index');
 });
 
 Route::get('/dashbord2', function () {
-    return view('dashboard.index2');
+    return view('admin.dashboard.index2');
 });
 
 Route::get('/dashbord3', function () {
-    return view('dashboard.index3');
+    return view('admin.dashboard.index3');
 });
