@@ -1,0 +1,29 @@
+{
+  "name": "LaravelAdmin",
+  "description": "Admin template laravel 5.3",
+  "main": "",
+  "authors": [
+    "mshossain110 <mshossain110@yahoo.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Laravel",
+    "Laravel5.3",
+    "admin",
+    "Template",
+    "Laravel",
+    "Admin"
+  ],
+  "homepage": "https://github.com/mshossain110/LaravelAdmin",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendors",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}
