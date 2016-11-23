@@ -26,10 +26,12 @@
     <!-- bootstrap-daterangepicker -->
     <link href="bower/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    
+    @yield('headerScript')
+
     <!-- Custom Theme Style -->
     <link href="css/custom.min.css" rel="stylesheet">
 
-    @yield('header_file')
   </head>
 
   <body class="nav-md">
@@ -69,7 +71,7 @@
     <!-- NProgress -->
     <script src="/bower/nprogress/nprogress.js" type="text/javascript"></script>
     <!-- Chart.js -->
-    <script src="/bower/chart.js/dist/Chart.min.js" type="text/javascript"></script>
+    <script src="/bower/Chart.js/dist/Chart.min.js" type="text/javascript"></script>
     <!-- gauge.js -->
     <script src="/bower/gauge.js/dist/gauge.min.js" type="text/javascript"></script>
     <!-- bootstrap-progressbar -->
@@ -97,10 +99,12 @@
     <!-- bootstrap-daterangepicker -->
     <script src="/bower/moment/min/moment.min.js" type="text/javascript"></script>
     <script src="/bower/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js" type="text/javascript"></script>
-
+    
     @yield('footerScript')
+
+
+
   </body>
 </html>
