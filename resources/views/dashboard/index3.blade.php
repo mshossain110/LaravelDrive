@@ -571,11 +571,11 @@
 @section('footerScript')
 
 <!-- morris.js -->
-    <script src="/vendors/raphael/raphael.min.js"></script>
-    <script src="/vendors/morris.js/morris.min.js"></script>
+    <script src="/bower/raphael/raphael.min.js"></script>
+    <script src="/bower/morris.js/morris.min.js"></script>
 
 <!-- jQuery Sparklines -->
-    <script src="/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="/bower/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
       <!-- Flot -->
     <script>
       $(document).ready(function() {

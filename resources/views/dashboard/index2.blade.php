@@ -465,7 +465,7 @@
 
 @section('footerScript')
 	<!-- jQuery Sparklines -->
-    <script src="/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="/bower/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
  <!-- Flot -->
     <script>
       $(document).ready(function() {

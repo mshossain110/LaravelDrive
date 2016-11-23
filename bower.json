@@ -39,6 +39,9 @@
     "skycons": "https://github.com/darkskyapp/skycons.git",
     "flot.curvedlines": "^1.1.1",
     "DateJS": "datejs#^1.0.0-rc3",
-    "flot-spline": "^0.8.2"
+    "flot-spline": "^0.8.2",
+    "jquery-sparkline": "^2.1.3",
+    "raphael": "^2.2.7",
+    "morris.js": "^0.5.1"
   }
 }
