@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 
 @section('title', 'Form General')
@@ -936,15 +936,15 @@
 
 
 <!-- Ion.RangeSlider -->
-    <script src="bower/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+    <script src="/bower/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
     <!-- Bootstrap Colorpicker -->
-    <script src="bower/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+    <script src="/bower/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
     <!-- jquery.inputmask -->
-    <script src="bower/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+    <script src="/bower/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
     <!-- jQuery Knob -->
-    <script src="bower/jquery-knob/dist/jquery.knob.min.js"></script>
+    <script src="/bower/jquery-knob/dist/jquery.knob.min.js"></script>
     <!-- Cropper -->
-    <script src="bower/cropper/dist/cropper.min.js"></script>
+    <script src="/bower/cropper/dist/cropper.min.js"></script>
 
 
   <!-- bootstrap-daterangepicker -->

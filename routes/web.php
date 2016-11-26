@@ -12,35 +12,39 @@
 */
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/admin', function () {
     return view('admin.dashboard.index');
 });
 
-Route::get('/dashbord', function () {
+Route::get('/admin/dashbord', function () {
     return view('admin.dashboard.index');
 });
 
-Route::get('/dashbord2', function () {
+Route::get('/admin/dashbord2', function () {
     return view('admin.dashboard.index2');
 });
 
-Route::get('/dashbord3', function () {
+Route::get('/admin/dashbord3', function () {
     return view('admin.dashboard.index3');
 });
-Route::get('/form', function () {
+Route::get('/admin/form', function () {
     return view('admin.form.form');
 });
-Route::get('/form-advance-component', function () {
+Route::get('/admin/form-advance-component', function () {
     return view('admin.form.formAdvance');
 });
-Route::get('/form-validation', function () {
+Route::get('/admin/form-validation', function () {
     return view('admin.form.formValidation');
 });
-Route::get('/form-wizard', function () {
+Route::get('/admin/form-wizard', function () {
     return view('admin.form.formWizard');
 });
-Route::get('/form-upload', function () {
+Route::get('/admin/form-upload', function () {
     return view('admin.form.formUpload');
 });
-Route::get('/form-buttons', function () {
+Route::get('/admin/form-buttons', function () {
     return view('admin.form.formButtons');
 });

@@ -27,19 +27,19 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="dashbord">Dashboard</a></li>
-                      <li><a href="dashbord2">Dashboard2</a></li>
-                      <li><a href="dashbord3">Dashboard3</a></li>
+                      <li><a href="{{url('admin/dashbord')}}">Dashboard</a></li>
+                      <li><a href="{{url('admin/dashbord2')}}">Dashboard2</a></li>
+                      <li><a href="{{url('admin/dashbord3')}}">Dashboard3</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form">General Form</a></li>
-                      <li><a href="form-advance-component">Advanced Components</a></li>
-                      <li><a href="form-validation">Form Validation</a></li>
-                      <li><a href="form-wizard">Form Wizard</a></li>
-                      <li><a href="form-upload">Form Upload</a></li>
-                      <li><a href="form-buttons">Form Buttons</a></li>
+                      <li><a href="{{url('admin/form')}}">General Form</a></li>
+                      <li><a href="{{url('admin/form-advance-component')}}">Advanced Components</a></li>
+                      <li><a href="{{url('admin/form-validation')}}">Form Validation</a></li>
+                      <li><a href="{{url('admin/form-wizard')}}">Form Wizard</a></li>
+                      <li><a href="{{url('admin/form-upload')}}">Form Upload</a></li>
+                      <li><a href="{{url('admin/form-buttons')}}">Form Buttons</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>

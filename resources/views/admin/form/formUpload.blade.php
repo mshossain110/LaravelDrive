@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 
 @section('title', 'Form Upload')
@@ -8,7 +8,7 @@
 
 
     <!-- Dropzone.js -->
-    <link href="bower/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <link href="/bower/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 
 
 @endsection
@@ -75,6 +75,6 @@
 
 
  <!-- Dropzone.js -->
-    <script src="bower/dropzone/dist/min/dropzone.min.js"></script>
+    <script src="/bower/dropzone/dist/min/dropzone.min.js"></script>
 
 @endsection

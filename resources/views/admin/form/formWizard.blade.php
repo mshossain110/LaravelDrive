@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 
 @section('title', 'Form General')
@@ -315,7 +315,7 @@
 
 @section('footerScript')
 <!-- jQuery Smart Wizard -->
-    <script src="bower/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <script src="/bower/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
 <script>
       $(document).ready(function() {
         $('#wizard').smartWizard();

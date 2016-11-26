@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 
 @section('title', 'Form General')
@@ -142,7 +142,7 @@
 @section('footerScript')
 
 <!-- validator -->
-    <script src="bower/validator/validator.js"></script>
+    <script src="/bower/validator/validator.js"></script>
 	   <!-- validator -->
     <script>
       // initialize the validator function

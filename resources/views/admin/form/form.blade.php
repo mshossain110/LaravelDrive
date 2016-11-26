@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 
 @section('title', 'Form General')
@@ -7,13 +7,13 @@
 
 
 <!-- bootstrap-wysiwyg -->
-    <link href="bower/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <link href="/bower/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
     <!-- Select2 -->
-    <link href="bower/select2/dist/css/select2.min.css" rel="stylesheet">
+    <link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet">
     <!-- Switchery -->
-    <link href="bower/switchery/dist/switchery.min.css" rel="stylesheet">
+    <link href="/bower/switchery/dist/switchery.min.css" rel="stylesheet">
     <!-- starrr -->
-    <link href="bower/starrr/dist/starrr.css" rel="stylesheet">
+    <link href="/bower/starrr/dist/starrr.css" rel="stylesheet">
 
 
 @endsection

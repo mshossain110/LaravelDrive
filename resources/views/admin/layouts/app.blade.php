@@ -10,27 +10,27 @@
     <title>@yield('title')</title>
 
     <!-- Bootstrap -->
-    <link href="bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bower/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 
     <!-- NProgress -->
-    <link href="bower/nprogress/nprogress.css" rel="stylesheet">
+    <link href="/bower/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="bower/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="/bower/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
-    <link href="bower/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="/bower/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="bower/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href="/bower/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
-    <link href="bower/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="/bower/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     
     @yield('headerScript')
 
     <!-- Custom Theme Style -->
-    <link href="css/custom.min.css" rel="stylesheet">
+    <link href="/css/custom.min.css" rel="stylesheet">
 
   </head>
 
@@ -38,16 +38,16 @@
     <div class="container body">
       <div class="main_container">
         
-        @include('layouts.sidenav')
+        @include('admin.layouts.sidenav')
 
         <!-- top navigation -->
-         @include('layouts.topnav') 
+         @include('admin.layouts.topnav') 
 
         <!-- /top navigation -->
 
         <!-- page content -->
         <div class="right_col" role="main">
-            @include('layouts.content')
+            @include('admin.layouts.content')
         </div>
         <!-- /page content -->
 
