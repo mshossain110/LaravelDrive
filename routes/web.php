@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
 Route::get('/admin', function () {
     return view('admin.dashboard.index');
 });
@@ -49,6 +53,3 @@ Route::get('/admin/form-buttons', function () {
     return view('admin.form.formButtons');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
