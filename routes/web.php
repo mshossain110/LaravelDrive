@@ -48,3 +48,7 @@ Route::get('/admin/form-upload', function () {
 Route::get('/admin/form-buttons', function () {
     return view('admin.form.formButtons');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
