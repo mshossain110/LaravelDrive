@@ -105,7 +105,7 @@ class RegisterController extends Controller
                 Mail::to($user->email)->send(new RegistrationConfirmation($data));
 
             //go welcome page for email activation
-            return view('welcome');
+            return redirect('/');
 
         } else {
 
@@ -119,6 +119,30 @@ class RegisterController extends Controller
      */
     public function makeHash(){
         return Hash::make(str_random(60));
+    }
+
+    /**
+     * confermation your registration with email and code 
+     * @param  Request $request 
+     * @return 
+     */
+    public function active(Request $request)
+    {
+        $code = $request->code;
+        $email = $request->email;
+
+        $user = User::where('active_code', $code)->where('email', $email)->first();
+
+        if($user){
+            $user->active_code = null;
+            $user->active = true;
+
+            if($user->save()){
+                return redirect('login');
+            }
+        }else{
+            return redirect('/');
+        }
     }
 
     /**
