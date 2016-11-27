@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Usermeta;
+use App\Mail\RegistrationConfirmation;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -79,7 +81,7 @@ class RegisterController extends Controller
 
         // create a new user
         $user                       = new User;
-        $user->name                 = $request->input('name');
+        $user->username             = $request->input('username');
         $user->email                = $request->input('email');
         $user->password             = bcrypt($request->input('password'));
         $user->active_code          = $this->makeHash();
@@ -92,6 +94,15 @@ class RegisterController extends Controller
             Usermeta::addUsermeta($user->id, 'lastName', $request->input('lastName'));
             Usermeta::addUsermeta($user->id, 'companyName', $request->input('companyName'));
             Usermeta::addUsermeta($user->id, 'permission', '1');
+
+            //create mail data
+                $data = array(
+                    'name'  => $user->username,
+                    'code'  => $user->active_code,
+                    'email' => $user->email
+                    );
+
+                Mail::to($user->email)->send(new RegistrationConfirmation($data));
 
             //go welcome page for email activation
             return view('welcome');
