@@ -128,6 +128,10 @@ class RegisterController extends Controller
      */
     public function active(Request $request)
     {
+        $this->validate($request, [
+            'code' => 'required', 'email' => 'required|email',
+        ]);
+        
         $code = $request->code;
         $email = $request->email;
 

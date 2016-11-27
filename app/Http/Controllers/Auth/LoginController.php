@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -35,5 +36,29 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     * @NOTE  comment out if you like to use username insted of email to login
+     *
+     * @return string
+     */
+    // public function username()
+    // {
+    //     return 'username';
+    // }
+    
+    
+
+    /**
+     * @override credentials function to inject active field to login
+     * 
+     * @return Request
+     */
+    protected function credentials(Request $request)
+    {
+        $request['active'] = true;
+        return $request->only($this->username(), 'password', 'active');
     }
 }
