@@ -56,6 +56,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/form-buttons', function () {
         return view('admin.form.formButtons');
     });
+
+    Route::get('/admin/general-element', function () {
+        return view('admin.elements.general');
+    });
+    Route::get('/admin/media', function () {
+        return view('admin.elements.media');
+    });
+    Route::get('/admin/calender', function () {
+        return view('admin.elements.calender');
+    });
+    Route::get('/admin/tables', function () {
+        return view('admin.elements.tables');
+    });
+    Route::get('/admin/tables-dynamic', function () {
+        return view('admin.elements.tablesDynamic');
+    });
 });
 
 
