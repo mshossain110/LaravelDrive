@@ -53,7 +53,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> Users <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="">Users</a></li>
+                      <li><a href="{{url('admin/users')}}">Users</a></li>
                     </ul>
                   </li>
                   

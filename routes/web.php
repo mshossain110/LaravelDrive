@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/tables-dynamic', function () {
         return view('admin.elements.tablesDynamic');
     });
+
+    Route::get('/admin/users', 'UsersController@getUsers');
 });
 
 
