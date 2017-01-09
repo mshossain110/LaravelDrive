@@ -101,6 +101,8 @@
     <script src="/bower/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
     <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js" type="text/javascript"></script>
+
+    <script src="/js/app.js"></script>
     
     @yield('footerScript')
 

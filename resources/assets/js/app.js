@@ -18,3 +18,10 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app'
 });
+
+var app2 = new Vue({
+  el: '#mytable',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
