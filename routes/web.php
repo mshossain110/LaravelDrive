@@ -74,6 +74,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/admin/users', 'UsersController@getUsers');
+
+    Route::get('/admin/articles', 'ArticleController@index');
+    Route::get('/admin/article/create', 'ArticleController@create');
 });
 
 
