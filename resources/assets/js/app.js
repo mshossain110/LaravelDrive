@@ -14,14 +14,8 @@ require('./bootstrap');
  */
 
 Vue.component('example', require('./components/Example.vue'));
+Vue.component('usertable', require('./components/usertable.vue'));
 
 const app = new Vue({
     el: '#app'
 });
-
-var app2 = new Vue({
-  el: '#mytable',
-  data: {
-    message: 'Hello Vue!'
-  }
-})

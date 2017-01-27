@@ -35,7 +35,7 @@
   </head>
 
   <body class="nav-md">
-    <div class="container body">
+    <div class="container body" id="app">
       <div class="main_container">
         
         @include('admin.layouts.sidenav')
@@ -61,9 +61,10 @@
         <!-- /footer content -->
       </div>
     </div>
-
+    <script src="/js/app.js"></script>
     <!-- jQuery -->
     <script src="/bower/jquery/dist/jquery.min.js" type="text/javascript"></script>
+
     <!-- Bootstrap -->
     <script src="/bower/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- FastClick -->
@@ -102,7 +103,7 @@
     <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js" type="text/javascript"></script>
 
-    <script src="/js/app.js"></script>
+    
     
     @yield('footerScript')
 
