@@ -22,60 +22,60 @@ Route::get('/active', 'Auth\RegisterController@active');
 Route::get('/home', 'HomeController@index');
 
 
-Route::group([],function () {
-   Route::get('/admin', function () {
+Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
+   Route::get('/', function () {
         return view('admin.dashboard.index');
     });
 
-    Route::get('/admin/dashbord', function () {
+    Route::get('/dashbord', function () {
         return view('admin.dashboard.index');
     });
 
-    Route::get('/admin/dashbord2', function () {
+    Route::get('/dashbord2', function () {
         return view('admin.dashboard.index2');
     });
 
-    Route::get('/admin/dashbord3', function () {
+    Route::get('/dashbord3', function () {
         return view('admin.dashboard.index3');
     });
-    Route::get('/admin/form', function () {
+    Route::get('/form', function () {
         return view('admin.form.form');
     });
-    Route::get('/admin/form-advance-component', function () {
+    Route::get('/form-advance-component', function () {
         return view('admin.form.formAdvance');
     });
-    Route::get('/admin/form-validation', function () {
+    Route::get('/form-validation', function () {
         return view('admin.form.formValidation');
     });
-    Route::get('/admin/form-wizard', function () {
+    Route::get('/form-wizard', function () {
         return view('admin.form.formWizard');
     });
-    Route::get('/admin/form-upload', function () {
+    Route::get('/form-upload', function () {
         return view('admin.form.formUpload');
     });
-    Route::get('/admin/form-buttons', function () {
+    Route::get('/form-buttons', function () {
         return view('admin.form.formButtons');
     });
 
-    Route::get('/admin/general-element', function () {
+    Route::get('/general-element', function () {
         return view('admin.elements.general');
     });
-    Route::get('/admin/media', function () {
+    Route::get('/media', function () {
         return view('admin.elements.media');
     });
-    Route::get('/admin/calender', function () {
+    Route::get('/calender', function () {
         return view('admin.elements.calender');
     });
-    Route::get('/admin/tables', function () {
+    Route::get('/tables', function () {
         return view('admin.elements.tables');
     });
-    Route::get('/admin/tables-dynamic', function () {
+    Route::get('/tables-dynamic', function () {
         return view('admin.elements.tablesDynamic');
     });
 
-    Route::get('/admin/users', 'UsersController@getUsers');
-    Route::get('/admin/user/create', 'UsersController@create');
+    Route::get('/users', 'UsersController@getUsers');
+    Route::get('/user/create', 'UsersController@create');
 
-    Route::get('/admin/articles', 'ArticleController@index');
-    Route::get('/admin/article/create', 'ArticleController@create');
+    Route::get('/articles', 'ArticleController@index');
+    Route::get('/article/create', 'ArticleController@create');
 });
