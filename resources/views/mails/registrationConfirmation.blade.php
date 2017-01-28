@@ -15,7 +15,7 @@
 
 					</p>Could you please click the link below to verify that this is your email address?
 
-					<a href="{{url('active?code='. $data['code'].'&email='.$data['code'])}}">Here</a>
+					<a href="{{url('active?code='. $data['code'].'&email='.$data['email'])}}">Here</a>
 
 					<p>If you need help or have any questions, please contanc us</p>
 

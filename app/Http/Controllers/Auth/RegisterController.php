@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -53,10 +54,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|max:255',
-            'companyName' => 'required|max:255',
+            'username' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|confirmed|min:6',
+            'permission' => 'numeric'
         ]);
     }
 
@@ -69,31 +70,33 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        
+        Log::debug($request->all());
         // validate user from validation function
         $validator = $this->validator($request->all());
-
+        
         if ($validator->fails()) {
             $this->throwValidationException(
                 $request, $validator
             );
         }
 
+
         // create a new user
         $user                       = new User;
         $user->username             = $request->input('username');
+        $user->firstName             = $request->input('firstName');
+        $user->lastName             = $request->input('lastName');
         $user->email                = $request->input('email');
         $user->password             = bcrypt($request->input('password'));
         $user->active_code          = $this->makeHash();
+        $permission = $request->input('permission') ? $request->input('permission') : 1;
+
 
         //save user in db
         if ($user->save()) {
 
             // save usermeta for this user
-            Usermeta::addUsermeta($user->id, 'firstName', $request->input('firstName'));
-            Usermeta::addUsermeta($user->id, 'lastName', $request->input('lastName'));
-            Usermeta::addUsermeta($user->id, 'companyName', $request->input('companyName'));
-            Usermeta::addUsermeta($user->id, 'permission', '1');
+            Usermeta::addUsermeta($user->id, 'permission', $permission);
 
             //create mail data
                 $data = array(
@@ -103,7 +106,7 @@ class RegisterController extends Controller
                     );
 
                 Mail::to($user->email)->send(new RegistrationConfirmation($data));
-
+                Log::info('User is saved');
             //go welcome page for email activation
             return redirect('/');
 

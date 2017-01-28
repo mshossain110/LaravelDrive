@@ -22,7 +22,7 @@ Route::get('/active', 'Auth\RegisterController@active');
 Route::get('/home', 'HomeController@index');
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group([],function () {
    Route::get('/admin', function () {
         return view('admin.dashboard.index');
     });
@@ -74,9 +74,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/admin/users', 'UsersController@getUsers');
+    Route::get('/admin/user/create', 'UsersController@create');
 
     Route::get('/admin/articles', 'ArticleController@index');
     Route::get('/admin/article/create', 'ArticleController@create');
 });
-
-

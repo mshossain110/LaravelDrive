@@ -13,4 +13,10 @@ class UsersController extends Controller
 
  			return view('admin.users.users')->with(compact('users'));
  	}
+
+
+ 	public function create(){
+ 		return view('admin.users.create');
+ 	}
+
 }
