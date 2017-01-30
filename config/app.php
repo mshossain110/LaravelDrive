@@ -186,6 +186,10 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
 
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
+        SocialiteProviders\Manager\ServiceProvider::class,
+
     ],
 
     /*
@@ -236,6 +240,9 @@ return [
 
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+                // ADD SOCIALITE
+        'Socialite'     => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 
