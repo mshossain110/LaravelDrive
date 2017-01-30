@@ -17,7 +17,7 @@
 		</div>
 		<div class="panel-body">
 
-			{!! Form::open(array('url' => 'register', 'method' => 'POST', 'role' => 'form')) !!}
+			{!! Form::open(array('url' => '/admin/user/create', 'method' => 'POST', 'role' => 'form')) !!}
 				{{-- -or- {!! Form::open(array('method' => 'POST', 'method' => 'POST', 'role' => 'form')) !!} --}}
 
 

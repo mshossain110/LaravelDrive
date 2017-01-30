@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
+
 
 class RegisterController extends Controller
 {
@@ -70,7 +70,7 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        Log::debug($request->all());
+
         // validate user from validation function
         $validator = $this->validator($request->all());
         
@@ -106,7 +106,6 @@ class RegisterController extends Controller
                     );
 
                 Mail::to($user->email)->send(new RegistrationConfirmation($data));
-                Log::info('User is saved');
             //go welcome page for email activation
             return redirect('/');
 
