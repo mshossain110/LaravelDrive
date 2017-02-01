@@ -17,6 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// LARAVEL SOCIALITE AUTHENTICATION ROUTES
+Route::get('/social/redirect/{provider}', 'Auth\RegisterController@getSocialRedirect'
+)->name('social');
+
+Route::get('/social/handle/{provider}', 'Auth\RegisterController@getSocialHandle');
+
+
 Route::get('/active', 'Auth\RegisterController@active');
 
 Route::get('/home', 'HomeController@index');

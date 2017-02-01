@@ -11,7 +11,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-
+use Socialite;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -149,6 +150,78 @@ class RegisterController extends Controller
         }else{
             return redirect('/');
         }
+    }
+
+
+    public function getSocialRedirect( $provider )
+    {
+        $providerKey = \Config::get('services.' . $provider);
+        if(empty($providerKey))
+            return redirect('/');
+
+        return Socialite::driver( $provider )->redirect();
+
+    }
+
+    public function getSocialHandle( $provider )
+    {
+
+        $suser = Socialite::driver( $provider )->user();
+
+        $user = null;
+
+        //CHECK IF USERS EMAIL ADDRESS IS ALREADY IN DATABASE
+        $is_user = User::where('email', '=', $suser->email)->first();
+
+        if(!empty($is_user))
+        {
+            $user = $is_user;
+        }
+        else
+        {
+            // USER IS NOT IN DATABASE BASED ON EMAIL ADDRESS
+
+            $social_id = Usermeta::where('key', '=', $provider )->where('value', '=', $suser->id)->first();
+            // CHECK IF NEW SOCIAL MEDIA USER
+            if(empty($social_id))
+            {
+
+                $new_user                    = new User;
+                $new_user->email             = $suser->email;
+                $name                        = explode(' ', $suser->name);
+                if ($suser->email) {
+                    $new_user->name          = $suser->email;
+                } else {
+                    $new_user->name          = $name[0];
+                }
+                $new_user->first_name        = $name[0];
+
+                // CHECK FOR LAST NAME
+                if (isset($name[1])) {
+                    $new_user->last_name     = $name[1];
+                }
+
+                $new_user->active             = '1';
+                $the_activation_code          = str_random(60) . $user->email;
+                $new_user->activation_code    = $the_activation_code;
+
+                
+                $new_user->save();
+                
+            }
+            else
+            {
+                //Load this existing social user
+                $user = $social_id->user;
+            }
+
+        }
+
+        Auth::login($user, true);
+
+        
+
+        return back();
     }
 
     /**

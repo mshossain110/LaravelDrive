@@ -65,22 +65,16 @@ return [
         'redirect'      => env('YOUTUBE_REDIRECT_URI'),
     ],
 
-    'twitch' => [
-        'client_id'     => env('TWITCH_KEY'),
-        'client_secret' => env('TWITCH_SECRET'),
-        'redirect'      => env('TWITCH_REDIRECT_URI'),
-    ],
-
     'instagram' => [
         'client_id'     => env('INSTAGRAM_KEY'),
         'client_secret' => env('INSTAGRAM_SECRET'),
         'redirect'      => env('INSTAGRAM_REDIRECT_URI'),
     ],
 
-    '37signals' => [
-        'client_id'     => env('37SIGNALS_KEY'),
-        'client_secret' => env('37SIGNALS_SECRET'),
-        'redirect'      => env('37SIGNALS_REDIRECT_URI'),
+    'flickr' => [
+        'client_id'     => env('FLICKR_KEY'),
+        'client_secret' => env('FLICKR_SECRET'),
+        'redirect'      => env('FLICKR_REDIRECT_URI'),
     ],
 
 ];
