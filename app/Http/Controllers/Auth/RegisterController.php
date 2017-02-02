@@ -190,23 +190,36 @@ class RegisterController extends Controller
                 $new_user->email             = $suser->email;
                 $name                        = explode(' ', $suser->name);
                 if ($suser->email) {
-                    $new_user->name          = $suser->email;
+                    $new_user->username          = $suser->email;
                 } else {
-                    $new_user->name          = $name[0];
+                    $new_user->username          = $name[0];
                 }
-                $new_user->first_name        = $name[0];
+                $new_user->firstName        = $name[0];
 
                 // CHECK FOR LAST NAME
                 if (isset($name[1])) {
-                    $new_user->last_name     = $name[1];
+                    $new_user->lastName     = $name[1];
                 }
 
-                $new_user->active             = '1';
-                $the_activation_code          = str_random(60) . $user->email;
-                $new_user->activation_code    = $the_activation_code;
-
+                $new_user->active_code          = $this->makeHash();
+                $new_user->password             = bcrypt($this->makeHash());
                 
-                $new_user->save();
+                if($new_user->save()){
+                    Usermeta::addUsermeta($new_user->id, $provider,  $suser->id);
+                    Usermeta::addUsermeta($new_user->id, 'permission', '1');
+
+                    //create mail data
+                    $data = array(
+                        'name'  => $new_user->username,
+                        'code'  => $new_user->active_code,
+                        'email' => $new_user->email
+                        );
+
+                    Mail::to($new_user->email)
+                        ->send(new RegistrationConfirmation($data));
+
+                    $user = $new_user;
+                }
                 
             }
             else
