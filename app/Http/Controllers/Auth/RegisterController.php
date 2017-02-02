@@ -190,9 +190,9 @@ class RegisterController extends Controller
                 $new_user->email             = $suser->email;
                 $name                        = explode(' ', $suser->name);
                 if ($suser->email) {
-                    $new_user->username          = $suser->email;
+                    $new_user->username      = substr($suser->email, 0, strpos($suser->email, '@'));
                 } else {
-                    $new_user->username          = $name[0];
+                    $new_user->username      = $name[0];
                 }
                 $new_user->firstName        = $name[0];
 
@@ -201,8 +201,9 @@ class RegisterController extends Controller
                     $new_user->lastName     = $name[1];
                 }
 
-                $new_user->active_code          = $this->makeHash();
-                $new_user->password             = bcrypt($this->makeHash());
+                $new_user->active_code      = null;
+                $new_user->active           = true;
+                $new_user->password         = bcrypt($this->makeHash());
                 
                 if($new_user->save()){
                     Usermeta::addUsermeta($new_user->id, $provider,  $suser->id);
