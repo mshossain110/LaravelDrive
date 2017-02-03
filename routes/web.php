@@ -84,6 +84,6 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
     Route::get('/user/create', 'UsersController@create');
     Route::post('/user/create', 'UsersController@store');
 
-    Route::get('/articles', 'ArticleController@index');
-    Route::get('/article/create', 'ArticleController@create');
+    Route::resource('article', 'ArticleController');
+
 });

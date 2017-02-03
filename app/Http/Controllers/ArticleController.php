@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Article;
+use Carbon\Carbon;
+use Validator;
+use Illuminate\Support\Facades\Log;
 
 class ArticleController extends Controller
 {
@@ -37,7 +41,29 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info($request->all());
+        // validate user from validation function
+        $validator = $this->validator($request->all());
+        
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $article = new Article;
+
+        $article->post_title        = $request->input('post_title');
+        $article->post_slog         = $request->input('post_slog');
+        $article->post_content      = $request->input('post_content');
+        $article->post_excerpt      = $request->input('post_content');
+        $article->post_thumbnail      = "comming soon";
+        $article->published_at      = Carbon::now();;
+        $article->user_id           = Auth::id();
+
+        $article->save();
+
+        return redirect('/admin/article');
     }
 
     /**
@@ -49,10 +75,8 @@ class ArticleController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => 'required|max:255|unique:users',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-            'permission' => 'numeric'
+            'post_title' => 'required|max:255',
+            'post_slog' => 'required|max:255|unique:articles'
         ]);
     }
 

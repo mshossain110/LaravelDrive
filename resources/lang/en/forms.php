@@ -82,4 +82,11 @@ return [
 	'username-icon'						=>	'fa-user',
 	'useremail-icon'					=>	'fa-envelope-o',
 
+
+
+	'create_article_label_title'		=>	'Title',
+	'create_article_ph_title'			=>	'',
+	'create_article_ph_slog'			=>	'slog',
+	'create_article_button_text'		=>	'Create Article',
+
 ];

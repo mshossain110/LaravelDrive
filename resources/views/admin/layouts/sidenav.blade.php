@@ -59,7 +59,7 @@
                   </li>
                   <li><a><i class="fa fa-table"></i> Articles <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="{{url('admin/articles')}}">Articles</a></li>
+                      <li><a href="{{url('admin/article')}}">Articles</a></li>
                       <li><a href="{{url('admin/article/create')}}">New Article</a></li>
                       <li><a href="{{url('admin/article/category')}}">Category</a></li>
                     </ul>
