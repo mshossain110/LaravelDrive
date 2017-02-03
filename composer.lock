@@ -409,16 +409,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.7",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "749be15d955845abbb83207a4d59abd775a994a9"
+                "reference": "3e226e3481aabe835626739a1507c8af17b76082"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/749be15d955845abbb83207a4d59abd775a994a9",
-                "reference": "749be15d955845abbb83207a4d59abd775a994a9",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3e226e3481aabe835626739a1507c8af17b76082",
+                "reference": "3e226e3481aabe835626739a1507c8af17b76082",
                 "shasum": ""
             },
             "require": {
@@ -534,20 +534,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-01-31 18:02:56"
+            "time": "2017-02-01 14:45:01"
         },
         {
             "name": "laravel/socialite",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "d3aaffa5e122395e54eb2c26062fde3a848c40fd"
+                "reference": "01588748beef55ad5dd4f172d235548d3a6be79a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/d3aaffa5e122395e54eb2c26062fde3a848c40fd",
-                "reference": "d3aaffa5e122395e54eb2c26062fde3a848c40fd",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/01588748beef55ad5dd4f172d235548d3a6be79a",
+                "reference": "01588748beef55ad5dd4f172d235548d3a6be79a",
                 "shasum": ""
             },
             "require": {
@@ -588,7 +588,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2017-01-25 17:58:13"
+            "time": "2017-02-01 13:43:56"
         },
         {
             "name": "laravel/tinker",

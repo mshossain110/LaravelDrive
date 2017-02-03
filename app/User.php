@@ -62,4 +62,15 @@ class User extends Authenticatable
 
         return false;
     }
+
+     /**
+     * Relationship between user and article. One to Many
+     * One User has many article.
+     * 
+     * @return object article object
+     */
+    public function articles()
+    {
+        return $this->hasMany('App\Article');
+    }
 }

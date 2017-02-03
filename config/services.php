@@ -72,9 +72,9 @@ return [
     ],
 
     'flickr' => [
-        'client_id'     => env('FLICKR_KEY'),
+        'client_id' => env('FLICKR_KEY'),
         'client_secret' => env('FLICKR_SECRET'),
-        'redirect'      => env('FLICKR_REDIRECT_URI'),
-    ],
+        'redirect' => env('FLICKR_REDIRECT_URI'),  
+    ], 
 
 ];
