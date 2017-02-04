@@ -52,7 +52,6 @@
     "cropper": "^2.3.0",
     "validator": "https://github.com/yairEO/validator.git#^1.0.6",
     "jQuery-Smart-Wizard": "^3.3.1",
-    "dropzone": "^4.3.0",
     "pnotify": "^3.0.0",
     "fullcalendar": "^2.6.1",
     "jquery.easy-pie-chart": "^2.1.6",
@@ -78,7 +77,8 @@
     "flot.curvedlines": "^1.1.1",
     "flot.orderbars": "*",
     "flot-spline": "^0.8.2",
-    "tinymce": "^4.5.3"
+    "tinymce": "^4.5.3",
+    "fine-uploader": "^5.13.0"
   },
   "resolutions": {
     "jquery": "^2.2.3",
