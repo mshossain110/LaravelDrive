@@ -27,6 +27,7 @@ Route::get('/social/handle/{provider}', 'Auth\RegisterController@getSocialHandle
 Route::get('/active', 'Auth\RegisterController@active');
 
 Route::get('/home', 'HomeController@index');
+Route::any('/upload', 'HomeController@upload');
 
 
 Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
@@ -85,5 +86,6 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
     Route::post('/user/create', 'UsersController@store');
 
     Route::resource('article', 'ArticleController');
+    Route::resource('media', 'MediaController');
 
 });

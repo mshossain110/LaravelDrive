@@ -154,7 +154,7 @@
         $('#fine-uploader-manual-trigger').fineUploader({
             template: 'qq-template-manual-trigger',
             request: {
-                endpoint: '/upload',
+                endpoint: '/admin/media/',
                 inputName: 'file',
                 params:{
                   description: "Hello discription"

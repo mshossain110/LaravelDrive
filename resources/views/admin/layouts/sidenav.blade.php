@@ -51,6 +51,12 @@
                       <li><a href="{{url('admin/calender')}}">Calendar</a></li>
                     </ul>
                   </li>
+                  <li><a><i class="fa fa-table"></i> Media <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{url('admin/media')}}">images</a></li>
+                      <li><a href="{{url('admin/media/create')}}">Add new</a></li>
+                    </ul>
+                  </li>
                   <li><a><i class="fa fa-table"></i> Users <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{{url('admin/users')}}">Users</a></li>

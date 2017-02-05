@@ -25,8 +25,12 @@
     <link href="/bower/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
     <link href="/bower/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
     
+    <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
     @yield('headerScript')
 
     <!-- Custom Theme Style -->
