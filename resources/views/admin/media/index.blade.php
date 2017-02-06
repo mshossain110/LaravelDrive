@@ -17,15 +17,41 @@
 
 <div class="x_panel">
   <div class="x_title">
-    <h2>Images</h2>
+    <h2>Media Gallery <small> gallery design </small></h2>
     <div class="clearfix"></div>
   </div>
   <div class="x_content">
-    
-	@foreach ($images as $image)
-	<p>{{	 $image->path }}</p>
-	    <img src="{{asset('storage/upload/'.$image->name)}}" alt="" />
-	@endforeach
+
+
+
+  	<div class="row">
+	
+		@foreach ($images as $image)
+
+		<div class="col-sm-4 col-md-3">
+	        <div class="thumbnail">
+	          <div class="image view view-first">
+	            <img style="width: 100%; display: block;" src="{{asset('storage/upload/'.$image->path)}}" alt="image" />
+	            <div class="mask">
+	              
+	              <div class="tools tools-bottom">
+	                <a href="{{asset('storage/upload/'.$image->path)}}"><i class="fa fa-link"></i></a>
+	                <a href="admin/media/{{$image->id}}/edit"><i class="fa fa-pencil"></i></a>
+	                
+	              </div>
+	            </div>
+	          </div>
+	          
+	          <div class="caption">
+	          	<strong>{{$image->title}}</strong>
+	            <p>{{$image->caption}}</p>
+	          </div>
+	         
+	        </div>
+	     </div>
+		@endforeach
+
+	</div>	
   </div>
 </div>
 </div>

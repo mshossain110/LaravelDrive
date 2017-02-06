@@ -68,9 +68,6 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
     Route::get('/general-element', function () {
         return view('admin.elements.general');
     });
-    Route::get('/media', function () {
-        return view('admin.elements.media');
-    });
     Route::get('/calender', function () {
         return view('admin.elements.calender');
     });

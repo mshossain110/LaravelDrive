@@ -45,7 +45,6 @@
                   <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="{{url('admin/general-element')}}">General Elements</a></li>
-                      <li><a href="{{url('admin/media')}}">Media Gallery</a></li>
                       <li><a href="{{url('admin/tables')}}">Tables</a></li>
                       <li><a href="{{url('admin/tables-dynamic')}}">Table Dynamic</a></li>
                       <li><a href="{{url('admin/calender')}}">Calendar</a></li>

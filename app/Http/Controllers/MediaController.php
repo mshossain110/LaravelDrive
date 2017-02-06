@@ -39,18 +39,18 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $file = $request->file('file');
-        $extension = $file->extension();
-        $fileName = $request->input('qqfilename');
+        $fileName = explode(".", $request->input('qqfilename'));
+        $ext= $file->extension();
         $date = Carbon::now();
-        
         $image = new Media;
-        $image->name = $date->year.'/'.$date->month.'/'.$fileName;
+        $image->path = $date->year.'/'.$date->month.'/'.$fileName[0].'.'.$ext;
+        $image->title =$fileName[0];
         $image->caption = $request->caption;
         $image->alternative_text = $request->alternative_text;
 
         
         if($image->save()){
-            $file->storeAs('upload/'.$date->year.'/'.$date->month, $fileName, 'public');
+            $file->storeAs('upload/'.$date->year.'/'.$date->month, $fileName[0].'.'.$ext, 'public');
 
             return  response()->json([
                             "success"=> true,
