@@ -44,17 +44,6 @@
               <div class="title_left">
                 <h3>Form Upload </h3>
               </div>
-
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="clearfix"></div>
@@ -73,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <img src="{{ Storage::disk('local')->url('app/upload/r2.jpg')}}" alt="hello">
+            
 
 @endsection
 
@@ -115,7 +104,7 @@
                     <span class="qq-upload-file-selector qq-upload-file"></span>
                     <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
                     <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-                    <input class="qq-edit-filename-selector qq-edit-filedes" tabindex="1" type="text">
+                    
                     <span class="qq-upload-size-selector qq-upload-size"></span>
                     <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
                     <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>

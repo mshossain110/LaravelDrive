@@ -89,4 +89,9 @@ return [
 	'create_article_ph_slog'			=>	'slog',
 	'create_article_button_text'		=>	'Create Article',
 
+	'media_edit_title'					=> 'Title',
+	'media_edit_alternetive_text'		=> 'Alternative Text',
+	'media_edit_caption'				=> 'Caption',
+	'media_edit_button'					=> 'Edit Description',
+
 ];

@@ -11,7 +11,7 @@
 @section('pageContent')
 
 <div class="col-md-12 col-sm-12 col-xs-12">
-	<a href="{{url('/admin/user/create')}}" class="btn btn-primary"> Create New User</a>
+	<a href="{{route('media.create')}}" class="btn btn-primary"> Add Media</a>
 </div>
 <div class="col-md-12 col-sm-12 col-xs-12">
 
@@ -36,7 +36,7 @@
 	              
 	              <div class="tools tools-bottom">
 	                <a href="{{asset('storage/upload/'.$image->path)}}"><i class="fa fa-link"></i></a>
-	                <a href="admin/media/{{$image->id}}/edit"><i class="fa fa-pencil"></i></a>
+	                <a href="{{route('media.edit', ['id' => $image->id])}}"><i class="fa fa-pencil"></i></a>
 	                
 	              </div>
 	            </div>

@@ -6,6 +6,8 @@ use App\Media;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 class MediaController extends Controller
 {
     /**
@@ -76,9 +78,10 @@ class MediaController extends Controller
      * @param  \App\Media  $media
      * @return \Illuminate\Http\Response
      */
-    public function edit(Media $media)
+    public function edit($id)
     {
-        //
+        $media = Media::findOrFail($id);
+        return view('admin.media.edit')->with(compact('media'));;
     }
 
     /**
@@ -88,9 +91,16 @@ class MediaController extends Controller
      * @param  \App\Media  $media
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Media $media)
+    public function update(Request $request, $id)
     {
-        //
+        $media = Media::findOrFail($id);
+
+        $media->title =$request->title;
+        $media->caption = $request->caption;
+        $media->alternative_text = $request->alternative_text;
+
+        $media->save();
+        return redirect()->route('media.index');     
     }
 
     /**
@@ -99,8 +109,11 @@ class MediaController extends Controller
      * @param  \App\Media  $media
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Media $media)
+    public function destroy($id)
     {
-        //
+        $media = Media::findOrFail($id);
+        Storage::delete(public_path().'/storage/upload/'.$media->path);
+        $media->delete();
+        return redirect()->route('media.index');
     }
 }
