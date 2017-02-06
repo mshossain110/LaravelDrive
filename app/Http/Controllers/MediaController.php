@@ -41,16 +41,16 @@ class MediaController extends Controller
         $file = $request->file('file');
         $extension = $file->extension();
         $fileName = $request->input('qqfilename');
-
+        $date = Carbon::now();
+        
         $image = new Media;
-        $image->name = $fileName;
+        $image->name = $date->year.'/'.$date->month.'/'.$fileName;
         $image->caption = $request->caption;
         $image->alternative_text = $request->alternative_text;
 
-        $date = Carbon::now();
         
         if($image->save()){
-            $file->storeAs('upload/'.$date->year.'/'.$date->month, $fileName);
+            $file->storeAs('upload/'.$date->year.'/'.$date->month, $fileName, 'public');
 
             return  response()->json([
                             "success"=> true,

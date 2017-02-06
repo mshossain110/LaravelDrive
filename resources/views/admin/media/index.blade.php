@@ -22,6 +22,10 @@
   </div>
   <div class="x_content">
     
+	@foreach ($images as $image)
+	<p>{{	 $image->path }}</p>
+	    <img src="{{asset('storage/upload/'.$image->name)}}" alt="" />
+	@endforeach
   </div>
 </div>
 </div>
