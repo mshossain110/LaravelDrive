@@ -8,14 +8,14 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Usermeta;
+use Illuminate\Support\Facades\Log;
 use App\Mail\RegistrationConfirmation;
 
 class UsersController extends Controller
 {
 
  	public function getUsers(){
- 			$users = User::all();
-
+ 			$users = User::with('usermeta')->get();
  			return view('admin.users.users')->with(compact('users'));
  	}
 

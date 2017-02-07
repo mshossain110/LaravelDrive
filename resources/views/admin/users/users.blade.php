@@ -21,11 +21,10 @@
     <div class="clearfix"></div>
   </div>
   <div class="x_content">
-    <usertable users="{{json_encode($users)}}"></usertable>
+    <usertable users="{{json_encode($users)}}" permission="{{json_encode(config('app.permission'))}}"></usertable>
   </div>
 </div>
 </div>
-
 
 @endsection
 
