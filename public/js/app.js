@@ -12177,27 +12177,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-		props: ['users', 'permission'],
-		data: function data() {
-				return {
-						_users: {},
-						_permission: {}
-				};
-		},
-		created: function created() {
-				this._users = JSON.parse(this.users);
-				this._permission = JSON.parse(this.permission);
-				console.log(this._permission);
-		},
-		methods: {
-				findByKey: function findByKey(ar, key) {
-						return _.find(ar, { 'key': key }).value;
-				},
-				getPermission: function getPermission(ar) {
-						var id = _.find(ar, { 'key': "permission" }).value;
-						return _.find(this._permission, id);
-				}
-		}
+  props: ['users', 'permission'],
+  data: function data() {
+    return {
+      _users: {},
+      _permission: {},
+      sortKey: ''
+    };
+  },
+  created: function created() {
+
+    this._permission = JSON.parse(this.permission);
+  },
+  computed: {
+    userData: function userData() {
+      var data = JSON.parse(this.users);
+      if (this.sortKey) {
+        data = _.sortBy(data, [this.sortKey]);
+      }
+      return data;
+    }
+  },
+  methods: {
+    findByKey: function findByKey(ar, key) {
+      return _.find(ar, { 'key': key }).value;
+    },
+    getPermission: function getPermission(ar) {
+      var id = _.find(ar, { 'key': "permission" }).value;
+      return _.find(this._permission, id);
+    },
+
+    sortBy: function sortBy(key) {
+      this.sortKey = key;
+    }
+  }
 };
 
 /***/ }),
@@ -31846,16 +31859,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "datatable-buttons"
     }
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm._users), function(user) {
+  }, [_c('thead', [_c('tr', [_c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('id')
+      }
+    }
+  }, [_vm._v("#")]), _vm._v(" "), _c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('firstName')
+      }
+    }
+  }, [_vm._v("first Name")]), _vm._v(" "), _c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('lastName')
+      }
+    }
+  }, [_vm._v("Last Name")]), _vm._v(" "), _c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('username')
+      }
+    }
+  }, [_vm._v("Username")]), _vm._v(" "), _c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('email')
+      }
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c('th', {
+    on: {
+      "click": function($event) {
+        _vm.sortBy('active')
+      }
+    }
+  }, [_vm._v("Active")]), _vm._v(" "), _c('th', [_vm._v("permission")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.userData), function(user) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(user.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.firstName))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.lastName))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.username))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(user.email))]), _vm._v(" "), _c('td', [(user.active) ? _c('span', {
       staticClass: "badge bg-green"
     }, [_vm._v("Active")]) : _c('span', {
       staticClass: "badge bg-red"
     }, [_vm._v("Disactive")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.getPermission(user.usermeta)))])])
   }))])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("#")]), _vm._v(" "), _c('th', [_vm._v("first Name")]), _vm._v(" "), _c('th', [_vm._v("Last Name")]), _vm._v(" "), _c('th', [_vm._v("Username")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Active")]), _vm._v(" "), _c('th', [_vm._v("permission")])])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

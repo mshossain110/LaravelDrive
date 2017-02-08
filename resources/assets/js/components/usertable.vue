@@ -3,19 +3,19 @@
     <table id="datatable-buttons" class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>#</th>
-          <th>first Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Active</th>
-          <th>permission</th>
+          <th @click="sortBy('id')">#</th>
+          <th @click="sortBy('firstName')">first Name</th>
+          <th @click="sortBy('lastName')">Last Name</th>
+          <th @click="sortBy('username')">Username</th>
+          <th @click="sortBy('email')">Email</th>
+          <th @click="sortBy('active')">Active</th>
+          <th >permission</th>
         </tr>
       </thead>
 
 
       <tbody>
-       <tr v-for="user in _users">
+       <tr v-for="user in userData">
             <td>{{user.id}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
@@ -40,15 +40,25 @@
 		data:function(){
 			return {
 				_users:{},
-        _permission:{}
+        _permission:{},
+        sortKey: ''
 			};
 			
 		},
 		created: function(){
-      this._users= JSON.parse(this.users);
+     
 			this._permission= JSON.parse(this.permission);
-			console.log(this._permission);
+			
 		},
+    computed: {
+      userData: function () {
+         var data= JSON.parse(this.users);
+         if(this.sortKey){
+          data = _.sortBy(data, [this.sortKey]);
+         }
+        return data;
+      }
+    },
     methods:{
       findByKey:function(ar, key){
         return _.find(ar, { 'key': key }).value;
@@ -56,6 +66,10 @@
       getPermission: function(ar){
         var id = _.find(ar, { 'key': "permission" }).value;
         return _.find(this._permission, id);
+      },
+
+      sortBy: function (key) {
+        this.sortKey = key;
       }
     }
 	}
