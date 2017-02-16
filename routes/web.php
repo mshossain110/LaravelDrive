@@ -81,6 +81,8 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
     Route::get('/users', 'UsersController@getUsers');
     Route::get('/user/create', 'UsersController@create');
     Route::post('/user/create', 'UsersController@store');
+    Route::get('/user/{id}/edit', 'UsersController@edit');
+    Route::put('/user/{id}', 'UsersController@update');    
 
     Route::resource('article', 'ArticleController');
     Route::resource('media', 'MediaController');

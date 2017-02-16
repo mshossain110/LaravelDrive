@@ -103,4 +103,28 @@ class UsersController extends Controller
         return Hash::make(str_random(60));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit')->with(compact('user'));;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+          
+    }
+
 }
