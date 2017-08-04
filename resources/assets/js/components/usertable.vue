@@ -1,6 +1,6 @@
 <template>
 
-    <table id="datatable-buttons" class="table table-striped table-bordered">
+    <table id="usertable" class="table table-bordered">
       <thead>
         <tr>
           <th @click="sortBy('id')">#</th>
@@ -15,7 +15,7 @@
 
 
       <tbody>
-       <tr v-for="user in userData">
+       <tr v-for="user in userData" @click="quickEdit(user, $event)">
             <td>{{user.id}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
@@ -70,8 +70,57 @@
 
       sortBy: function (key) {
         this.sortKey = key;
+      },
+
+      quickEdit:function(user, event){
+        var target = event.target, tr= $(target).parent();
+
+        console.log(target);
+        if(!tr.hasClass("parent")){
+          tr.addClass("parent");
+          tr.after( "<p>"+user.firstName+"</p>" );
+        }else{
+          tr.removeClass('parent');
+          $( ".hello" ).remove();
+        }
+            
       }
     }
 	}
 	
 </script>
+
+<style type="text/css">
+
+#usertable > tbody > tr > td:first-child
+{
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+}
+  
+  #usertable > tbody > tr > td:first-child::before
+ {
+  top: 9px;
+  left: 4px;
+  height: 14px;
+  width: 14px;
+  display: block;
+  position: absolute;
+  color: white;
+  border: 2px solid white;
+  border-radius: 14px;
+  box-shadow: 0 0 3px #444;
+  box-sizing: content-box;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 14px;
+  content: '+';
+  background-color: #337ab7;
+}
+
+#usertable > tbody > tr.parent > td:first-child::before {
+  content: '-';
+  background-color: #d33333;
+}
+</style>

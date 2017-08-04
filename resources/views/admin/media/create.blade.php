@@ -151,6 +151,13 @@
                 customHeaders: {
                     'X-CSRF-TOKEN': window.Laravel.csrfToken
                 }
+                
+            },
+            callbacks: {
+                onComplete:function(){
+                    alert('done')
+                    //console.log(id, name, response);
+                }
             },
             thumbnails: {
                 placeholders: {
@@ -162,7 +169,12 @@
             validation: {
                 allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
             }
-        });
+        }).on('complete', function(event, id, fileName, responseJSON) {
+       alert("Success: " + responseJSON.success);
+       if (responseJSON.success) {
+          //$('#files-upload').append('<img src="img/success.jpg" alt="' + fileName + '">');
+       }
+   });
 
         $('#trigger-upload').click(function() {
             $('#fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
