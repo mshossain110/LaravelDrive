@@ -48,7 +48,7 @@ class MediaController extends Controller
         $image->path = $date->year.'/'.$date->month.'/'.$fileName[0].'.'.$ext;
         $image->title =$fileName[0];
         $image->caption = $request->caption;
-        $image->alternative_text = $request->alternative_text;
+        $image->alt_text = $request->alternative_text;
 
         
         if($image->save()){

@@ -31,11 +31,11 @@
 		<div class="col-sm-4 col-md-3">
 	        <div class="thumbnail">
 	          <div class="image view view-first">
-	            <img style="width: 100%; display: block;" src="{{asset('storage/upload/'.$image->path)}}" alt="image" />
+	            <img style="width: 100%; display: block;" src="{{$image->getPath()}}" alt="image" />
 	            <div class="mask">
 	              
 	              <div class="tools tools-bottom">
-	                <a href="{{asset('storage/upload/'.$image->path)}}"><i class="fa fa-link"></i></a>
+	                <a href="{{$image->getPath()}}"><i class="fa fa-link"></i></a>
 	                <a href="{{route('media.edit', ['id' => $image->id])}}"><i class="fa fa-pencil"></i></a>
 	                
 	              </div>
