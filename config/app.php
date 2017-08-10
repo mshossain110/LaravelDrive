@@ -187,6 +187,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
 
         SocialiteProviders\Manager\ServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
     ],
 

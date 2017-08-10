@@ -934,7 +934,8 @@ window.Vue = __webpack_require__(16);
 window.axios = __webpack_require__(17);
 
 window.axios.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest'
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': Laravel.csrfToken
 };
 
 /**
