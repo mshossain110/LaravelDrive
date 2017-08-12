@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Media;
 use Illuminate\Http\Request;
@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use App\Http\Controllers\Controller;
+
 class MediaController extends Controller
 {
     /**
@@ -17,9 +19,7 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $images = Media::all();
-
-        return view('admin.media.index')->with(compact('images'));
+        return Media::all();
     }
 
     /**
