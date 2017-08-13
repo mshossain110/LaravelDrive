@@ -16,6 +16,7 @@ require('./bootstrap');
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('usertable', require('./components/usertable.vue'));
 Vue.component('ud', require('./components/ud.vue'));
+Vue.component('showmedia', require('./components/admin/media.index.vue'));
 
 const app = new Vue({
     el: '#app'

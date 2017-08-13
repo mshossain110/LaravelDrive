@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Media;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
+use Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,8 @@ class MediaController extends Controller
      */
     public function index()
     {
-        return Media::all();
+        Log::debug(Media::all());
+        return Media::all();//response()->json(["media"=>], 200);
     }
 
     /**
@@ -44,16 +45,18 @@ class MediaController extends Controller
         $fileName = explode(".", $request->input('qqfilename'));
         $ext= $file->extension();
         $date = Carbon::now();
+
+        $path = $date->year.'/'.$date->month.'/'.$fileName[0].'.'.$ext;
         $image = new Media;
-        $image->path = $date->year.'/'.$date->month.'/'.$fileName[0].'.'.$ext;
+        $image->path = asset('storage/'.$path);
+
         $image->title =$fileName[0];
         $image->caption = $request->caption;
         $image->alternative_text = $request->alternative_text;
 
         
         if($image->save()){
-            $file->storeAs('upload/'.$date->year.'/'.$date->month, $fileName[0].'.'.$ext, 'public');
-
+            $file->storeAs($date->year.'/'.$date->month, $fileName[0].'.'.$ext, 'public');
             return  response()->json([
                             "success"=> true,
                             "uuid" =>$request->qquuid

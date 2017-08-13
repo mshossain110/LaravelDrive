@@ -16,6 +16,7 @@ Route::prefix('v1')
 	->namespace('Api\V1')
 	->middleware('auth:api')
 	->group(function () {
-		
+
+		Route::resource('media', 'MediaController');
 
 });

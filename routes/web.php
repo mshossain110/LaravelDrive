@@ -78,6 +78,10 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
         return view('admin.elements.tablesDynamic');
     });
 
+    Route::get('/media', function(){
+        return view('admin.media.index');
+    });
+
     Route::get('/users', 'UsersController@getUsers');
     Route::get('/user/create', 'UsersController@create');
     Route::post('/user/create', 'UsersController@store');
@@ -85,6 +89,6 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'],function () {
     Route::put('/user/{id}', 'UsersController@update');    
 
     Route::resource('article', 'ArticleController');
-    Route::resource('media', 'MediaController');
+    
 
 });
