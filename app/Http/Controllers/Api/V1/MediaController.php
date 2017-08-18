@@ -19,7 +19,6 @@ class MediaController extends Controller
      */
     public function index()
     {
-        Log::debug(Media::all());
         return Media::all();//response()->json(["media"=>], 200);
     }
 
@@ -42,24 +41,22 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $file = $request->file('file');
-        $fileName = explode(".", $request->input('qqfilename'));
-        $ext= $file->extension();
+        
         $date = Carbon::now();
 
-        $path = $date->year.'/'.$date->month.'/'.$fileName[0].'.'.$ext;
+        $path = $date->year.'/'.$date->month.'/'.$file->getClientOriginalName();
         $image = new Media;
         $image->path = asset('storage/'.$path);
 
-        $image->title =$fileName[0];
+        $image->title =$file->getClientOriginalName();
         $image->caption = $request->caption;
         $image->alternative_text = $request->alternative_text;
 
         
         if($image->save()){
-            $file->storeAs($date->year.'/'.$date->month, $fileName[0].'.'.$ext, 'public');
+            $file->storeAs($date->year.'/'.$date->month, $file->getClientOriginalName(), 'public');
             return  response()->json([
                             "success"=> true,
-                            "uuid" =>$request->qquuid
                         ]);
         }
     }
