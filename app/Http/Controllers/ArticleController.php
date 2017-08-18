@@ -7,10 +7,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Article;
 use Carbon\Carbon;
 use Validator;
-use Illuminate\Support\Facades\Log;
+use Log;
+
+use App\Repositories\ArticalRepository;
+
 
 class ArticleController extends Controller
 {
+
+    protected $article;
+
+
+    public function __construct(ArticleRepository $article){
+        $this->article = $article;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +28,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        $articles = $this->article->all();
 
         return view('admin.article.index')->with(compact('articles'));
     }
@@ -53,13 +63,13 @@ class ArticleController extends Controller
 
         $article = new Article;
 
-        $article->post_title        = $request->input('post_title');
-        $article->post_slog         = $request->input('post_slog');
-        $article->post_content      = $request->input('post_content');
-        $article->post_excerpt      = $request->input('post_content');
-        $article->post_thumbnail      = "comming soon";
-        $article->published_at      = Carbon::now();;
-        $article->user_id           = Auth::id();
+        $article->title        = $request->input('title');
+        $article->slug         = $request->input('slug');
+        $article->content      = $request->input('content');
+        $article->excerpt      = $request->input('content');
+        $article->thumbnail    = "comming soon";
+        $article->published_at = Carbon::now();;
+        $article->user_id      = Auth::id();
 
         $article->save();
 
@@ -75,8 +85,8 @@ class ArticleController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'post_title' => 'required|max:255',
-            'post_slog' => 'required|max:255|unique:articles'
+            'title' => 'required|max:255',
+            'slug' => 'required|max:255|unique:articles'
         ]);
     }
 
