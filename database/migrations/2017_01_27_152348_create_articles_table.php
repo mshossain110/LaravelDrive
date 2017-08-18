@@ -17,14 +17,15 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             
-            $table->string('post_title');
-            $table->string('post_content');
-            $table->string('post_excerpt');
-            $table->string('post_slog')->unique();
-            $table->string('post_thumbnail');
-            $table->string('post_status')->default('publish');
+            $table->string('title');
+            $table->string('content')->nullable();
+            $table->string('excerpt')->nullable();
+            $table->string('slug')->unique();
+            $table->string('thumbnail')->nullable();
+            $table->string('status')->default('publish');
             $table->boolean('comment_status')->default(true);
-            $table->timestamp('published_at');
+            $table->timestamp('published_at')->nullable();
+            $table->integer('view_count')->unsigned()->default(0)->index();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -3,9 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
+    use SoftDeletes;
+
+
+    
     /**
      * The database table used by the model.
      *
@@ -14,12 +19,20 @@ class Article extends Model
     protected $table = 'articles';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['published_at', 'created_at', 'deleted_at'];
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'post_title', 'post_slog'
+        'title', 'slug', 'content', 'slug'
     ];
 
     /**
@@ -61,4 +74,27 @@ class Article extends Model
 	{
 	    return $this->belongsTo('App\User');
 	}
+
+    /**
+    *Set title attribute
+    *
+    * @param string $value
+    * @return 
+    */
+    public function setTitleAttribute($value){
+        $this->attributes['title'] = $value;
+        $this->setUniqueSlug($value, '');
+    }
+
+
+    public function setUniqueSlug($value, $extra){
+        $slug =srt_slug($value.$extra);
+
+        if(static::whereSlug($slug)->exists()){
+            $this->setUniqueSlug($slug, (int) str_random(40));
+            return;
+        }
+
+        $this->attributes['slug']=$slug;
+    }
 }
