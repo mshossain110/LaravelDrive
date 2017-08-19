@@ -67,6 +67,71 @@ trait BaseRepository
 		return $this->getById($id)->delete();
 	}
 
+
+	/**
+	 * Store this model object
+	 * 
+	 * @param array $input
+	 * @return mix object
+	 * 
+	 */
+
+	public function store($input){
+		return $this->save($this->model, $input);
+	}
+
+	/**
+	 * Update The model Using id
+	 * 
+	 * @param init $id
+	 * @return mix object
+	 */
+
+	public function update($id, $input){
+		$this->model = $this->getById($id);
+
+		return $this->save($this->model, $input);
+	}
+
+	/**
+     * Update columns in the record by id.
+     *
+     * @param $id
+     * @param $input
+     * @return App\Model|User
+     */
+	
+    public function updateColumn($id, $input)
+    {
+        $this->model = $this->getById($id);
+
+        foreach ($input as $key => $value) {
+            $this->model->{$key} = $value;
+        }
+
+        return $this->model->save();
+    }
+
+	/**
+	 * Save model data bu model
+	 * 
+	 * @uses Use this function to save other model also
+	 * 
+	 * @param mix model object
+	 * @param array $input
+	 * 
+	 * @return model object
+	 */
+
+	public function save($model, $input){
+		$model->fill($input);
+
+		$model->save();
+
+		return $model;
+
+	}
+
 	
 }
 

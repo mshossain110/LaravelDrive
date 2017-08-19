@@ -4,9 +4,15 @@ namespace App\Repositories;
 
 
 use App\Article;
+use App\Repositories\BaseRepository;
 
 
 class ArticleRepository{
+
+	/**
+	 * Using base Repository class
+	 */
+	use BaseRepository;
 
 
 	protected $model;
@@ -14,11 +20,7 @@ class ArticleRepository{
 	public function __construct(Article $article){
 		$this->model = $article;
 	}
-
-
-	public function All(){
-		return $this->model->get();
-	}
+	
 }
 
 ?>

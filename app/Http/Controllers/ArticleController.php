@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ArticleRequests;
 use App\Article;
 use Carbon\Carbon;
 use Validator;
 use Log;
 
-use App\Repositories\ArticalRepository;
+use App\Repositories\ArticleRepository;
 
 
 class ArticleController extends Controller
@@ -46,48 +47,19 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests\ArticleRequests  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequests $request)
     {
-        Log::info($request->all());
-        // validate user from validation function
-        $validator = $this->validator($request->all());
-        
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
-        }
+        $data = array_merge($request->all(), [
+                'user_id' => Auth::id(),
+                'published_at' =>Carbon::now(),
+            ]);
 
-        $article = new Article;
-
-        $article->title        = $request->input('title');
-        $article->slug         = $request->input('slug');
-        $article->content      = $request->input('content');
-        $article->excerpt      = $request->input('content');
-        $article->thumbnail    = "comming soon";
-        $article->published_at = Carbon::now();;
-        $article->user_id      = Auth::id();
-
-        $article->save();
+        $this->article->store($data);
 
         return redirect('/admin/article');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'title' => 'required|max:255',
-            'slug' => 'required|max:255|unique:articles'
-        ]);
     }
 
     /**
@@ -132,6 +104,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $this->article->destroy($id);
     }
 }

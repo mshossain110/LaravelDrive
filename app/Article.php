@@ -32,7 +32,11 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'content', 'slug'
+        'title',
+        'slug',
+        'content',
+        'user_id',
+        'published_at'
     ];
 
     /**
@@ -88,7 +92,7 @@ class Article extends Model
 
 
     public function setUniqueSlug($value, $extra){
-        $slug =srt_slug($value.$extra);
+        $slug = str_slug($value.$extra);
 
         if(static::whereSlug($slug)->exists()){
             $this->setUniqueSlug($slug, (int) str_random(40));

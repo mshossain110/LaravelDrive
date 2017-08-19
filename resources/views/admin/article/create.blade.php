@@ -25,41 +25,25 @@
 
 
                  <div class="form-group has-feedback row">
-                    {!! Form::label('post_title', Lang::get('forms.create_article_label_title'), array('class' => 'col-md-12 control-label')); !!}
+                    {!! Form::label('title', Lang::get('forms.create_article_label_title'), array('class' => 'col-md-12 control-label')); !!}
                     <div class="col-md-12">
-                          {!! Form::text('post_title', NULL, array('id' => 'post_title', 'class' => 'form-control', 'placeholder' => Lang::get('forms.create_article_ph_title'))) !!}
+                          {!! Form::text('title', NULL, array('id' => 'title', 'class' => 'form-control', 'placeholder' => Lang::get('forms.create_article_ph_title'))) !!}
                           
 
-                        @if ($errors->has('post_title'))
-                                      <span class="help-block">
-                                          <strong>{{ $errors->first('post_title') }}</strong>
-                                      </span>
-                                  @endif
-                    </div>
-                  </div>
-
-                  <div class="form-group form-group-sm has-feedback row">
-                    {!! Form::label('post_slog', URL::to('admin').'/', array('class' => 'col-md-3 control-label')); !!}
-                    <div class="col-md-9">
-                        <div class="input-group">
-                          {!! Form::text('post_slog', NULL, array('id' => 'post_slog', 'class' => 'form-control input-sm', 'placeholder' => Lang::get('forms.create_article_ph_slog'))) !!}
-                          
-                        </div>
-                        @if ($errors->has('post_title'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('post_title') }}</strong>
-                              </span>
+                        @if ($errors->has('title'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('title') }}</strong>
+                            </span>
                         @endif
                     </div>
                   </div>
 
+
                   <div class="form-group has-feedback row">
                     <div class="col-md-12">
-                        
+  
 
-                          
-
-                          <textarea name="post_content" id="editor" class="editor-wrapper" ></textarea>
+                          <textarea name="content" id="editor" class="editor-wrapper" ></textarea>
 
                     </div>
                   </div>
@@ -99,16 +83,5 @@
         });
     </script>
     <!-- /bootstrap-wysiwyg -->
-
-
-
-   
-
-    
-
-
-
-
-
 
 @endsection
