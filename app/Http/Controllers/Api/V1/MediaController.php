@@ -50,7 +50,7 @@ class MediaController extends Controller
 
         $image->title =$file->getClientOriginalName();
         $image->caption = $request->caption;
-        $image->alternative_text = $request->alternative_text;
+        $image->alt_text = $request->alternative_text;
 
         
         if($image->save()){
