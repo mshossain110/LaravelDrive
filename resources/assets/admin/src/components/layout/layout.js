@@ -15,10 +15,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
+import { Route, Switch } from 'react-router-dom';
+import  Dahsboard from "@ap/dashboard";
+import Users from '@ap/users';
 
 
 
-const drawerWidth = 240;
+
+const drawerWidth = 180;
 
 const styles = theme => ({
     root: {
@@ -85,13 +89,7 @@ const styles = theme => ({
         padding: theme.spacing.unit * 3,
         height: '100vh',
         overflow: 'auto',
-    },
-    chartContainer: {
-        marginLeft: -22,
-    },
-    tableContainer: {
-        height: 320,
-    },
+    }
 });
 
 class Layout extends React.Component {
@@ -197,22 +195,12 @@ class Layout extends React.Component {
                     <main className={classes.content}>
                         <div className={classes.appBarSpacer} />
                         
-                        <Typography variant="display1" gutterBottom>
-                            Orders
-                        </Typography>
-        
-        
-                        <Typography component="div" className={classes.chartContainer}>
-                            Here is simple line chart
-                        </Typography>
-        
-        
-                        <Typography variant="display1" gutterBottom>
-                            Products
-                        </Typography>
-                        
-                        <div className={classes.tableContainer}>
-                            here is a table
+                        <div className="dashboad-page pages router-container" >
+                            <Switch>
+                                <Route exact path="/" component={Dahsboard} />
+                                <Route path="/users" component={Users} />
+                            </Switch>
+                            
                         </div>
                     </main>
                 </div>
