@@ -20,7 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('active')->default(0);
+            $table->string('role')->default('subscriber');
+            $table->string('avatar')->nullable();
+            $table->integer('status')->default(0);
+            $table->timestamp('last_loged_in')->useCurrent();
+            $table->ipAddress('ip');
             $table->rememberToken();
             $table->timestamps();
         });

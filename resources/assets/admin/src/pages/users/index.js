@@ -1,11 +1,29 @@
 import React from 'react';
+import api from '@au/api';
 
 
 
-const Users = () => {
-    return (
-        <h1>This is Users page</h1>
-    )
+
+class Users extends React.Component {
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            user: [],
+        }
+    }
+
+    componentWillMount () {
+        api.get('/api/user').then( res => {
+            console.log(res);
+        })
+    }
+
+    render () {
+        return (
+            <h1>This is users page</h1>
+        )
+    }
 }
 
 export default Users

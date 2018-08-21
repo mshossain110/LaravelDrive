@@ -32,7 +32,8 @@ module.exports = {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
             '@ac' : adminPath('components'),
-            '@ap' : adminPath('pages')
+            '@ap' : adminPath('pages'),
+            '@au' : adminPath('utils')
         }
     },
     
