@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use App\Transformers\UserTransformer;
 use App\Http\Requests\UserRequest;
+use Carbon\Carbon;
 
 class UserController extends ApiController
 {
@@ -22,7 +23,7 @@ class UserController extends ApiController
     	return $this->respondWithPaginator($this->user->page(), new UserTransformer);
     }
 
-    public function show ( $id ){
+    public function show ( $id ) {
     	return $this->respondWithItem($this->user->getById($id), new UserTransformer);
     }
 
@@ -32,8 +33,12 @@ class UserController extends ApiController
      * @param  \App\Http\Requests\UserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( UserRequest $request){
-        $data = $request->all();
+    public function store ( UserRequest $request) {
+        $validated = $request->validated();
+
+        $data = $request->only(['firstname', 'lastname', 'name', 'email', 'password', 'role', 'avatar']);
+        $data['ip'] = $request->ip();
+        $data['last_loged_in'] =  Carbon::now();
 
         $user = $this->user->store($data);
 

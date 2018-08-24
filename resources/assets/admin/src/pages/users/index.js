@@ -9,19 +9,18 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Input from '@material-ui/core/Input';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import Avatar from '@material-ui/core/Avatar';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import UserTableAppBar from './UserTableAppBar';
 import api from '@au/api';
 
 
@@ -59,7 +58,7 @@ class EnhancedTableHead extends React.Component {
 
         return (
             <TableHead>
-                <TableRow>
+                <TableRow className={classes.headerrow}>
                     <TableCell className={classes.checkboxcell} >
                         <Checkbox
                             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -99,6 +98,10 @@ class EnhancedTableHead extends React.Component {
                         }, this)
                     }
 
+                    <TableCell>
+                        
+                    </TableCell>
+
                 </TableRow>
             </TableHead>
         );
@@ -115,87 +118,6 @@ EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const toolbarStyles = theme => ({
-    root: {
-        paddingRight: theme.spacing.unit,
-    },
-    highlight:
-        theme.palette.type === 'light'
-        ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-        : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-        },
-
-    spacer: {
-        flex: '1 1 100%',
-    },
-    actions: {
-        color: theme.palette.text.secondary,
-    },
-    title: {
-        flex: '0 0 auto',
-    },
-});
-
-let EnhancedTableToolbar = props => {
-    const { numSelected, classes } = props;
-
-    return (
-
-        <Toolbar
-            className={classNames(classes.root, {
-                        [classes.highlight]: numSelected > 0,
-                    })
-                }
-                >
-        
-            <div className={classes.title}>
-                {
-                    numSelected > 0 ? (
-                        <Typography color="inherit" variant="subheading">
-                            {numSelected} selected
-                        </Typography>
-                    ) : (
-                        <Typography variant="title" id="tableTitle">
-                            Users
-                        </Typography>
-                    )
-                }
-            </div>
-            
-            <div className={classes.spacer} />
-
-            <div className={classes.actions}>
-                {
-                    numSelected > 0 ? (
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="Delete">
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    ) : (
-                        <Tooltip title="Filter list">
-                            <IconButton aria-label="Filter list">
-                                <FilterListIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )
-                }
-            </div>
-        </Toolbar>
-    );
-};
-
-EnhancedTableToolbar.propTypes = {
-    classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
-};
-
-EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
     root: {
@@ -234,6 +156,14 @@ const styles = theme => ({
         '&: hover': {
             color: '#3d6501',
         }
+    },
+    headerrow: {
+        height: 30,
+        borderTop: '2px solid #929292',
+        borderBottom: '2px solid #929292'
+    },
+    actiontoolbar : {
+        flexGrow: 1,
     }
 });
 
@@ -321,10 +251,32 @@ class Users extends React.Component {
         }
 
         return (
-            <Paper className={classes.root}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-            
+            <div className={classes.root}>
+                <UserTableAppBar />    
+
+                <Toolbar className={classes.actiontoolbar}>
+                    <NativeSelect className={classes.actiontoolbar}>
+                        <option value="Actions" > Bulk Actions </option>
+                        <option value={10}>Ten</option>
+                        <option value={20}>Twenty</option>
+                        <option value={30}>Thirty</option>
+                    </NativeSelect>
+                    <Input
+                        placeholder="Search ..."
+                        id="adornment-password"
+                        type="Search"
+                        endAdornment={
+                        <InputAdornment position="end">
+                            <SearchIcon />
+                        </InputAdornment>
+                        }
+                    />       
+
+                </Toolbar>
+
                 <div className={classes.tableWrapper}>
+
+                    
                     <Table className={classes.table} aria-labelledby="tableTitle">
                     
                         <EnhancedTableHead
@@ -409,7 +361,7 @@ class Users extends React.Component {
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
                     
-            </Paper>
+            </div>
         );
     }
 }

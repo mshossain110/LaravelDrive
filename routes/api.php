@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::group([
-    //'middleware' => ['auth:api'],
+    'middleware' => ['auth:api'],
     'namespace' => 'Api\V1',
 ], function () {
 	Route::resource('user', 'UserController', ['except' => ['edit']]);
