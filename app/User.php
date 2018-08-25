@@ -22,7 +22,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'status',
-        'role',
+        'permissions',
         'avatar',
         'last_loged_in',
         'ip'
@@ -37,6 +37,46 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function setPermissionsAttribute( $value ) {
+        if ( ! empty($value) ) {
+            $this->attributes['permissions'] = serialize( $value );
+        }
+    }
+
+    public function getPermissionsAttribute( $value ) {
+        $permissions = unserialize( $value );
+        
+        $roles = $this->roles();
+
+        foreach ( $roles as $role ) {
+            $permissions = array_merge($permissions, $role->permissions);
+        }
+
+        return $permissions;
+    }
+
+    public function hasPermission( $permission ) {
+        if ( in_array($permission, $this->permissions) ){
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+
+    /**
+     * Get the comments for the blog post.
+     */
+    public function meta()
+    {
+        return $this->hasMany('App\UserMeta');
+    }
 
     
 }

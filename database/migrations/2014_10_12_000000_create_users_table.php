@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('role')->default('subscriber');
+            $table->string('permissions')->nullable();
             $table->string('avatar')->nullable();
             $table->integer('status')->default(0);
             $table->timestamp('last_loged_in')->useCurrent();

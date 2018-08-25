@@ -16,9 +16,7 @@ class RoleTransformer extends TransformerAbstract {
 			'id' 				=> (int) $role->id,
 			'title'				=> $role->title,
 			'description'		=> $role->description,
-			'price'				=> (int) $role->price,
-			'payment_type'		=> (int) $role->payment_type,
-			'capabilities'		=> $role->capabilities,
+			'permissions'		=> (array) $role->permissions,
 		];
 	}
 

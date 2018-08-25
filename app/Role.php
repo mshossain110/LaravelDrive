@@ -7,23 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     
+    protected $fillable = [
+        'name',
+        'description',
+        'permissions',
+        'status'
+    ];
 
-    public function setCapabilitiesAttribute( $value ) {
+    public function setPermissionsAttribute( $value ) {
         if ( ! empty($value) ) {
             $this->attributes['meta'] = serialize( $value );
         }
     }
 
-    public function getCapabilitiesAttribute( $value ) {
+    public function getPermissionsAttribute( $value ) {
         return unserialize( $value );
     }
 
-
     /**
-     * Get the user for a role.
+     * The users that belong to the role.
      */
-    public function user()
+    public function users()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsToMany('App\User');
     }
 }
