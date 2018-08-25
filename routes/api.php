@@ -17,5 +17,7 @@ Route::group([
     'namespace' => 'Api\V1',
 ], function () {
 	Route::resource('user', 'UserController', ['except' => ['edit']]);
-
+    Route::resource('role', 'RoleController', ['except' => ['edit']]);
+    Route::post('role/{role_id}/attach_users', 'RoleController@attachUser');
+    Route::get('permissions', 'RoleController@getAbilities');
 });

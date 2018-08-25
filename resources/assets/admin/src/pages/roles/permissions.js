@@ -2,13 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import api from '@au/api';
 
-function Permissions (props) {
-    return (
-        <Paper>
-            Here will display roes permisssion
-        </Paper>
-    )
+class Permissions extends React.Component {
+    
+    state = {
+        permissions: [],
+    }
+
+    componentWillMount () {
+        api.get('/api/permissions')
+            .then(res => {
+                console.log(res);
+            })
+            .catch( error => {
+                console.log(error.response.data)
+            })
+    }
+
+    render () {
+        return (
+            <Paper>
+                Here will display roes permisssion
+            </Paper>
+        )
+    }
+    
 }
 
 const styles = theme => ({

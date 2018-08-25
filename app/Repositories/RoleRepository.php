@@ -14,7 +14,7 @@ class RoleRepository
     /**
      * User Model
      *
-     * @var User
+     * @var Role
      */
     protected $model;
 
@@ -29,7 +29,7 @@ class RoleRepository
     }
 
     /**
-     * Get the list of all the user without myself.
+     * Get the list of all the user without.
      *
      * @return mixed
      */
@@ -46,11 +46,23 @@ class RoleRepository
      * @param  string $title
      * @return mixed
      */
-    public function getByTitle ($title)
+    public function getByName ($name)
     {
         return $this->model
-                    ->where('title', $title)
+                    ->where('name', $name)
                     ->first();
     }
+
+    public function getPermissions ($id) {
+        $this->model = $this->getById($id);
+
+        return $this->model->permissions;
+    }
+
+    public function attachUser( $role_id, $user_id ) {
+        $this->model = $this->getById($role_id);
+
+        return $this->model->users()->attach($user_id);
+    } 
 
 }

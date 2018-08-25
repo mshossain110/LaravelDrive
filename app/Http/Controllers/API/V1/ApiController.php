@@ -132,6 +132,23 @@ class ApiController extends Controller
     }
 
     /**
+     * Respond the message.
+     * 
+     * @param  string $message
+     * @return json
+     */
+
+    public function respondWithMessage ($message) {
+        return $this->setStatusCode(200)
+            ->respondWithArray([
+                    'success' => [
+                        'http_code' => $this->statusCode,
+                        'message' => $message,
+                    ]
+                ]);
+    }
+
+    /**
      * Respond the error message.
      * 
      * @param  string $message

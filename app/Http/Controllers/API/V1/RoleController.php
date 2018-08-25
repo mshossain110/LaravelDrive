@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repositories\RoleRepository;
 use App\Transformers\RoleTransformer;
 use App\Http\Requests\RoleRequest;
+use Gate;
 
 class RoleController extends ApiController
 {
@@ -19,7 +20,7 @@ class RoleController extends ApiController
     }
 
     public function index () {
-    	return $this->respondWithPaginator($this->role->page(), new RoleTransformer);
+    	return $this->respondWithPaginator($this->role->getList(), new RoleTransformer);
     }
 
     public function show ( $id ){
@@ -33,8 +34,9 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store( RoleRequest $request){
-        $data = $request->all();
-        $role = $this->role->store($data);
+        $validated = $request->validated();
+        $data      = $request->only(['name', 'description', 'statua', 'permissions']);
+        $role      = $this->role->store($data);
 
        	return $this->respondWithItem($role, new RoleTransformer);
     }
@@ -47,10 +49,9 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function update ( RoleRequest $request, $id ) {
-
-    	$data = $request->all();
-
-    	$role = $this->role->update( $id, $data);
+        $validated = $request->validated();
+        $data      = $request->only(['name', 'description', 'statua', 'permissions']);
+    	$role      = $this->role->update( $id, $data);
 
     	return $this->respondWithItem($role, new RoleTransformer);
     }
@@ -70,5 +71,50 @@ class RoleController extends ApiController
         $this->role->destroy($id);
 
         return $this->noContent();
-    } 
+    }
+    
+    public function attachUser (Request $request) {
+        $role_id = $request->get('role_id');
+        $user_id = $request->get('user_id');
+        $this->role->attachUser($role_id, $user_id);
+
+        return $this->respondWithMessage("Role attached with the user");
+
+    }
+
+    public function getAbilities() {
+        $permissions = [];
+        
+        $policies = Gate::policies();
+        
+        
+        if ( is_array($policies) ) {
+            foreach ($policies as $model => $policy) {
+                $permissions[$model] = $this->getPolicyMethods($model, $policy);
+            }
+        }
+
+        $abilities = Gate::abilities();
+
+        if ( is_array($abilities) ) {
+            $permissions['abilities'] = array_keys($abilities);  
+       } 
+
+
+        return $permissions;
+    }
+
+    protected function getPolicyMethods($model, $policy) {
+        $name = (new \ReflectionClass($model))->getShortName();
+        $methods = get_class_methods($policy);
+        $data = [];
+
+        if ( is_array( $methods ) ) {
+            foreach ( $methods as $method) {
+              $data[] = strtolower($name) . '.' . $method;
+            }
+        }
+
+        return $data;
+    }
 }
