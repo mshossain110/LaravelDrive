@@ -26,8 +26,8 @@ class UserTransformer extends TransformerAbstract
             'lastname'      => $user->lastname,
             'avatar'        => $user->avatar,           
             'status'        => $user->status,       
-            'permissions'   => $user->permissions,       
-            'last_loged_in' => $user->last_loged_in->toDateTimeString(),       
+            // 'permissions'   => $user->permissions,       
+            // 'last_loged_in' => $user->last_loged_in->toDateTimeString(),       
             'ip'            => $user->ip,       
             'created_at'    => $user->created_at->toDateTimeString(),
         ];

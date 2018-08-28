@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
+import Permissions from '@ac/common/Permissions'
 
 
 const styles = theme => ({
@@ -28,7 +29,7 @@ class RoleList extends React.Component {
     }
 
     openRoleForm = () => {
-        this.setState(state => ({ checked: !state.checked }));
+        this.setState(state => ({ checked: true }));
     };
 
     render () {
@@ -71,7 +72,7 @@ class RoleList extends React.Component {
                                     className={classes.name}
                                     margin="none"
                                     />
-
+                                    <Permissions />
                                     <Button variant="contained" color="primary" className={classes.button}>
                                         Add Role
                                     </Button>

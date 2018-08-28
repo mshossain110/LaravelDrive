@@ -10,16 +10,6 @@ class Permissions extends React.Component {
         permissions: [],
     }
 
-    componentWillMount () {
-        api.get('/api/permissions')
-            .then(res => {
-                console.log(res);
-            })
-            .catch( error => {
-                console.log(error.response.data)
-            })
-    }
-
     render () {
         return (
             <Paper>
