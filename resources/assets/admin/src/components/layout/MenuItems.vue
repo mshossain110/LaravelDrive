@@ -53,7 +53,7 @@
             </v-list-group>
     
     
-            <v-list-tile v-else :key="item.text">
+            <v-list-tile v-else :key="item.text" :to="{name:item.name }">
                 <v-list-tile-action>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-tile-action>
@@ -75,7 +75,8 @@
         data () {
             return {
                 items: [
-                    { icon: 'contacts', text: 'Contacts' },
+                    { icon: 'dashboard', text: 'Dashboard', name: 'dashboard' },
+                    { icon: 'people', text: 'Users', name: 'users' },
                     { icon: 'history', text: 'Frequently contacted' },
                     { icon: 'content_copy', text: 'Duplicates' },
                     {
