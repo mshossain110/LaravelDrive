@@ -1,9 +1,14 @@
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 /**
  * required variables
  */
 var plugins = [];
+
+plugins.push (
+    new VueLoaderPlugin()
+)
 
 function adminPath (dir = '') {
     return path.join(__dirname, './resources/assets/admin/src', dir);
@@ -60,11 +65,12 @@ module.exports = {
             },
 
             {
-                test: /\.scss$/,
+                test: /\.styl$/,
                 use: [
+                    'vue-style-loader',
                     'style-loader',
                     'css-loader',
-                    'sass-loader'
+                    'stylus-loader'
                 ]
             },
             {
