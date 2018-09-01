@@ -1,78 +1,134 @@
 <template>
-    <v-data-table
-        :headers="headers"
-        :items="users"
-        :search="search"
-        v-model="selected"
-        item-key="name"
-        select-all
-        class="elevation-1"
-    >
-    <template slot="headerCell" slot-scope="props">
-      <v-tooltip bottom>
-        <span slot="activator">
-          {{ props.header.text }}
-        </span>
-        <span>
-          {{ props.header.text }}
-        </span>
-      </v-tooltip>
-    </template>
-    <template slot="items" slot-scope="props">
-      <td>
-        <v-checkbox
-          v-model="props.selected"
-          primary
-          hide-details
-        ></v-checkbox>
-      </td>
-      <td>{{ props.item.name }}</td>
-      <td class="text-xs-right">{{ props.item.calories }}</td>
-      <td class="text-xs-right">{{ props.item.fat }}</td>
-      <td class="text-xs-right">{{ props.item.carbs }}</td>
-      <td class="text-xs-right">{{ props.item.protein }}</td>
-      <td class="text-xs-right">{{ props.item.iron }}</td>
-    </template>
-  </v-data-table>
+    <v-card flat>
+        <v-card-title>
+            <v-select
+                :items="BulkActions"
+                label="Bulk Action"
+                placeholder="Bulk Action"
+                solo
+                flat />
+            <v-spacer />
+            <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details />
+        </v-card-title>
+
+        <v-data-table
+            :headers="headers"
+            :items="users"
+            :search="search"
+            v-model="selected"
+            item-key="name"
+            select-all
+            flat
+            hide-actions
+            class="elevation-1" >
+
+            <template
+                slot="items"
+                slot-scope="props">
+                <td>
+                    <v-checkbox
+                        v-model="props.selected"
+                        primary
+                        hide-details />
+                </td>
+                <td>
+                    <v-avatar
+                        :title="props.item.firstname"
+                        :size="32"
+                        color="grey lighten-4" >
+                        <img
+                            :src="props.item.avatar"
+                            :alt="props.item.firstname" >
+                    </v-avatar>
+                </td>
+                <td>{{ props.item.firstname }}</td>
+                <td class="text-xs-right">{{ props.item.lastname }}</td>
+                <td class="text-xs-right">{{ props.item.email }}</td>
+                <td class="text-xs-right">{{ props.item.role }}</td>
+                <td class="text-xs-right">
+                    <div class="text-xs-center">
+                        <v-chip
+                            :class="props.item.status"
+                            small>
+                            {{ props.item.status }}
+                        </v-chip>
+                    </div>
+                </td>
+                <td class="justify-center layout px-0">
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="editItem(props.item)" >
+                        edit
+                    </v-icon>
+                    <v-icon
+                        small
+                        @click="deleteItem(props.item)" >
+                        delete
+                    </v-icon>
+                </td>
+            </template>
+        </v-data-table>
+
+        <div class="text-xs-left pt-2">
+            <v-pagination
+                v-model="currentpage"
+                :length="pagination.count" />
+        </div>
+    </v-card>
 </template>
 
 
 <script>
-	import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 
-    export default {
-        data () {
-            return {
-                search: '',
-                selected: [],
-                headers: [
+export default {
+    data() {
+        return {
+            currentpage: typeof this.$route.query.page === 'undefined' ? 1 : parseInt(this.$route.query.page, 10),
+            search: '',
+            selected: [],
+            headers: [
                 {
-                    text: 'Dessert (100g serving)',
-                    align: 'left',
+                    text: 'Avatar',
+                    value: 'avatar',
                     sortable: false,
-                    value: 'name'
                 },
-                { text: 'Calories', value: 'calories' },
-                { text: 'Fat (g)', value: 'fat' },
-                { text: 'Carbs (g)', value: 'carbs' },
-                { text: 'Protein (g)', value: 'protein' },
-                { text: 'Iron (%)', value: 'iron' }
-                ],
-       
-            }
+                {
+                    text: 'First Name',
+                    align: 'left',
+                    sortable: true,
+                    value: 'firstname',
+                },
+                { text: 'Last Name', value: 'lastname' },
+                { text: 'Email', value: 'email' },
+                { text: 'Role', value: 'role' },
+                { text: 'Status', value: 'status' },
+            ],
+            BulkActions: [
+                'Delete',
+            ],
+        };
+    },
+    computed: {
+        ...mapState('Users', ['users', 'pagination']),
+    },
+    watch: {
+        currentpage(newValue) {
+            this.$router.push({ name: 'users', query: { page: newValue } });
+            this.$store.dispatch('Users/getUsers', { page: newValue });
         },
-        created () {
-            this.$store.dispatch('Users/getUsers');
-        },
-        computed: {
-            ...mapState(['Users/users', 'Users/totalPage', 'Users/totalUsers', 'Users/perPage'])
-        },
-        methods: {
-            
-        }
-    }
-</script>
+    },
+    created() {
+        this.$store.dispatch('Users/getUsers', { page: parseInt(this.$route.query.page, 10) });
+    },
+    methods: {
 
-<style>
-    
-</style>
+    },
+};
+</script>

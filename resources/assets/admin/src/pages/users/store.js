@@ -7,38 +7,30 @@ export default {
         errors: [],
     },
     getters: {
-        users (state) {
+        users(state) {
             return state.users;
         },
-        totalPage (state) {
-            return state.pagination.total_pages;
+        pagination(state) {
+            return state.pagination;
         },
-        totalUsers (state) {
-            return state.pagination.total;
-        },
-        perPage (state) {
-            return state.pagination.per_page;
-        }
-      
     },
     mutations: {
-        getUsers (state, payload) {
-          state.users = payload;
+        getUsers(state, payload) {
+            state.users = payload;
         },
-        getPagination (state, payload) {
+        getPagination(state, payload) {
             state.pagination = payload;
         }
 
     },
     actions: {
-        getUsers ({ commit }) {
-            axios.get('/api/user')
-                .then( res => { 
-                    commit('getUsers', res.data.data)
-                    commit('getPagination', res.data.meta)
+        getUsers({ commit }, params) {
+            axios.get('/api/users', { params })
+                .then((res) => {
+                    commit('getUsers', res.data.data);
+                    commit('getPagination', res.data.meta.pagination);
                 })
-                .catch( errors => { console.log(errors)})
-
-        }
+                .catch((errors) => { console.log(errors); });
+        },
     },
-}
+};

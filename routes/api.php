@@ -16,8 +16,11 @@ Route::group([
     'middleware' => ['auth:api'],
     'namespace' => 'Api\V1',
 ], function () {
-	Route::resource('user', 'UserController', ['except' => ['edit']]);
-    Route::resource('role', 'RoleController', ['except' => ['edit']]);
-    Route::post('role/{role_id}/attach_users', 'RoleController@attachUser');
+
+    Route::resource('users', 'UserController', ['except' => ['edit']]);
+    Route::delete('users/delete-multiple', 'UserController@deleteMultiple');
+
+    Route::resource('roles', 'RoleController', ['except' => ['edit']]);
+    Route::post('roles/{role_id}/attach_users', 'RoleController@attachUser');
     Route::get('permissions', 'RoleController@getAbilities');
 });

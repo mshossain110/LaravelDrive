@@ -38,6 +38,19 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    static $status = [
+        '0' => 'Inactive',
+        '1' => 'Active',
+        '2' => "Pandding",
+        '3' => "Baned"
+    ];
+
+    public function getStatusAttribute ( $value ) {
+        if ( array_key_exists( $value, self::$status ) ) {
+            return self::$status[$value];
+        }
+    }
+
     // public function setPermissionsAttribute( $value ) {
     //     if ( ! empty($value) ) {
     //         $this->attributes['permissions'] = serialize( $value );

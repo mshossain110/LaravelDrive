@@ -128,4 +128,24 @@ class UserRepository
     {
         return $this->getById($id)->delete();
     }
+
+
+    /**
+     * Delete multiple users.
+     *
+     * @param array $ids
+     * @return bool|null
+     */
+    public function deleteMultiple($ids)
+    {
+        foreach ($ids as $id) {
+            $user = $this->user->find($id);
+            if (is_null($user)) continue;
+
+            $user->roles()->detach();
+            $user->delete();
+        }
+
+        return $ids;
+    }
 }

@@ -15,8 +15,8 @@ class UserController extends ApiController
 
     public function __construct ( UserRepository $user ) {
         parent::__construct();
-
         $this->user = $user;
+        $this->middleware('auth');
     }
 
     public function index () {
@@ -96,5 +96,24 @@ class UserController extends ApiController
         $this->user->destroy($id);
 
         return $this->noContent();
-    } 
+    }
+    
+    
+    /**
+     * Delete multiple users.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteMultiple(Request $request )
+    {
+        $this->authorize('destroy', User::class);
+
+        $this->validate($request, [
+            'ids' => 'required|array|min:1'
+        ]);
+
+        $this->user->deleteMultiple($request->get('ids'));
+
+        return $this->success([], 204);
+    }
 }
