@@ -13,7 +13,7 @@
     
         <v-toolbar
             :clipped-left="$vuetify.breakpoint.lgAndUp"
-            color="blue darken-3"
+            color="primary"
             height="40"
             dark
             app

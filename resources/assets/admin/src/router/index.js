@@ -1,5 +1,5 @@
-import DashRoute from '@ap/Dashboard/route';
-import UserRoute from '@ap/Users/route';
+import DashRoute from '@ap/dashboard/route';
+import UserRoute from '@ap/users/route';
 
 const Routes = [];
 

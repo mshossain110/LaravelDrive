@@ -1,7 +1,9 @@
 import Vuex from 'vuex';
+import UsersStore from '@ap/users/store'
+import Vue from 'vue';
+Vue.use(Vuex);
 
-
-const store = new Vuex.Store({
+export default new Vuex.Store({
     state: {
         count: 0,
     },
@@ -22,7 +24,8 @@ const store = new Vuex.Store({
             commit('increment')
           }, 1000)
         }
+    },
+    modules: {
+        Users: UsersStore,
     }
 });
-
-export default store;
