@@ -6,25 +6,21 @@
 
 
 <script>
-    import Layout from '@ac/layout';
-    export default {
-        data () {
-            return {
-                
-            }
-        },
-        computed: {
-            
-        },
-        components: {
-            Layout
-        },
-        methods: {
-            
-        }
-    }
-</script>
+import Layout from '@ac/layout';
 
-<style>
-    
-</style>
+export default {
+    components: {
+        Layout,
+    },
+    data () {
+        return {
+        };
+    },
+    computed: {
+
+    },
+    methods: {
+
+    },
+};
+</script>

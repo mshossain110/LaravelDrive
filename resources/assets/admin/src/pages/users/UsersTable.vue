@@ -47,10 +47,10 @@
                     </v-avatar>
                 </td>
                 <td>{{ props.item.firstname }}</td>
-                <td class="text-xs-right">{{ props.item.lastname }}</td>
-                <td class="text-xs-right">{{ props.item.email }}</td>
-                <td class="text-xs-right">{{ props.item.role }}</td>
-                <td class="text-xs-right">
+                <td>{{ props.item.lastname }}</td>
+                <td>{{ props.item.email }}</td>
+                <td>{{ props.item.role }}</td>
+                <td>
                     <div class="text-xs-center">
                         <v-chip
                             :class="props.item.status"
@@ -105,10 +105,10 @@ export default {
                     sortable: true,
                     value: 'firstname',
                 },
-                { text: 'Last Name', value: 'lastname' },
-                { text: 'Email', value: 'email' },
-                { text: 'Role', value: 'role' },
-                { text: 'Status', value: 'status' },
+                { text: 'Last Name', value: 'lastname', align: 'left' },
+                { text: 'Email', value: 'email', align: 'left' },
+                { text: 'Role', value: 'role', align: 'left' },
+                { text: 'Status', align: 'left', value: 'status' },
             ],
             BulkActions: [
                 'Delete',

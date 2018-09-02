@@ -85,20 +85,29 @@ class RoleController extends ApiController
     public function getAbilities() {
         $permissions = [];
         
-        $permissions[]['super'] = config('admin.auth.permissions.super');
+        $permissions[] = [
+            "model" => "Super",
+            "permissions" => config('admin.auth.permissions.super'),
+        ];
 
         $policies = Gate::policies();
         
         if ( is_array($policies) ) {
             foreach ($policies as $model => $policy) {
-                $permissions[][$model] = $this->getPolicyMethods($model, $policy);
+                $permissions[] = [
+                    "model" => $model,
+                    "permissions" => $this->getPolicyMethods($model, $policy)
+                ];
             }
         }
 
         $abilities = Gate::abilities();
 
         if ( is_array($abilities) ) {
-            $permissions[]['abilities'] = array_keys($abilities);  
+            $permissions[] = [
+                "model" => 'Abilities',
+                "permissions" => array_keys($abilities),
+            ];
        } 
 
 

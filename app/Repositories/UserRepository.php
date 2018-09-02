@@ -77,6 +77,18 @@ class UserRepository
     }
 
     /**
+     * Store a new record.
+     *
+     * @param  $input
+     * @return User
+     */
+    public function store($input)
+    {   
+        $input['password'] = bcrypt($input['password']);
+        return $this->save($this->model, $input);
+    }
+
+    /**
      * Update the article record without draft scope.
      * 
      * @param  int $id

@@ -15,7 +15,9 @@
 
                 <v-spacer />
 
-                <v-btn icon>
+                <v-btn
+                    icon
+                    @click="openform = true">
                     <v-icon>person_add</v-icon>
                 </v-btn>
 
@@ -36,7 +38,7 @@
         <v-flex xs12>
             <users-table />
         </v-flex>
-
+        <user-form v-model="openform" />
 
     </v-layout>
 </template>
@@ -44,13 +46,16 @@
 
 <script>
 import UsersTable from './UsersTable.vue';
+import UserForm from './UserForm.vue';
 
 export default {
     components: {
         UsersTable,
+        UserForm,
     },
-    data() {
+    data () {
         return {
+            openform: false,
         };
     },
     computed: {

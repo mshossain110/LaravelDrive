@@ -22,7 +22,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'status',
-        // 'permissions',
+        'permissions',
         'avatar',
         'last_loged_in',
         'ip'
@@ -51,23 +51,23 @@ class User extends Authenticatable
         }
     }
 
-    // public function setPermissionsAttribute( $value ) {
-    //     if ( ! empty($value) ) {
-    //         $this->attributes['permissions'] = serialize( $value );
-    //     }
-    // }
+    public function setPermissionsAttribute( $value ) {
+        if ( ! empty($value) ) {
+            $this->attributes['permissions'] = serialize( $value );
+        }
+    }
 
-    // public function getPermissionsAttribute( $value ) {
-    //     $permissions = unserialize( $value );
+    public function getPermissionsAttribute( $value ) {
+        $permissions = unserialize( $value );
         
-    //     $roles = $this->roles();
+        $roles = self::roles()->get();
 
-    //     foreach ( $roles as $role ) {
-    //         $permissions = array_merge($permissions, $role->permissions);
-    //     }
+        foreach ( $roles as $role ) {
+            $permissions = array_merge($permissions, $role->permissions);
+        }
 
-    //     return $permissions;
-    // }
+        return $permissions;
+    }
 
     public function hasPermission( $permission ) {
         if ( in_array($permission, $this->permissions) ){

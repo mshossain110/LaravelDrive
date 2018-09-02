@@ -36,7 +36,17 @@ class UserController extends ApiController
     public function store ( UserRequest $request) {
         $validated = $request->validated();
 
-        $data = $request->only(['firstname', 'lastname', 'name', 'email', 'password', 'role', 'avatar']);
+        $data = $request->only([
+            'firstname',
+            'lastname',
+            'name',
+            'email',
+            'password',
+            'role',
+            'avatar',
+            'permissions'
+        ]);
+        
         $data['ip'] = $request->ip();
         $data['last_loged_in'] =  Carbon::now();
 
