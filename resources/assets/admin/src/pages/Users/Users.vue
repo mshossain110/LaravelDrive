@@ -1,17 +1,22 @@
 <template>
-    <v-layout row wrap>
+    <v-layout
+        row
+        wrap>
         <v-flex xs12 >
             <v-toolbar
                 flat
                 light
                 height="60px"
                 color="secondary">
-                <v-toolbar-title class="headline"> <v-icon>people</v-icon> Users</v-toolbar-title>
+                <v-toolbar-title class="headline">
+                    <v-icon>people</v-icon>
+                    Users
+                </v-toolbar-title>
 
                 <v-spacer />
 
                 <v-btn icon>
-                    <v-icon>search</v-icon>
+                    <v-icon>person_add</v-icon>
                 </v-btn>
 
                 <v-btn icon>
@@ -56,5 +61,5 @@ export default {
 </script>
 
 <style>
-    
+
 </style>

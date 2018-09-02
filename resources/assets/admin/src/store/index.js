@@ -1,31 +1,31 @@
+import Vue from 'vue';
 import Vuex from 'vuex';
 import UsersStore from '@ap/users/store'
-import Vue from 'vue';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    root: true,
     state: {
-        count: 0,
+        snackbar: {},
     },
     getters: {
-        getCount (state) {
-            return state.count;
-        }
-      
+        snackbar(state) {
+            return state.snackbar;
+        },
     },
     mutations: {
-        increment (state, payload) {
-          state.count += payload.amount
-        }
+        setSnackbar(state, payload) {
+            state.snackbar = payload;
+        },
+        setSnackbarHide(state) {
+            state.snackbar.show = !state.snackbar.show;
+        },
     },
     actions: {
-        incrementAsync ({ commit }, payload) {
-          setTimeout(() => {
-            commit('increment')
-          }, 1000)
-        }
+
     },
     modules: {
         Users: UsersStore,
-    }
+    },
 });
