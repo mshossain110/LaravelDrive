@@ -58,13 +58,24 @@ class UserController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UserRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update ( Request $request, $id ) {
+    public function update ( UserRequest $request, $id ) {
 
-    	$data = $request->all();
+        $validated = $request->validated();
+
+        $data = $request->only([
+            'firstname',
+            'lastname',
+            'name',
+            'email',
+            'password',
+            'role',
+            'avatar',
+            'permissions'
+        ]);
 
     	$user = $this->user->update( $id, $data);
 
@@ -105,7 +116,7 @@ class UserController extends ApiController
 
         $this->user->destroy($id);
 
-        return $this->noContent();
+        return $this->respondWithMessage("Successfully deleted");
     }
     
     

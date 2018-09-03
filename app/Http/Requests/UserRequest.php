@@ -23,10 +23,24 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'      => 'required|string|max:255|unique:users',
-            'email'     => 'required|string|email|max:255|unique:users',
-            'password'  => 'required|string|min:6|confirmed',
+        $userId = $this->input('id');
+
+        $rules = [
+            'firstname'   => 'alpha|min:2|max:255|nullable',
+            'lastname'    => 'alpha|min:2|max:255|nullable',
+            'permissions' => 'array',
+            'roles'       => 'array',
+            'password'    => 'min:6|max:255|confirmed',
+            'name'        => "min:3|max:255|unique:users,name,$userId",
+            'email'       => "email|min:3|max:255|unique:users,email,$userId"
         ];
+
+        if ($this->method() === 'POST') {
+            $rules['email']    = 'required|'.$rules['email'];
+            $rules['name']    = 'required|'.$rules['name'];
+            $rules['password'] = 'required|'.$rules['password'];
+        }
+
+        return $rules;
     }
 }
