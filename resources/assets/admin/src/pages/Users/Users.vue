@@ -38,7 +38,12 @@
         <v-flex xs12>
             <users-table />
         </v-flex>
-        <user-form v-model="openform" />
+
+        <v-dialog
+            v-model="openform"
+            max-width="500px">
+            <user-form @close="openform = false"/>
+        </v-dialog>
 
     </v-layout>
 </template>

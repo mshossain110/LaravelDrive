@@ -1,128 +1,127 @@
 <template>
-    <v-layout
-        row
-        justify-center>
-        <v-dialog
-            v-model="value"
-            persistent
-            max-width="500px">
+    <v-card>
+        <form @submit.prevent="submit()" >
+            <v-card-title>
+                <span
+                    v-if="user.id"
+                    class="headline">
+                    Update User
+                </span>
+                <span
+                    v-else
+                    class="headline">
+                    New User
+                </span>
+            </v-card-title>
 
-            <v-card>
-                <form @submit.prevent="submit()">
-                    <v-card-title>
-                        <span class="headline">New User</span>
-                    </v-card-title>
+            <v-card-text>
+                <v-container grid-list-md>
+                    <v-layout wrap>
+                        <v-flex
+                            xs12
+                            sm6
+                            md6>
+                            <v-text-field
+                                v-model="user.firstname"
+                                :error-messages="errors.collect('firstname')"
+                                label="First Name"/>
+                        </v-flex>
+                        <v-flex
+                            xs12
+                            sm6
+                            md6>
+                            <v-text-field
+                                v-model="user.lastname"
+                                :error-messages="errors.collect('lastname')"
+                                label="Last Name" />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-validate="'required|min:6'"
+                                v-model="user.name"
+                                :counter="6"
+                                :disabled="Boolean(user.id)"
+                                :error-messages="errors.collect('name')"
+                                data-vv-name="name"
+                                label="User Name*"
+                                required />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-validate="'required|email'"
+                                v-model="user.email"
+                                :disabled="Boolean(user.id)"
+                                :error-messages="errors.collect('email')"
+                                label="E-mail*"
+                                data-vv-name="email"
+                                required />
 
-                    <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-                                <v-flex
-                                    xs12
-                                    sm6
-                                    md6>
-                                    <v-text-field
-                                        v-model="user.firstname"
-                                        :error-messages="errors.collect('firstname')"
-                                        label="First Name"/>
-                                </v-flex>
-                                <v-flex
-                                    xs12
-                                    sm6
-                                    md6>
-                                    <v-text-field
-                                        v-model="user.lastname"
-                                        :error-messages="errors.collect('lastname')"
-                                        label="Last Name" />
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field
-                                        v-validate="'required|min:6'"
-                                        v-model="user.name"
-                                        :counter="6"
-                                        :error-messages="errors.collect('name')"
-                                        data-vv-name="name"
-                                        label="User Name*"
-                                        required />
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field
-                                        v-validate="'required|email'"
-                                        v-model="user.email"
-                                        :error-messages="errors.collect('email')"
-                                        label="E-mail*"
-                                        data-vv-name="email"
-                                        required />
+                        </v-flex>
 
-                                </v-flex>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-validate="{ required: !user.id, min: 6 }"
+                                ref="password"
+                                v-model="user.password"
+                                :error-messages="errors.collect('password')"
+                                name="password"
+                                type="password"
+                                label="Password"
+                                data-vv-name="password" />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field
+                                v-validate="{ required: !user.id, confirmed: 'password' }"
+                                v-model="user.password_confirmation"
+                                :error-messages="errors.collect('password_confirmation')"
+                                name="password_confirmation"
+                                type="password"
+                                label="Confirmed Password"
+                                data-vv-name="password_confirmation" />
+                        </v-flex>
 
-                                <v-flex xs12>
-                                    <v-text-field
-                                        v-validate="'required|min:6'"
-                                        ref="password"
-                                        v-model="user.password"
-                                        :error-messages="errors.collect('password')"
-                                        name="password"
-                                        type="password"
-                                        label="Password"
-                                        data-vv-name="password"
-                                        required />
-                                </v-flex>
-                                <v-flex xs12>
-                                    <v-text-field
-                                        v-validate="'required|confirmed:password'"
-                                        v-model="user.password_confirmation"
-                                        :error-messages="errors.collect('password_confirmation')"
-                                        name="password_confirmation"
-                                        type="password"
-                                        label="Confirmed Password"
-                                        data-vv-name="password_confirmation"
-                                        required />
-                                </v-flex>
+                        <v-flex xs12>
+                            <label class="typo__label">Permissions</label>
+                            <multiselect
+                                v-model="user.permissions"
+                                :options="permissions"
+                                :multiple="true"
+                                :group-select="true"
+                                :searchable="false"
+                                group-values="permissions"
+                                group-label="model"
+                                placeholder="Add Permissions">
 
-                                <v-flex xs12>
-                                    <label class="typo__label">Permissions</label>
-                                    <multiselect
-                                        v-model="user.permissions"
-                                        :options="permissions"
-                                        :multiple="true"
-                                        :group-select="true"
-                                        :searchable="false"
-                                        group-values="permissions"
-                                        group-label="model"
-                                        placeholder="Add Permissions">
+                                <span slot="noResult">
+                                    Oops! No Permissions found.
+                                    Consider changing the search query.
+                                </span>
+                            </multiselect>
+                        </v-flex>
 
-                                        <span slot="noResult">
-                                            Oops! No Permissions found.
-                                            Consider changing the search query.
-                                        </span>
-                                    </multiselect>
-                                </v-flex>
+                    </v-layout>
+                </v-container>
 
-                            </v-layout>
-                        </v-container>
-
-                        <small>*indicates required field</small>
-                    </v-card-text>
-
-                    <v-card-actions>
-                        <v-spacer/>
-                        <v-btn
-                            color="blue darken-1"
-                            flat
-                            @click.native="$emit('input', false)">
-                            Close
-                        </v-btn>
-                        <v-btn
-                            color="blue darken-1"
-                            flat
-                            type="submit">
-                            Save
-                        </v-btn>
-                    </v-card-actions>
-                </form>
-            </v-card>
-        </v-dialog>
-    </v-layout>
+                <small>*indicates required field</small>
+            </v-card-text>
+            <v-divider />
+            <v-card-actions>
+                <v-spacer/>
+                <v-btn
+                    color="blue darken-1"
+                    flat
+                    @click.native="$emit('close', false)">
+                    Close
+                </v-btn>
+                <v-btn
+                    color="blue darken-1"
+                    flat
+                    type="submit">
+                    Save
+                </v-btn>
+            </v-card-actions>
+        </form>
+    </v-card>
 </template>
 
 
@@ -138,10 +137,6 @@ export default {
         validator: 'new',
     },
     props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
         user: {
             type: Object,
             default () {
@@ -173,6 +168,7 @@ export default {
         submit () {
             this.$validator.validateAll();
             const user = {
+                id: this.user.id,
                 firstname: this.user.firstname,
                 lastname: this.user.lastname,
                 name: this.user.name,
@@ -183,8 +179,18 @@ export default {
                 role: this.user.role,
                 avatar: this.user.avatar,
             };
-            this.$store.dispatch('Users/addUser', user);
-            // this.clear();
+            if (!this.user.id) {
+                this.$store.dispatch('Users/addUser', user)
+                    .then(() => {
+                        this.clear();
+                        this.$emit('close', false);
+                    });
+            } else {
+                this.$store.dispatch('Users/editUser', user)
+                    .then(() => {
+                        this.$emit('close', false);
+                    });
+            }
         },
         clear () {
             this.user = {

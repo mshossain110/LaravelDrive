@@ -63,12 +63,12 @@
                     <v-icon
                         small
                         class="mr-2"
-                        @click="editItem(props.item)" >
+                        @click="editUserMethod(props.item)" >
                         edit
                     </v-icon>
                     <v-icon
                         small
-                        @click="deleteItem(props.item)" >
+                        @click="deleteUser(props.item)" >
                         delete
                     </v-icon>
                 </td>
@@ -80,18 +80,31 @@
                 v-model="currentpage"
                 :length="pagination.count" />
         </div>
+        <v-dialog
+            v-model="openEditUserForm"
+            max-width="500px">
+            <user-form
+                :user="editUser"
+                @close="openEditUserForm = false" />
+        </v-dialog>
     </v-card>
 </template>
 
 
 <script>
 import { mapState } from 'vuex';
+import UserForm from './UserForm.vue';
 
 export default {
-    data() {
+    components: {
+        UserForm,
+    },
+    data () {
         return {
             currentpage: typeof this.$route.query.page === 'undefined' ? 1 : parseInt(this.$route.query.page, 10),
             search: '',
+            editUser: {},
+            openEditUserForm: false,
             selected: [],
             headers: [
                 {
@@ -109,6 +122,7 @@ export default {
                 { text: 'Email', value: 'email', align: 'left' },
                 { text: 'Role', value: 'role', align: 'left' },
                 { text: 'Status', align: 'left', value: 'status' },
+                { text: 'Action', align: 'left', value: 'action' },
             ],
             BulkActions: [
                 'Delete',
@@ -119,16 +133,27 @@ export default {
         ...mapState('Users', ['users', 'pagination']),
     },
     watch: {
-        currentpage(newValue) {
+        currentpage (newValue) {
             this.$router.push({ name: 'users', query: { page: newValue } });
             this.$store.dispatch('Users/getUsers', { page: newValue });
         },
     },
-    created() {
+    created () {
         this.$store.dispatch('Users/getUsers', { page: parseInt(this.$route.query.page, 10) });
     },
     methods: {
-
+        editUserMethod (user) {
+            const index = this.users.findIndex(u => u.id === user.id);
+            if (index !== -1) {
+                this.editUser = this.users[index];
+                this.openEditUserForm = true;
+            }
+        },
+        deleteUser (user) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                this.$store.dispatch('Users/deleteUser', user.id);
+            }
+        },
     },
 };
 </script>
