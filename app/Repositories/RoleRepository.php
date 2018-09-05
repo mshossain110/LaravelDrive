@@ -21,7 +21,7 @@ class RoleRepository
     /**
      * Constructor
      *
-     * @param User $user
+     * @param Role $role
      */
     public function __construct(Role $role)
     {

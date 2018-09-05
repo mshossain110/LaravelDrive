@@ -16,7 +16,7 @@ class Role extends Model
 
     public function setPermissionsAttribute( $value ) {
         if ( ! empty($value) ) {
-            $this->attributes['meta'] = serialize( $value );
+            $this->attributes['permissions'] = serialize( $value );
         }
     }
 

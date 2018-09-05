@@ -186,7 +186,7 @@ export default {
                         this.$emit('close', false);
                     });
             } else {
-                this.$store.dispatch('Users/editUser', user)
+                this.$store.dispatch('Users/updateUser', user)
                     .then(() => {
                         this.$emit('close', false);
                     });

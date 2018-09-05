@@ -39,7 +39,7 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js',
             '@ac' : adminPath('components'),
             '@ap' : adminPath('pages'),
-            '@au' : adminPath('utils')
+            '@au' : adminPath('utils'),
         }
     },
     
@@ -61,25 +61,25 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
-                }
+                },
             },
 
             {
-                test: /\.styl$/,
+                test: /\.(styl|css)$/,
                 use: [
                     'vue-style-loader',
                     'style-loader',
                     'css-loader',
-                    'stylus-loader'
-                ]
+                    'stylus-loader',
+                ],
             },
             {
-              test: /\.(png|jpg|gif|svg)$/,
-              loader: 'file-loader',
-              options: {
-                name: '[name].[ext]?[hash]'
-              }
-            }
+                test: /\.(png|jpg|gif|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]?[hash]'
+                }
+            },
         ]
     },
 

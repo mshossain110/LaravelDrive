@@ -18,6 +18,9 @@ export default {
         permissions (state) {
             return state.permissions;
         },
+        roles (state) {
+            return state.roles;
+        },
     },
     mutations: {
         setUsers (state, payload) {
@@ -26,7 +29,7 @@ export default {
         addUser (state, payload) {
             state.users.sclice(0, 0, payload);
         },
-        editUser (state, payload) {
+        updateUser (state, payload) {
             const i = state.users.findIndex(u => u.id === payload.id);
             if (i !== -1) {
                 state.users[i] = payload;
@@ -36,6 +39,24 @@ export default {
             const i = state.users.findIndex(u => u.id === id);
             if (i !== -1) {
                 state.users.sclice(i, 1);
+            }
+        },
+        setRoles (state, payload) {
+            state.roles = payload;
+        },
+        addRole (state, payload) {
+            state.roles.sclice(0, 0, payload);
+        },
+        updateRole (state, payload) {
+            const i = state.roles.findIndex(u => u.id === payload.id);
+            if (i !== -1) {
+                state.roles[i] = payload;
+            }
+        },
+        deleteRole (state, id) {
+            const i = state.roles.findIndex(u => u.id === id);
+            if (i !== -1) {
+                state.roles.sclice(i, 1);
             }
         },
         setPagination (state, payload) {
@@ -92,11 +113,11 @@ export default {
                     });
             });
         },
-        editUser ({ commit }, params) {
+        updateUser ({ commit }, params) {
             return new Promise((resolve, reject) => {
                 axios.put(`/api/users/${params.id}`, params)
                     .then((res) => {
-                        commit('editUser', res.data.data);
+                        commit('updateUser', res.data.data);
                         resolve(res.data);
                     })
                     .catch((error) => {
@@ -137,7 +158,7 @@ export default {
                             },
                             { root: true });
                         reject(error.response);
-                    })
+                    });
             });
         },
         getPermissions ({ commit }) {
@@ -146,6 +167,95 @@ export default {
                     .then((res) => {
                         commit('setPermissions', res.data.data);
                         resolve(res.data.data);
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true,
+                            },
+                            { root: true });
+                        reject(error.response);
+                    });
+            });
+        },
+        getRole ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/roles', { params })
+                    .then((res) => {
+                        commit('setRoles', res.data.data);
+                        resolve(res.data);
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true,
+                            },
+                            { root: true });
+                        reject(error.response);
+                    });
+            });
+        },
+        addRole ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.post('/api/roles', params)
+                    .then((res) => {
+                        commit('addRoles', res.data.data);
+                        commit('setSnackbar',
+                            {
+                                message: res.data.message,
+                                status: res.status,
+                                color: 'success',
+                                show: true,
+                            },
+                            { root: true });
+                        resolve(res.data);
+                    })
+                    .catch((error) => {
+                        commit('setError', error.response.data);
+                        reject(error.response);
+                    });
+            });
+        },
+        updateRole ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.put(`/api/roles/${params.id}`, params)
+                    .then((res) => {
+                        commit('updateRole', res.data.data);
+                        resolve(res.data);
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true,
+                            },
+                            { root: true });
+                        reject(error.response);
+                    });
+            });
+        },
+        deleteRole ({ commit }, id) {
+            return new Promise((resolve, reject) => {
+                axios.delete(`/api/roles/${id}`)
+                    .then((res) => {
+                        commit('deleteRoles', id);
+                        commit('setSnackbar',
+                            {
+                                message: res.data.message,
+                                status: res.status,
+                                color: 'success',
+                                show: true,
+                            },
+                            { root: true });
+                        resolve(true);
                     })
                     .catch((error) => {
                         commit('setSnackbar',

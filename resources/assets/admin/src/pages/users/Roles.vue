@@ -2,7 +2,7 @@
     <v-layout row>
         <v-flex
             xs12
-            sm6>
+            sm4>
             <v-card flat>
                 <v-toolbar
                     flat
@@ -19,47 +19,77 @@
                 </v-toolbar>
 
                 <v-list
+                    v-for="role in roles"
+                    :key="role.id"
                     two-line
                     subheader>
 
                     <v-list-tile
-                        :to="{name: 'permissions', params: { id: 1 }}"
+                        :to="{name: 'role-permissions', params: { id: 1 }}"
                         avatar
                         ripple>
                         <v-list-tile-content>
-                            <v-list-tile-title>Profile photo</v-list-tile-title>
+                            <v-list-tile-title>{{ role.name }}</v-list-tile-title>
                             <v-list-tile-sub-title>
-                                Change your Google+ profile photo
+                                {{ role.description }}
                             </v-list-tile-sub-title>
                         </v-list-tile-content>
-                    </v-list-tile>
+                        <v-list-tile-action class="role-action">
 
-                    <v-list-tile avatar>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Show your status</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                Your status is visible to everyone
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
+                            <v-icon
+                                small
+                                class="mr-2"
+                                @click="editUserMethod(props.item)" >
+                                edit
+                            </v-icon>
+                            <v-icon
+                                small
+                                @click="deleteUser(props.item)" >
+                                delete
+                            </v-icon>
+                        </v-list-tile-action>
                     </v-list-tile>
                 </v-list>
-
             </v-card>
+            <role-form />
+        </v-flex>
+        <v-flex
+            xs12
+            sm6>
+            <router-view />
         </v-flex>
     </v-layout>
 </template>
 
 
 <script>
+import { mapState } from 'vuex';
+import RoleForm from './RoleForm.vue';
+
 export default {
-    data() {
+    components: {
+        RoleForm,
+    },
+    data () {
         return {
-            roles: [],
+            status: true,
         };
     },
     computed: {
+        ...mapState('Users', ['roles']),
+    },
+    created () {
+        this.$store.dispatch('Users/getRole');
     },
     methods: {
     },
 };
 </script>
+
+<style lang="css">
+.role-action {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+</style>

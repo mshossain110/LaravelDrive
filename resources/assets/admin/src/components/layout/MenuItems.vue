@@ -77,6 +77,7 @@
                 items: [
                     { icon: 'dashboard', text: 'Dashboard', name: 'dashboard' },
                     { icon: 'people', text: 'Users', name: 'users' },
+                    { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
                     { icon: 'history', text: 'Frequently contacted' },
                     { icon: 'content_copy', text: 'Duplicates' },
                     {

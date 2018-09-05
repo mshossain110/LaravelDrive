@@ -20,7 +20,7 @@ class RoleController extends ApiController
     }
 
     public function index () {
-    	return $this->respondWithPaginator($this->role->getList(), new RoleTransformer);
+    	return $this->respondWithCollection($this->role->getList(), new RoleTransformer);
     }
 
     public function show ( $id ){
@@ -35,7 +35,8 @@ class RoleController extends ApiController
      */
     public function store( RoleRequest $request){
         $validated = $request->validated();
-        $data      = $request->only(['name', 'description', 'statua', 'permissions']);
+
+        $data      = $request->only(['name', 'description', 'status', 'permissions']);
         $role      = $this->role->store($data);
 
        	return $this->respondWithItem($role, new RoleTransformer);
@@ -50,7 +51,7 @@ class RoleController extends ApiController
      */
     public function update ( RoleRequest $request, $id ) {
         $validated = $request->validated();
-        $data      = $request->only(['name', 'description', 'statua', 'permissions']);
+        $data      = $request->only(['name', 'description', 'status', 'permissions']);
     	$role      = $this->role->update( $id, $data);
 
     	return $this->respondWithItem($role, new RoleTransformer);
