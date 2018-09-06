@@ -135,6 +135,6 @@ class UserController extends ApiController
 
         $this->user->deleteMultiple($request->get('ids'));
 
-        return $this->success([], 204);
+        return $this->respondWithMessage("Successfully deleted");
     }
 }

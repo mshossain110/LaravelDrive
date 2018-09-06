@@ -27,7 +27,7 @@ export default {
             state.users = payload;
         },
         addUser (state, payload) {
-            state.users.sclice(0, 0, payload);
+            state.users.splice(0, 0, payload);
         },
         updateUser (state, payload) {
             const i = state.users.findIndex(u => u.id === payload.id);
@@ -38,14 +38,14 @@ export default {
         deleteUser (state, id) {
             const i = state.users.findIndex(u => u.id === id);
             if (i !== -1) {
-                state.users.sclice(i, 1);
+                state.users.splice(i, 1);
             }
         },
         setRoles (state, payload) {
             state.roles = payload;
         },
         addRole (state, payload) {
-            state.roles.sclice(0, 0, payload);
+            state.roles.splice(0, 0, payload);
         },
         updateRole (state, payload) {
             const i = state.roles.findIndex(u => u.id === payload.id);
@@ -56,7 +56,7 @@ export default {
         deleteRole (state, id) {
             const i = state.roles.findIndex(u => u.id === id);
             if (i !== -1) {
-                state.roles.sclice(i, 1);
+                state.roles.splice(i, 1);
             }
         },
         setPagination (state, payload) {

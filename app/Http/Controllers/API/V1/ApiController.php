@@ -76,13 +76,15 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithItem($item, $callback)
+    public function respondWithItem($item, $callback, $message = 'Successfully')
     {
         $resource = new Item($item, $callback);
 
-        $rootScope = $this->fractal->createData($resource);
+        $data = $this->fractal->createData($resource)->toArray();
 
-        return $this->respondWithArray($rootScope->toArray());
+        $data['message'] = $message;
+
+        return $this->respondWithArray($data);
     }
 
     /**
@@ -92,13 +94,14 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithCollection($collection, $callback)
+    public function respondWithCollection($collection, $callback, $message = 'Successfully')
     {
         $resource = new Collection($collection, $callback);
 
-        $rootScope = $this->fractal->createData($resource);
+        $data = $this->fractal->createData($resource)->toArray();
+        $data['message'] = $message;
 
-        return $this->respondWithArray($rootScope->toArray());
+        return $this->respondWithArray($data);
     }
 
     /**
@@ -108,15 +111,16 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithPaginator($paginator, $callback)
+    public function respondWithPaginator($paginator, $callback, $message = 'Successfully')
     {
         $resource = new Collection($paginator->getCollection(), $callback);
 
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
 
-        $rootScope = $this->fractal->createData($resource);
+        $data = $this->fractal->createData($resource)->toArray();
+        $data['message'] = $message;
 
-        return $this->respondWithArray($rootScope->toArray());
+        return $this->respondWithArray($data);
     }
 
     /**
@@ -141,10 +145,7 @@ class ApiController extends Controller
     public function respondWithMessage ($message) {
         return $this->setStatusCode(200)
             ->respondWithArray([
-                    'success' => [
-                        'http_code' => $this->statusCode,
-                        'message' => $message,
-                    ]
+                    'message' => $message,
                 ]);
     }
 
@@ -155,7 +156,7 @@ class ApiController extends Controller
      * @param  string $errorCode
      * @return json
      */
-    protected function respondWithError($message, $errorCode)
+    protected function respondWithError($message, $errorCode, $errors = [])
     {
         if ($this->statusCode === 200) {
             trigger_error(
@@ -165,11 +166,9 @@ class ApiController extends Controller
         }
 
         return $this->respondWithArray([
-            'error' => [
-                'code' => $errorCode,
-                'http_code' => $this->statusCode,
-                'message' => $message,
-            ]
+            'errors'  => $errors,
+            'code'    => $errorCode,
+            'message' => $message,
         ]);
     }
 
@@ -179,10 +178,10 @@ class ApiController extends Controller
      * @param  string $message
      * @return json
      */
-    public function errorForbidden($message = 'Forbidden')
+    public function errorForbidden($message = 'Forbidden', $errors = [])
     {
         return $this->setStatusCode(500)
-                    ->respondWithError($message, self::CODE_FORBIDDEN);
+                    ->respondWithError($message, self::CODE_FORBIDDEN, $errors);
     }
 
     /**
@@ -191,10 +190,10 @@ class ApiController extends Controller
      * @param  string $message
      * @return json
      */
-    public function errorInternalError($message = 'Internal Error')
+    public function errorInternalError($message = 'Internal Error', $errors = [])
     {
         return $this->setStatusCode(500)
-                    ->respondWithError($message, self::CODE_INTERNAL_ERROR);
+                    ->respondWithError($message, self::CODE_INTERNAL_ERROR, $errors);
     }
 
     /**
@@ -203,10 +202,10 @@ class ApiController extends Controller
      * @param  string $message
      * @return json
      */
-    public function errorNotFound($message = 'Resource Not Found')
+    public function errorNotFound($message = 'Resource Not Found', $errors = [])
     {
         return $this->setStatusCode(404)
-                    ->respondWithError($message, self::CODE_NOT_FOUND);
+                    ->respondWithError($message, self::CODE_NOT_FOUND, $errors);
     }
 
     /**
@@ -215,10 +214,10 @@ class ApiController extends Controller
      * @param  string $message
      * @return json
      */
-    public function errorUnauthorized($message = 'Unauthorized')
+    public function errorUnauthorized($message = 'Unauthorized', $errors = [])
     {
         return $this->setStatusCode(401)
-                    ->respondWithError($message, self::CODE_UNAUTHORIZED);
+                    ->respondWithError($message, self::CODE_UNAUTHORIZED, $errors);
     }
 
     /**
@@ -227,9 +226,9 @@ class ApiController extends Controller
      * @param  string $message
      * @return json
      */
-    public function errorWrongArgs($message = 'Wrong Arguments')
+    public function errorWrongArgs($message = 'Wrong Arguments', $errors = [])
     {
         return $this->setStatusCode(400)
-                    ->respondWithError($message, self::CODE_WRONG_ARGS);
+                    ->respondWithError($message, self::CODE_WRONG_ARGS, $errors);
     }
 }
