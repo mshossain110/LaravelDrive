@@ -17,6 +17,7 @@
                     </v-btn>
 
                 </v-toolbar>
+                <role-form :half-form="false" />
 
                 <v-list
                     v-for="role in roles"
@@ -24,34 +25,11 @@
                     two-line
                     subheader>
 
-                    <v-list-tile
-                        :to="{name: 'role-permissions', params: { id: 1 }}"
-                        avatar
-                        ripple>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ role.name }}</v-list-tile-title>
-                            <v-list-tile-sub-title>
-                                {{ role.description }}
-                            </v-list-tile-sub-title>
-                        </v-list-tile-content>
-                        <v-list-tile-action class="role-action">
+                    <role :role="role" />
 
-                            <v-icon
-                                small
-                                class="mr-2"
-                                @click="editUserMethod(props.item)" >
-                                edit
-                            </v-icon>
-                            <v-icon
-                                small
-                                @click="deleteUser(props.item)" >
-                                delete
-                            </v-icon>
-                        </v-list-tile-action>
-                    </v-list-tile>
                 </v-list>
             </v-card>
-            <role-form />
+
         </v-flex>
         <v-flex
             xs12
@@ -65,10 +43,12 @@
 <script>
 import { mapState } from 'vuex';
 import RoleForm from './RoleForm.vue';
+import Role from './Role.vue';
 
 export default {
     components: {
         RoleForm,
+        Role,
     },
     data () {
         return {

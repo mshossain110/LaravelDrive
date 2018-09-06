@@ -246,7 +246,7 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.delete(`/api/roles/${id}`)
                     .then((res) => {
-                        commit('deleteRoles', id);
+                        commit('deleteRole', id);
                         commit('setSnackbar',
                             {
                                 message: res.data.message,
