@@ -24,10 +24,10 @@
                 v-else-if="item.children"
                 v-model="item.model"
                 :key="item.text"
-                :prepend-icon="item.model ? item.icon : item['icon-alt']"
-                append-icon=""
+                :prepend-icon="item.icon"
+                no-action
                 >
-                <v-list-tile slot="activator">
+                <v-list-tile slot="activator" :to="{name:item.name }">
                     <v-list-tile-content>
                         <v-list-tile-title>
                             {{ item.text }}
@@ -38,6 +38,7 @@
                 <v-list-tile
                     v-for="(child, i) in item.children"
                     :key="i"
+                    :to="{name:child.name }"
                         >
         
                     <v-list-tile-action v-if="child.icon">
@@ -76,37 +77,19 @@
             return {
                 items: [
                     { icon: 'dashboard', text: 'Dashboard', name: 'dashboard' },
-                    { icon: 'people', text: 'Users', name: 'users' },
-                    { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
-                    { icon: 'history', text: 'Frequently contacted' },
-                    { icon: 'content_copy', text: 'Duplicates' },
-                    {
-                    icon: 'keyboard_arrow_up',
-                    'icon-alt': 'keyboard_arrow_down',
-                    text: 'Labels',
-                    model: true,
-                    children: [
-                        { icon: 'add', text: 'Create label' }
-                    ]
+                    { 
+                        icon: 'people',
+                        text: 'Users',
+                        name: 'users',
+                        model: false,
+                        children: [
+                            { icon: 'people', text: 'Users', name: 'users' },
+                            { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
+                        ]
                     },
-                    {
-                    icon: 'keyboard_arrow_up',
-                    'icon-alt': 'keyboard_arrow_down',
-                    text: 'More',
-                    model: false,
-                    children: [
-                        { text: 'Import' },
-                        { text: 'Export' },
-                        { text: 'Print' },
-                        { text: 'Undo changes' },
-                        { text: 'Other contacts' }
-                    ]
-                    },
-                    { icon: 'settings', text: 'Settings' },
-                    { icon: 'chat_bubble', text: 'Send feedback' },
-                    { icon: 'help', text: 'Help' },
-                    { icon: 'phonelink', text: 'App downloads' },
-                    { icon: 'keyboard', text: 'Go to the old version' }
+                    { icon: 'perm_media', text: 'Media', name: 'media' },
+                  
+                    { icon: 'settings', text: 'Settings' }
                 ]
             }
         },
