@@ -23,4 +23,6 @@ Route::group([
     Route::resource('roles', 'RoleController', ['except' => ['edit']]);
     Route::post('roles/{role_id}/attach_users', 'RoleController@attachUser');
     Route::get('permissions', 'RoleController@getAbilities');
+
+    Route::resource('folder', 'FolderController');
 });

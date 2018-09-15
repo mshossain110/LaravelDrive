@@ -20,7 +20,7 @@
                 <v-btn icon>
                     <v-icon>add_photo_alternate</v-icon>
                 </v-btn>
-                <v-btn icon>
+                <v-btn icon @click="createFolder()">
                     <v-icon>create_new_folder</v-icon>
                 </v-btn>
                 <v-btn icon>
@@ -106,7 +106,7 @@ export default {
         }
     },
     mounted () {
-        console.log(this.$refs);
+        
     },
     watch : {
         drawer (newvalue) {
@@ -138,6 +138,16 @@ export default {
                 display: 'none',
                 opacity: 0,
             }
+        },
+        createFolder () {
+            this.images.push({
+                id: parseInt( Math.random * 10),
+                name:"",
+                description:null,
+                file_name:"",
+                type:"folder",
+                edit: true,
+                })
         }
     }
 }

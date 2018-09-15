@@ -23,8 +23,17 @@ class FolderRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
+        $folderId = $this->input('id');
+
+        $rules = [
+            'name'        => "alpha|max:255",
+            'description' => "string|min:2|max:255|nullable",
         ];
+
+        if ($this->method() === 'POST') {
+            $rules['name']    = 'required|'.$rules['name'];
+        }
+
+        return $rules;
     }
 }

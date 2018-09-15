@@ -36,8 +36,12 @@ class FolderController extends ApiController
     public function store( FolderRequest $request){
         $validated = $request->validated();
 
-        $data      = $request->only(['name', 'description']);
-        $folder      = $this->folder->store($data);
+        $data           = $request->only(['name', 'description', 'parent']);
+        $data['parent'] = isset($data['parent']) ? intval($data['parent']): 0;
+
+        
+        $folder = $this->folder->store($data);
+        $folder->generatePath();
 
        	return $this->respondWithItem($folder, new FolderTransformer);
     }

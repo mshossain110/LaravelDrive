@@ -3,21 +3,32 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\FolderObserver;
+use App\Model\HandlesPaths;
 
 class Folder extends Model
 {
-    //
+    use HandlesPaths;
 
     protected $fillable = [
         'name',
         'description',
         'path',
-        'user_id',
         'parent',
         'share_id',
         'password',
         'name',
     ];
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        Folder::observe(FolderObserver::class);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

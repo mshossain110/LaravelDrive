@@ -25,17 +25,27 @@
         </v-responsive>
 
         <v-card-actions>
-            {{media.name}}
-            <v-spacer></v-spacer>
-            <v-btn icon>
-            <v-icon>favorite</v-icon>
-            </v-btn>
-            <v-btn icon>
-            <v-icon>bookmark</v-icon>
-            </v-btn>
-            <v-btn icon>
-            <v-icon>share</v-icon>
-            </v-btn>
+            <span v-text="media.name" v-if="!media.edit"></span>
+                <input
+                    class="form-control"
+                    ref="medaiName"
+                    v-if="media.edit"
+                    v-model="media.name"
+                    :autofocus="media.edit"
+                    @blur="createFolder()"
+                    type="text"
+                    required />
+            <div class="sharebutton" v-if="!media.edit" >
+                <v-btn icon>
+                <v-icon>favorite</v-icon>
+                </v-btn>
+                <v-btn icon>
+                <v-icon>bookmark</v-icon>
+                </v-btn>
+                <v-btn icon>
+                <v-icon>share</v-icon>
+                </v-btn>
+            </div>
         </v-card-actions>
     </v-card>
 </template>
@@ -51,6 +61,7 @@
         },
         data () {
             return {
+                error: '',
             }
         },
         computed: {
@@ -171,7 +182,26 @@
             }
         },
         methods: {
-            
+           createFolder () {
+               if (this.media.name == '') {
+                   this.$store.commit('setSnackbar',
+                            {
+                                message: 'Folder Name should not be null.',
+                                status: '',
+                                color: 'error',
+                                show: true,
+                            },
+                            { root: true });
+                   this.$refs.medaiName.focus();
+               }
+
+               const item = {
+                   id: this.media.id,
+                   name: this.media.name
+               }
+
+               this.$store.dispatch('Media/addFolder', item)
+           } 
         }
     }
 </script>

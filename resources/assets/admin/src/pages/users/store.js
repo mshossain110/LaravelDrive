@@ -205,7 +205,7 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.post('/api/roles', params)
                     .then((res) => {
-                        commit('addRoles', res.data.data);
+                        commit('addRole', res.data.data);
                         commit('setSnackbar',
                             {
                                 message: res.data.message,

@@ -18,7 +18,6 @@ class CreateFoldersTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->text('path')->nullable();
-            $table->integer('user_id')->nullable();
             $table->integer('parent')->nullable();
             $table->string('share_id', 20)->unique;
             $table->string('password')->nullable();
