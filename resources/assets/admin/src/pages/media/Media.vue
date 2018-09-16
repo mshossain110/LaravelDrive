@@ -44,7 +44,8 @@
     <v-layout style="display: block; position:"
             
             @dragenter="activeDropzone($event)">
-            <v-layout row wrap :style="mediaareaStyle" >
+            <v-layout row wrap id="filecontainer" >
+                
                 <v-flex
                     v-for="img in images"
                     :key="img.id"
@@ -91,10 +92,33 @@ export default {
             drawer: false,
             mediaareaStyle: {},
             dropzoneOptions: {
-                url: '/api/files',
+                url: '/api/file',
                 thumbnailWidth: 200,
                 addRemoveLinks: true,
-                clickable: false
+                clickable: false,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
+                },
+                previewsContainer: '#filecontainer',
+                previewTemplate: `
+                    <div class="flex xs4 sm3 lg2" >
+                    <div class="dz-preview dz-file-preview media-item mr-3 mt-3 v-card v-card--flat v-card--tile theme--light">
+                        <div class="dz-details v-responsive folder" style="width: 166px; color: rgb(251, 192, 45);">
+                            <div class="v-responsive__content">
+                                <div class="v-avatar v-avatar--tile" style="height: 166px; width: 166px;">
+                                    <img data-dz-thumbnail />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dz-error-mark"><span>✘</span></div>
+                        <div class="dz-filename v-card__actions">
+                            <span data-dz-name></span> <span class="dz-size" data-dz-size></span>
+                        </div>
+                        <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                    </div>
+                    </div>
+                `
                 
             },
             dropzonestyle: {
@@ -102,7 +126,7 @@ export default {
                 opacity: 0,
             },
             folders: [{"id":15731,"name":"Images","parent_id":null,"path":"15731","hash":"MTU3MzF8cGFkZA","url":null},{"id":15745,"name":"Documents","parent_id":null,"path":"15745","hash":"MTU3NDV8cGFkZA","url":null},{"id":15767,"name":"Shared","parent_id":null,"path":"15767","hash":"MTU3Njd8cGFkZA","url":null},{"id":15744,"name":"Nested Folder","parent_id":15731,"path":"15731\/15744","hash":"MTU3NDR8cGFkZA","url":null}],
-            images: [{"id":15745,"name":"Documents","description":null,"file_name":"Documents","mime":"NULL","file_size":null,"user_id":null,"parent_id":null,"password":null,"created_at":"2018-08-27 10:30:20","updated_at":"2018-08-27 10:30:20","deleted_at":null,"path":"15745","public_path":null,"type":"folder","extension":null,"public":0,"hash":"MTU3NDV8cGFkZA","url":null,"users":[{"email":"admin@demo083.com","id":141,"avatar":"https:\/\/www.gravatar.com\/avatar\/7c2a7ecd7c5f2f330e50cbad9a7d7baf?s=65","owns_entry":true,"entry_permissions":[],"display_name":"Demo Admin"}],"tags":[]}],
+            images: [{"id":15745,"name":"Documents","description":null,"file_name":"Documents","mime":"NULL","file_size":null,"user_id":null,"parent_id":null,"password":null,"created_at":"2018-08-27 10:30:20","updated_at":"2018-08-27 10:30:20","deleted_at":null,"path":"15745","public_path":null,"type":"folder","extension":null,"public":0,"hash":"MTU3NDV8cGFkZA","url":null,"users":[{"email":"admin@demo083.com","id":141,"avatar":"https:\/\/www.gravatar.com\/avatar\/7c2a7ecd7c5f2f330e50cbad9a7d7baf?s=65","owns_entry":true,"entry_permissions":[],"display_name":"Demo Admin"}],"tags":[]},{"id":6896,"name":"Documents","description":null,"file_name":"Documents","mime":"NULL","file_size":null,"user_id":null,"parent_id":null,"password":null,"created_at":"2018-08-27 10:30:20","updated_at":"2018-08-27 10:30:20","deleted_at":null,"path":"15745","public_path":null,"type":"folder","extension":null,"public":0,"hash":"MTU3NDV8cGFkZA","url":null,"users":[{"email":"admin@demo083.com","id":141,"avatar":"https:\/\/www.gravatar.com\/avatar\/7c2a7ecd7c5f2f330e50cbad9a7d7baf?s=65","owns_entry":true,"entry_permissions":[],"display_name":"Demo Admin"}],"tags":[]}],
         }
     },
     mounted () {

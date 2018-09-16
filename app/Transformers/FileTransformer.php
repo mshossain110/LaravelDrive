@@ -2,7 +2,7 @@
 
 namespace App\Transformers;
 
-use App\Role;
+use App\File;
 use League\Fractal\TransformerAbstract;
 
 class FileTransformer extends TransformerAbstract {
@@ -11,12 +11,11 @@ class FileTransformer extends TransformerAbstract {
 
 	];
 
-	public function transform ( Role $role ) {
+	public function transform ( File $file ) {
 		return [
-			'id' 				=> (int) $role->id,
-			'name'				=> $role->name,
-			'description'		=> $role->description,
-			'permissions'		=> (array) $role->permissions,
+			'id' 				=> (int) $file->id,
+			'name'				=> $file->name,
+			'description'		=> $file->description,
 		];
 	}
 

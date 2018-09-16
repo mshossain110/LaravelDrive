@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Observers\FolderObserver;
 use App\Model\HandlesPaths;
 
 class Folder extends Model

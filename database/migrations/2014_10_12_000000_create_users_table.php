@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->integer('status')->default(0);
             $table->timestamp('last_loged_in')->useCurrent();
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->nullable();;
             $table->rememberToken();
             $table->timestamps();
         });

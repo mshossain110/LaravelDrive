@@ -14,23 +14,30 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->increments('id');
-			$table->string('name');
-			$table->string('description', 150)->nullable();
-			$table->string('file_name');
+            $table->bigIncrements('id');
+
+			$table->string('name')->index();
+            $table->string('description', 150)->nullable();
+            $table->string('path', 255)->nullable()->index();
+            $table->string('type', 20)->nullable()->index();
+
+            $table->string('public_path', 255)->nullable();
+            $table->boolean('public')->default(0)->index();
+
+            $table->string('extension', 10)->nullable();
             $table->string('mime', 50)->nullable();
-            $table->string('share_id', 20)->unique;
-            $table->string('attach_id', 15)->unique()->nullable();
-            $table->integer('file_size')->nullable()->unsigned();
-            $table->integer('user_id')->nullable();
-            $table->integer('folder_id')->nullable();
+            $table->bigInteger('file_size')->nullable()->unsigned();
+            $table->string('file_name', 255);
+
+            $table->integer('parent_id')->nullable();
             $table->string('password')->nullable();
+
+            $table->integer('created_by');
+            $table->integer('deleted_by')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('user_id');
-            $table->index('share_id');
-            $table->index('attach_id');
         });
     }
 

@@ -26,26 +26,15 @@
 
         <v-card-actions>
             <span v-text="media.name" v-if="!media.edit"></span>
-                <input
-                    class="form-control"
-                    ref="medaiName"
-                    v-if="media.edit"
-                    v-model="media.name"
-                    :autofocus="media.edit"
-                    @blur="createFolder()"
-                    type="text"
-                    required />
-            <div class="sharebutton" v-if="!media.edit" >
-                <v-btn icon>
-                <v-icon>favorite</v-icon>
-                </v-btn>
-                <v-btn icon>
-                <v-icon>bookmark</v-icon>
-                </v-btn>
-                <v-btn icon>
-                <v-icon>share</v-icon>
-                </v-btn>
-            </div>
+            <input
+                class="form-control"
+                ref="medaiName"
+                v-if="media.edit"
+                v-model="media.name"
+                :autofocus="media.edit"
+                @blur="createFolder()"
+                type="text"
+                required />
         </v-card-actions>
     </v-card>
 </template>

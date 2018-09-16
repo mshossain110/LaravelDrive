@@ -25,4 +25,5 @@ Route::group([
     Route::get('permissions', 'RoleController@getAbilities');
 
     Route::resource('folder', 'FolderController');
+    Route::resource('file', 'FileController');
 });
