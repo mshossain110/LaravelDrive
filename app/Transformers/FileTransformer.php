@@ -13,9 +13,20 @@ class FileTransformer extends TransformerAbstract {
 
 	public function transform ( File $file ) {
 		return [
-			'id' 				=> (int) $file->id,
-			'name'				=> $file->name,
-			'description'		=> $file->description,
+			'id'          => (int) $file->id,
+			'name'        => $file->name,
+			'description' => $file->description,
+			'path'        => $file->path,
+			'type'        => $file->type,
+			'public_path' => $file->public_path,
+			'public'      => $file->public,
+			'extension'   => $file->extension,
+			'mime'        => $file->mime,
+			'file_size'   => $file->file_size,
+			'file_name'   => $file->file_name,
+			'parent_id'   => $file->parent_id,
+			'created_at'  => $file->created_at,
+			'updated_at'  => $file->updated_at,
 		];
 	}
 

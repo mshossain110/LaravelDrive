@@ -27,7 +27,7 @@ export default {
     actions: {
         getMediaItems ({ commit }, params) {
             return new Promise((resolve, reject) => {
-                axios.get('/api/media', { params })
+                axios.get('/api/file', { params })
                     .then((res) => {
                         commit('setMediaItems', res.data.data);
                         commit('setPagination', res.data.meta.pagination);

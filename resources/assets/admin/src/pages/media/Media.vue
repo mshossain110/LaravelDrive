@@ -41,13 +41,13 @@
         </v-flex>
     </v-layout>
 
-    <v-layout style="display: block; position:"
+    <v-layout style="display: block;"
             
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
                 
                 <v-flex
-                    v-for="img in images"
+                    v-for="img in mediaItems"
                     :key="img.id"
                     xs4
                     sm3
@@ -78,6 +78,7 @@
 
 
 <script>
+import { mapState } from 'vuex';
 import Dropzone from '@ac/dropzone';
 import MediaItem from './mediaItem.vue';
 
@@ -124,10 +125,14 @@ export default {
             dropzonestyle: {
                 display: 'none',
                 opacity: 0,
-            },
-            folders: [{"id":15731,"name":"Images","parent_id":null,"path":"15731","hash":"MTU3MzF8cGFkZA","url":null},{"id":15745,"name":"Documents","parent_id":null,"path":"15745","hash":"MTU3NDV8cGFkZA","url":null},{"id":15767,"name":"Shared","parent_id":null,"path":"15767","hash":"MTU3Njd8cGFkZA","url":null},{"id":15744,"name":"Nested Folder","parent_id":15731,"path":"15731\/15744","hash":"MTU3NDR8cGFkZA","url":null}],
-            images: [{"id":15745,"name":"Documents","description":null,"file_name":"Documents","mime":"NULL","file_size":null,"user_id":null,"parent_id":null,"password":null,"created_at":"2018-08-27 10:30:20","updated_at":"2018-08-27 10:30:20","deleted_at":null,"path":"15745","public_path":null,"type":"folder","extension":null,"public":0,"hash":"MTU3NDV8cGFkZA","url":null,"users":[{"email":"admin@demo083.com","id":141,"avatar":"https:\/\/www.gravatar.com\/avatar\/7c2a7ecd7c5f2f330e50cbad9a7d7baf?s=65","owns_entry":true,"entry_permissions":[],"display_name":"Demo Admin"}],"tags":[]},{"id":6896,"name":"Documents","description":null,"file_name":"Documents","mime":"NULL","file_size":null,"user_id":null,"parent_id":null,"password":null,"created_at":"2018-08-27 10:30:20","updated_at":"2018-08-27 10:30:20","deleted_at":null,"path":"15745","public_path":null,"type":"folder","extension":null,"public":0,"hash":"MTU3NDV8cGFkZA","url":null,"users":[{"email":"admin@demo083.com","id":141,"avatar":"https:\/\/www.gravatar.com\/avatar\/7c2a7ecd7c5f2f330e50cbad9a7d7baf?s=65","owns_entry":true,"entry_permissions":[],"display_name":"Demo Admin"}],"tags":[]}],
+            }
         }
+    },
+    created () {
+        this.$store.dispatch('Media/getMediaItems')
+        .then((res) => {
+            console.log(res);
+        });
     },
     mounted () {
         
@@ -142,7 +147,7 @@ export default {
         }
     },
     computed: {
-        
+        ...mapState('Media', ['mediaItems', 'pagination']),
     
     },
     methods: {

@@ -20,11 +20,14 @@ class FileController extends ApiController
     }
 
     public function index () {
-    	return $this->respondWithCollection($this->file->getList(), new RoleTransformer);
+    	return $this->respondWithCollection($this->file->getList(), new FileTransformer);
     }
 
     public function show ( $id ){
-    	return $this->respondWithItem($this->file->getById($id), new RoleTransformer);
+        if ((int) $id === 0) {
+            $id = $this->file->decodeHash($id);
+        }
+    	$entry = $this->entry->withTrashed()->findOrFail($id);
     }
 
     /**
