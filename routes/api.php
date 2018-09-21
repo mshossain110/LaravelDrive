@@ -27,3 +27,4 @@ Route::group([
     Route::resource('folder', 'FolderController');
     Route::resource('file', 'FileController');
 });
+

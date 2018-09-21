@@ -41,8 +41,7 @@
         </v-flex>
     </v-layout>
 
-    <v-layout style="display: block;"
-            
+    <v-layout fill-height style="display: block;"
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
                 
@@ -129,7 +128,7 @@ export default {
     created () {
         this.$store.dispatch('Media/getMediaItems')
         .then((res) => {
-            console.log(res);
+
         });
     },
     mounted () {
@@ -149,6 +148,7 @@ export default {
     },
     methods: {
         activeDropzone (event) {
+            console.log(event)
             event.stopPropagation();
             event.preventDefault();
             this.dropzonestyle = {

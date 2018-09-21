@@ -6,8 +6,8 @@
 
         <v-responsive width="166px" v-if="media.type == 'image' && !getMediaIcon.icon">
             <v-img
-                src="https://fyf.tac-cdn.net/images/products/large/TEV12-4.jpg"
-                lazy-src="https://fyf.tac-cdn.net/images/products/large/TEV12-4.jpg"
+                :src="fileUrl"
+                :lazy-src="fileUrl"
                 height="150px"
                 class="grey lighten-2" >
 
@@ -168,6 +168,9 @@
                     ].find( icon => 
                         icon.type == this.media.type
                     ) || {};
+            },
+            fileUrl () {
+                return window.location.origin +'/'+ this.media.url;
             }
         },
         methods: {

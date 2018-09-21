@@ -17,7 +17,7 @@ class ImageResponse {
      */
     public function create(File $entry)
     {
-        $content = Storage::drive(config('common.site.uploads_disk'))->get($entry->getStoragePath());
+        $content = Storage::drive('uploads_local')->get($entry->getStoragePath());
         return response($content, 200, ['Content-Type' => $entry->mime]);
     }
 }

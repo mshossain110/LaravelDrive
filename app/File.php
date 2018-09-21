@@ -26,6 +26,14 @@ class File extends Model
         'password',
     ];
 
+    protected $casts = [
+        'id' => 'integer',
+        'file_size' => 'integer',
+        'user_id' => 'integer',
+        'parent_id' => 'integer'
+    ];
+
+
     /**
      * Bootstrap any application services.
      *
@@ -65,10 +73,10 @@ class File extends Model
             return null;
         }
 
-        if (Arr::get($this->attributes, 'public')) {
+        if (array_get($this->attributes, 'public')) {
             return "storage/$this->public_path/$this->file_name";
         } else {
-            return 'secure/uploads/'.$this->attributes['id'];
+            return 'uploads/'.$this->attributes['id'];
         }
     }
 
