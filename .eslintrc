@@ -8,9 +8,10 @@
          "parser": "babel-eslint"
      },
     "extends": [
-        "airbnb-standard",
-        "plugin:vue/recommended"
+        "eslint:recommended",
+        "plugin:vue/essential"
     ],
+    "plugins" : ["html"],
     "globals": {
         "axios": true,
         "Vue": true

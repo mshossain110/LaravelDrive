@@ -82,7 +82,6 @@ import { mapState } from 'vuex';
 import Dropzone from '@ac/dropzone';
 import MediaItem from './mediaItem.vue';
 
-
 export default {
     components: {
         Dropzone,
@@ -120,7 +119,6 @@ export default {
                     </div>
                     </div>
                 `
-                
             },
             dropzonestyle: {
                 display: 'none',
@@ -135,7 +133,7 @@ export default {
         });
     },
     mounted () {
-        
+
     },
     watch : {
         drawer (newvalue) {
@@ -148,11 +146,10 @@ export default {
     },
     computed: {
         ...mapState('Media', ['mediaItems', 'pagination']),
-    
     },
     methods: {
         activeDropzone (event) {
-            event.stopPropagation(); 
+            event.stopPropagation();
             event.preventDefault();
             this.dropzonestyle = {
                 display: 'block',
@@ -160,8 +157,7 @@ export default {
             }
         },
         deactiveDropzone (event) {
-            console.log(event)
-            event.stopPropagation(); 
+            event.stopPropagation();
             event.preventDefault();
             this.dropzonestyle = {
                 display: 'none',
