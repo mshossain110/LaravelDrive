@@ -17,7 +17,7 @@
 
                 <v-spacer />
 
-                <v-btn icon>
+                <v-btn icon class="la-upload">
                     <v-icon>add_photo_alternate</v-icon>
                 </v-btn>
                 <v-btn icon @click="createFolder()">
@@ -44,7 +44,14 @@
     <v-layout fill-height style="display: block;"
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
-                
+                <v-flex
+                    v-if="newFolder"
+                    xs4
+                    sm3
+                    lg2
+                    >
+                    <media-item :media="{name: null, type: 'folder'}" :editable="newFolder" @rename="createNewFolder"></media-item>
+                </v-flex>
                 <v-flex
                     v-for="img in mediaItems"
                     :key="img.id"
@@ -90,11 +97,24 @@ export default {
         return {
             drawer: false,
             mediaareaStyle: {},
+            newFolder: false,
             dropzoneOptions: {
                 url: '/api/file',
                 thumbnailWidth: 200,
+                init: function() {
+                    this.on("sending", function(file, xhr, formData){
+                        let path = file.fullPath;
+                        if ( typeof file.fullPath === 'undefined' ) {
+                            path = '/' + file.name;
+                        }
+                        formData.append('path', path);
+                    });
+                },
+                params: {
+                    parent_id: null,
+                },
                 addRemoveLinks: true,
-                clickable: false,
+                clickable: [".la-upload"],
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
@@ -148,7 +168,6 @@ export default {
     },
     methods: {
         activeDropzone (event) {
-            console.log(event)
             event.stopPropagation();
             event.preventDefault();
             this.dropzonestyle = {
@@ -165,13 +184,16 @@ export default {
             }
         },
         createFolder () {
-            this.images.push({
-                id: parseInt( Math.random * 10),
-                name:"",
-                description:null,
-                file_name:"",
-                type:"folder",
-                edit: true,
+            this.newFolder = true;
+        },
+        createNewFolder (media) {
+            const item = {
+                name: media.name,
+            }
+
+            this.$store.dispatch('Media/addFolder', item)
+                .then((res) => {
+                    this.newFolder = false;
                 })
         }
     }

@@ -23,13 +23,13 @@ class FileTransformer extends TransformerAbstract {
 			'extension'   => $file->extension,
 			'mime'        => $file->mime,
 			'file_size'   => $file->file_size,
-			'hash'	=> $file->hash,
-			'url'=> $file->url,
+			'hash'	      => $file->hash,
+			'url'         => $file->url,
 			'file_name'   => $file->file_name,
 			'parent_id'   => $file->parent_id,
 			'created_at'  => $file->created_at,
 			'updated_at'  => $file->updated_at,
-			'deleted_at' => $file->deleted_at,
+			'deleted_at'  => $file->deleted_at,
 		];
 	}
 

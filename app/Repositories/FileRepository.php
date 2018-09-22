@@ -168,7 +168,7 @@ class FileRepository
         /**
      * @param UploadedFile $file
      * @param $extra
-     * @return FileEntry
+     * @return File
      */
     public function createFile(UploadedFile $file, $extra)
     {
@@ -233,12 +233,11 @@ class FileRepository
             ];
 
             // check if user already has a folder with that name and parent
-            $folder = $this->entry->where($values)
-                ->whereOwner($userId)
+            $folder = $this->model->where($values)
                 ->first();
 
             if ( ! $folder) {
-                $folder = $this->entry->create($values);
+                $folder = $this->model->create($values);
                 $folder->generatePath();
             }
 

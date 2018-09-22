@@ -21,7 +21,7 @@ export default {
       state.pagination = payload
     },
     addFolder (state, payload) {
-    //   console.log(payload)
+      state.mediaItems.unshift(payload);
     }
   },
   actions: {
