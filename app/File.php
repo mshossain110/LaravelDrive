@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\FileObserver;
 use App\Traits\HandlesPaths;
+use App\Traits\HashesId;
 
 class File extends Model
 {
-    use HandlesPaths;
+    use HandlesPaths, HashesId;
     
     protected $fillable = [
         'name',

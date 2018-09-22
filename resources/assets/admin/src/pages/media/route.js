@@ -6,6 +6,11 @@ const MediaRoute = [
         path: 'media',
         name: 'media',
         component: Media,
+    },
+    {
+        path: 'media/folder/:folderId',
+        name: 'singleFolder',
+        component: Media,
     }
 ];
 

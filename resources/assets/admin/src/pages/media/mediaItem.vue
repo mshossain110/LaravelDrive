@@ -1,42 +1,45 @@
 <template>
-    <v-card flat tile class="media-item mr-3 mt-3">
-        <v-responsive width="166px" v-if="getMediaIcon.icon" :class="getMediaIcon.type" :style="{ color: getMediaIcon.color }" >
-            <v-avatar size="166" tile v-html="getMediaIcon.icon"></v-avatar>
-        </v-responsive>
+    <v-card   flat class="media-item mr-3 mt-3">
+        <div @click="clickde()" class="card-inner">
+            <v-responsive  width="166px" v-if="getMediaIcon.icon" :class="getMediaIcon.type" :style="{ color: getMediaIcon.color }" >
+                <v-avatar size="166" tile v-html="getMediaIcon.icon"></v-avatar>
+            </v-responsive>
 
-        <v-responsive width="166px" v-if="media.type == 'image' && !getMediaIcon.icon">
-            <v-img
-                :src="fileUrl"
-                :lazy-src="fileUrl"
-                height="150px"
-                class="grey lighten-2" >
+            <v-responsive width="166px" v-if="media.type == 'image' && !getMediaIcon.icon">
+                <v-img
+                    :src="fileUrl"
+                    :lazy-src="fileUrl"
+                    height="150px"
+                    class="grey lighten-2" >
 
-                <v-layout
-                    slot="placeholder"
-                    fill-height
-                    align-center
-                    justify-center
-                    ma-0
-                    >
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                </v-layout>
+                    <v-layout
+                        slot="placeholder"
+                        fill-height
+                        align-center
+                        justify-center
+                        ma-0
+                        >
+                        <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    </v-layout>
 
-            </v-img>
-        </v-responsive>
+                </v-img>
+            </v-responsive>
 
-        <v-card-actions>
-            <span class="filename" v-text="media.name" v-if="!media.edit"></span>
-            <input
-                class="form-control"
-                ref="medaiName"
-                v-if="editable"
-                v-model="media.name"
-                :autofocus="editable"
-                @keyup.enter="renameMedia"
-                @blur="renameMedia"
-                type="text"
-                required />
-        </v-card-actions>
+            <v-card-actions>
+                <span class="filename" v-text="media.name" v-if="!media.edit"></span>
+                <input
+                    class="form-control"
+                    ref="medaiName"
+                    v-if="editable"
+                    v-model="media.name"
+                    :autofocus="editable"
+                    @keyup.enter="renameMedia"
+                    @blur="renameMedia"
+                    type="text"
+                    required />
+            </v-card-actions>
+        </div>
+
     </v-card>
 </template>
 
@@ -201,7 +204,18 @@ export default {
 
             this.$emit('rename', this.media)
 
-        } 
+        },
+        clickde () {
+            
+            if (this.media.type == 'folder') {
+                this.$router.push({
+                    name: 'singleFolder',
+                    params: {
+                        folderId: this.media.hash
+                    }
+                })
+            }
+        }
     }
 }
 </script>

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
 use App\Transformers\FileTransformer;
 use App\Http\Requests\FileRequest;
+use App\File;
 use Auth;
+use DB;
 
 class FileController extends ApiController
 {
@@ -19,8 +21,16 @@ class FileController extends ApiController
         $this->file = $file;
     }
 
-    public function index () {
-    	return $this->respondWithCollection($this->file->getList(), new FileTransformer);
+    public function index (Request $request) {
+        $parent_id = $request->get('parent_id');
+
+        $folder = $this->file->getFolder($parent_id);
+
+        $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
+                ->where('parent_id', $folder ? $folder->id : null)
+                ->get();
+
+    	return $this->respondWithCollection($files, new FileTransformer);
     }
 
     public function show ( $id ){

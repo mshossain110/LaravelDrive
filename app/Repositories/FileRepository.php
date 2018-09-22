@@ -40,6 +40,7 @@ class FileRepository
     public function getList()
     {
         return $this->model
+            ->orderBy(DB::raw('type = "folder"'), 'desc')
             ->orderBy('id', 'desc')
             ->get();
     }
@@ -90,6 +91,26 @@ class FileRepository
     public function store($input)
     {   
         return $this->save($this->model, $input);
+    }
+
+
+    /**
+     * @param array $params
+     * @return File|null
+     */
+    public function getFolder($folderId = null)
+    {
+        // no folderId specified or it's "root" folder
+        if ( ! $folderId ) return null;
+
+        // it's a folder hash, need to decode it
+        if ((int) $folderId === 0) {
+            $folderId = $this->model->decodeHash($folderId);
+        } else {
+            $folderId = (int) $folderId;
+        }
+
+        return $this->getById($folderId );
     }
 
     /**
@@ -224,7 +245,6 @@ class FileRepository
         return $path->reduce(function($parents, $name) use($parentId, $userId) {
             if ( ! $parents) $parents = collect();
             $parent = $parents->last();
-
             $values = [
                 'type' => 'folder',
                 'name' => $name,

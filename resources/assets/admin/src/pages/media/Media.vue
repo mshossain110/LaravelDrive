@@ -41,7 +41,9 @@
         </v-flex>
     </v-layout>
 
-    <v-layout fill-height style="display: block;"
+    <v-layout fill-height
+            v-if="isloaded"
+            style="display: block;"
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
                 <v-flex
@@ -101,19 +103,19 @@ export default {
             dropzoneOptions: {
                 url: '/api/file',
                 thumbnailWidth: 200,
+                parallelUploads: 1,
                 init: function() {
                     this.on("sending", function(file, xhr, formData){
                         let path = file.fullPath;
                         if ( typeof file.fullPath === 'undefined' ) {
-                            path = '/' + file.name;
+                            path = file.name;
                         }
-                        formData.append('path', path);
+                        formData.append('path', '/' + path);
                     });
                 },
                 params: {
-                    parent_id: null,
+                    parent_id: this.$route.params.folderId,
                 },
-                addRemoveLinks: true,
                 clickable: [".la-upload"],
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -139,6 +141,7 @@ export default {
                     </div>
                 `
             },
+            isloaded: false,
             dropzonestyle: {
                 display: 'none',
                 opacity: 0,
@@ -146,10 +149,7 @@ export default {
         }
     },
     created () {
-        this.$store.dispatch('Media/getMediaItems')
-        .then((res) => {
-
-        });
+        this.loadMediaItems();
     },
     mounted () {
 
@@ -161,6 +161,11 @@ export default {
             } else {
                 this.mediaareaStyle = {}
             }
+        },
+        '$route' (to, from) {
+            this.loadMediaItems({
+                parent_id: to.params.folderId,
+            });
         }
     },
     computed: {
@@ -195,6 +200,14 @@ export default {
                 .then((res) => {
                     this.newFolder = false;
                 })
+        },
+        loadMediaItems (params) {
+            params = params || {};
+            params.parent_id = typeof this.$route.params.folderId !== 'undefined' ?  this.$route.params.folderId: '';
+            this.$store.dispatch('Media/getMediaItems', params)
+            .then((res) => {
+                this.isloaded = true;
+            });
         }
     }
 }
