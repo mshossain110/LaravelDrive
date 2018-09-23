@@ -1,25 +1,31 @@
 <template>
-    <h1>Hello from Dashboard</h1>
+<v-layout>
+    <login/>
+</v-layout>
 </template>
 
 
 <script>
-    export default {
-        data () {
-            return {
-                
-            }
-        },
-        created () {
-            console.log("shahdatafdlkjd flksadfkl");
-        },
-        computed: {
-            
-        },
-        methods: {
+import Login from '@ac/auth/login.vue'
+export default {
+    components: {
+        Login
+    },
+    data () {
+        return {
             
         }
+    },
+    created () {
+        
+    },
+    computed: {
+        
+    },
+    methods: {
+        
     }
+}
 </script>
 
 <style>
