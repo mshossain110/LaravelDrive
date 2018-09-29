@@ -3,7 +3,6 @@
 
         <form method="POST" v-on:submit.prevent="login">
 
-            <p class="text-danger" v-if="authErrors.has('invalid_credentials')" v-text="authErrors.get('invalid_credentials')"></p>
 
             <label for="email" class="sr-only">Email address</label>
             <input type="email" id="email" class="form-control" placeholder="Email address" required autofocus v-model="email">

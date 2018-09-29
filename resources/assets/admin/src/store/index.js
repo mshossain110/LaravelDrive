@@ -50,7 +50,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    authRequest: ({commit, dispatch}, payload) => {
+    authRequest: ({commit}, payload) => {
       let actionUrl = '/login';
       let remember = payload.remember ? payload.remember : false;
       let data = {
@@ -82,12 +82,11 @@ export default new Vuex.Store({
           commit('authRequest');
           axios.post(actionUrl, data)
             .then((resp) => {
-              let access_token = 'Bearer ' + resp.data.access_token;
+              let access_token = 'Bearer ' + resp.data.token;
               Cookies.set('access_token', access_token, { expires: remember ? 365 : 1 });
               axios.defaults.headers.common['Authorization'] = access_token;
 
               commit('authSuccess', access_token);
-              dispatch('userRequest');
               resolve(access_token);
             })
             .catch((err) => {
@@ -97,11 +96,11 @@ export default new Vuex.Store({
             })
         })
     },
-    authLogout: ({commit, dispatch}) => {
-        Cookies.remove('access_token');
+    authLogout: ({commit}) => {
+        // Cookies.remove('access_token');
         return new Promise((resolve, reject) => {
           axios.post('/logout')
-            .then((resp) => {
+            .then(() => {
               commit('authLogout');
               resolve();
             })
