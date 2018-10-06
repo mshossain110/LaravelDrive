@@ -33,4 +33,20 @@ class FileTransformer extends TransformerAbstract {
 		];
 	}
 
+	    /**
+     * Include parent of file
+     *
+     * @param Task $item
+     * @return \League\Fractal\Resource\Item
+     */
+    public function includeParent( File $item ) { 
+        $parent = $item->parent->first();
+        
+        if ( ! empty( $parent ) ) {
+            return $this->item( $parent, new FileTransformer );
+        }
+
+        return null;
+    }
+
 }

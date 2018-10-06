@@ -20,11 +20,11 @@ class FolderController extends ApiController
     }
 
     public function index () {
-    	return $this->respondWithCollection($this->folder->getList(), new RoleTransformer);
+    	return $this->respondWithCollection($this->folder->getList(), new FolderTransformer);
     }
 
     public function show ( $id ){
-    	return $this->respondWithItem($this->folder->getById($id), new RoleTransformer);
+    	return $this->respondWithItem($this->folder->getById($id), new FolderTransformer);
     }
 
     /**
@@ -58,7 +58,7 @@ class FolderController extends ApiController
         $data      = $request->only(['name', 'description']);
     	$folder      = $folderthis->folder->update( $id, $data);
 
-    	return $this->respondWithItem($folder, new RoleTransformer);
+    	return $this->respondWithItem($folder, new FolderTransformer);
     }
 
     /**

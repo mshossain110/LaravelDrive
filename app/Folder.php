@@ -5,10 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Observers\FolderObserver;
 use App\Traits\HandlesPaths;
+use App\Traits\HashesId;
 
 class Folder extends Model
 {
-    use HandlesPaths;
+    use HandlesPaths, HashesId;
 
     protected $table = 'files';
 

@@ -26,7 +26,7 @@ class FolderRequest extends FormRequest
         $folderId = $this->input('id');
 
         $rules = [
-            'name'        => "alpha|max:255",
+            'name'        => "string|max:255",
             'description' => "string|min:2|max:255|nullable",
         ];
 

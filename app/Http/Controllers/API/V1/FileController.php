@@ -27,7 +27,7 @@ class FileController extends ApiController
         $folder = $this->file->getFolder($parent_id);
 
         $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
-                ->where('parent_id', $folder ? $folder->id : null)
+                ->where('parent_id', $folder ? $folder->id : 0)
                 ->get();
 
     	return $this->respondWithCollection($files, new FileTransformer);
@@ -49,9 +49,9 @@ class FileController extends ApiController
     public function store( FileRequest $request){
         $userId       = Auth::user()->id;
         $path         = $request->get('path');
-        $parentId     = $request->get('parentId');
+        $parent_id    = $request->get('parent_id');
         $uploadedFile = $request->file('file');
-        $fileEntry = $this->file->createFile($uploadedFile, ['parent_id' => $parentId, 'path' => $path] );
+        $fileEntry    = $this->file->createFile($uploadedFile, ['parent_id' => $parent_id, 'path' => $path] );
 
         $this->file->storePrivateUpload($fileEntry, $uploadedFile);
         return $this->respondWithItem($fileEntry, new FileTransformer);

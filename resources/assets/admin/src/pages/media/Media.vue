@@ -37,12 +37,11 @@
                     <v-icon>chevron_right</v-icon>
                 </v-btn>
             </v-toolbar>
-
         </v-flex>
     </v-layout>
 
     <v-layout fill-height
-            v-if="isloaded"
+            v-if="isLoaded"
             style="display: block;"
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
@@ -79,7 +78,14 @@
                 here will be show image detals
             </v-navigation-drawer>
 
-            <dropzone ref="myVueDropzone" id="laraveladmin" :options="dropzoneOptions" :style="dropzonestyle" @vdropzone-drop="deactiveDropzone" @vdropzone-drag-leave="deactiveDropzone"/>
+            <dropzone 
+                ref="myVueDropzone" 
+                id="laraveladmin"
+                @vdropzone-sending="dropzoneSending"
+                :options="dropzoneOptions" 
+                :style="dropzonestyle" 
+                @vdropzone-drop="deactiveDropzone" 
+                @vdropzone-drag-leave="deactiveDropzone"/>
     </v-layout>
 </v-layout>
 </template>
@@ -104,18 +110,6 @@ export default {
                 url: '/api/file',
                 thumbnailWidth: 200,
                 parallelUploads: 1,
-                init: function() {
-                    this.on("sending", function(file, xhr, formData){
-                        let path = file.fullPath;
-                        if ( typeof file.fullPath === 'undefined' ) {
-                            path = file.name;
-                        }
-                        formData.append('path', '/' + path);
-                    });
-                },
-                params: {
-                    parent_id: this.$route.params.folderId,
-                },
                 clickable: [".la-upload"],
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -141,7 +135,8 @@ export default {
                     </div>
                 `
             },
-            isloaded: false,
+            isfilesLoaded: false,
+            isfolderLoaded: false,
             dropzonestyle: {
                 display: 'none',
                 opacity: 0,
@@ -150,6 +145,10 @@ export default {
     },
     created () {
         this.loadMediaItems();
+        this.$store.dispatch('Media/getFolders')
+            .then(() =>{
+                this.isfolderLoaded = true;
+            });
     },
     mounted () {
 
@@ -169,7 +168,26 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'folders']),
+        isLoaded () {
+            return this.isfilesLoaded && this.isfolderLoaded;
+        },
+        currentFolder () {
+            const hash = this.$route.params.folderId;
+            const i = this.folders.findIndex(m => m.hash === hash);
+            if ( -1 === i) {
+                return false;
+            }else {
+                return this.folders[i];
+            }
+        },
+        currentFolderId () {
+            if (this.currentFolder) {
+                return this.currentFolder.id;
+            }else {
+                return 0
+            }
+        }
     },
     methods: {
         activeDropzone (event) {
@@ -206,8 +224,16 @@ export default {
             params.parent_id = typeof this.$route.params.folderId !== 'undefined' ?  this.$route.params.folderId: '';
             this.$store.dispatch('Media/getMediaItems', params)
             .then((res) => {
-                this.isloaded = true;
+                this.isfilesLoaded = true;
             });
+        },
+        dropzoneSending (file, xhr, formData) {
+            let path = file.fullPath;
+            if ( typeof file.fullPath === 'undefined' ) {
+                path = file.name;
+            }
+            formData.append('path', '/' + path);
+            formData.append('parent_id', this.currentFolderId);
         }
     }
 }

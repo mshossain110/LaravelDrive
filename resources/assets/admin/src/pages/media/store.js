@@ -3,6 +3,7 @@ export default {
   namespaced: true,
   state: {
     mediaItems: [],
+    folders: [],
     pagination: {}
   },
   getters: {
@@ -11,7 +12,8 @@ export default {
     },
     pagination (state) {
       return state.pagination
-    }
+    },
+    
   },
   mutations: {
     setMediaItems (state, payload) {
@@ -19,6 +21,9 @@ export default {
     },
     setPagination (state, payload) {
       state.pagination = payload
+    },
+    setFolder (state, payload ) {
+      state.folders = payload;
     },
     addFolder (state, payload) {
       state.mediaItems.unshift(payload);
@@ -42,6 +47,18 @@ export default {
                 show: true
               },
               { root: true })
+            reject(error.response)
+          })
+      })
+    },
+    getFolders ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        axios.get('/api/folder', params)
+          .then((res) => {
+            commit('setFolder', res.data.data)
+            resolve(res.data)
+          })
+          .catch((error) => {
             reject(error.response)
           })
       })
