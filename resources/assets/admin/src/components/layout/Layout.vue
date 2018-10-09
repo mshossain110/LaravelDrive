@@ -10,9 +10,9 @@
 
         <v-toolbar
             :clipped-left="$vuetify.breakpoint.lgAndUp"
-            color="primary"
-            height="40"
-            dark
+            color="white"
+            flat
+            light
             app
             fixed>
 
@@ -20,8 +20,18 @@
                 style="width: 300px"
                 class="ml-0 pl-3">
                 <v-toolbar-side-icon @click.stop="drawer = !drawer" />
-                <span class="hidden-sm-and-down">Google Contacts</span>
+                <span class="hidden-sm-and-down"><img src="./../../images/logo.png"  width="150px"/></span>
             </v-toolbar-title>
+
+            <v-text-field
+                flat
+                solo
+                box
+                hide-details
+                prepend-inner-icon="search"
+                placeholder="Search"
+                class="hidden-sm-and-down la-search"
+            ></v-text-field>
 
             <v-spacer />
 
@@ -107,3 +117,10 @@ export default {
     },
 };
 </script>
+
+<style>
+.la-search.v-text-field--box.v-text-field--single-line input{
+    margin-top: 0px;
+}
+</style>
+

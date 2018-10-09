@@ -28,7 +28,7 @@ const router = new VueRouter({
 
 Vue.use(Vuetify, {
     theme: {
-        primary: colors.blueGrey.darken2,
+        primary: colors.white,
         secondary: colors.blueGrey.lighten5,
         accent: colors.lightGreen.darken3,
         error: colors.red.base,

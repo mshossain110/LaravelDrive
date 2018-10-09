@@ -77,7 +77,10 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg|woff(2)?|ttf|eot)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]?[hash]'
+                    name: '[name].[ext]',
+                    outputPath: '../images/',
+                    publicPath: '/images/',
+                    useRelativePath: process.env.NODE_ENV === "production"
                 }
             },
         ]

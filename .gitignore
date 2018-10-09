@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/js
+/public/images
 /storage/*.key
 /vendor
 /.idea
