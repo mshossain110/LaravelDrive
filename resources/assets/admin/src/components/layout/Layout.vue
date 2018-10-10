@@ -1,5 +1,5 @@
 <template>
-    <v-app id="inspire">
+    <v-app id="inspire" light>
         <v-navigation-drawer
             :clipped="$vuetify.breakpoint.lgAndUp"
             v-model="drawer"
@@ -78,6 +78,16 @@
                             </v-btn>
                         </v-snackbar>
                     </template>
+
+                    <template v-if="!isAuthenticated">
+                        <v-dialog
+                            :value="!isAuthenticated"
+                            persistent
+                            width="500"
+                            >
+                            <login />
+                        </v-dialog>
+                    </template>
                 </v-layout>
             </v-container>
         </v-content>
@@ -87,10 +97,12 @@
 <script>
 import { mapState } from 'vuex';
 import MenuItems from './MenuItems.vue';
+import Login from '@ac/auth/login.vue'
 
 export default {
     components: {
         MenuItems,
+        Login,
     },
     props: {
 
@@ -102,7 +114,7 @@ export default {
         }
     ),
     computed: {
-        ...mapState(['snackbar']),
+        ...mapState(['snackbar', 'isAuthenticated']),
     },
     methods: {
         hideSnackbar() {

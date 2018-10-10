@@ -31,45 +31,32 @@ export default new Vuex.Store({
   },
   actions: {
     authRequest: ({commit}, payload) => {
-      let actionUrl = '/login';
       let remember = payload.remember ? payload.remember : false;
       let data = {
         'email':payload.email,
         'password':payload.password,
         'remember': remember,
       }
-
-      if(payload.action=='register'){
-        actionUrl='/register';
-        data = {
-          'name':payload.name,
-          'email':payload.email,
-          'password':payload.password,
-          'password_confirmation':payload.password_confirmation
-        }
-      }
-      if(payload.action=='password-reset'){
-        actionUrl='/password/reset';
-        data = {
-          'token':payload.token,
-          'email':payload.email,
-          'password':payload.password,
-          'password_confirmation':payload.password_confirmation
-        }
-      }
-      commit('authRequest');
-      axios.post(actionUrl, data)
+      return new Promise((resolve, reject) => {
+        axios.post('/login', data)
+          .then( ()=> {
+            commit('auth', true);
+            resolve();
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      });
     },
     authLogout: ({commit}) => {
         // Cookies.remove('access_token');
         return new Promise((resolve, reject) => {
           axios.post('/logout')
             .then(() => {
-              commit('authLogout');
+              commit('auth', false);
               resolve();
             })
             .catch((err) => {
-              commit('authError', err.response.data);
               reject(err);
             });
         })

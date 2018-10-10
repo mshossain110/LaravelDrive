@@ -29,6 +29,7 @@ router.beforeEach((to, from, next) => {
     var user = LA.user;
 
     if (user){
+        store.commit('auth', true);
         next();
     }else {
         store.commit('auth', false);
@@ -39,8 +40,8 @@ router.beforeEach((to, from, next) => {
 
 Vue.use(Vuetify, {
     theme: {
-        primary: colors.grey.lighten5,
-        secondary: colors.blueGrey.lighten5,
+        primary: colors.grey.darken3,
+        secondary: colors.blue.darken3,
         accent: colors.lightGreen.darken3,
         error: colors.red.base,
         warning: colors.yellow.darken1,
