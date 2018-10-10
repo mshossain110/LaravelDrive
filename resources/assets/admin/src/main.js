@@ -25,10 +25,21 @@ const router = new VueRouter({
     }
 });
 
+router.beforeEach((to, from, next) => {
+    var user = LA.user;
+
+    if (user){
+        next();
+    }else {
+        store.commit('auth', false);
+        next(false);
+    }
+    
+})
 
 Vue.use(Vuetify, {
     theme: {
-        primary: colors.white,
+        primary: colors.grey.lighten5,
         secondary: colors.blueGrey.lighten5,
         accent: colors.lightGreen.darken3,
         error: colors.red.base,

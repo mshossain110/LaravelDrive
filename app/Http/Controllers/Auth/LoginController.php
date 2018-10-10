@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Cookie;
 
 use Illuminate\Support\Facades\DB;
 
@@ -50,10 +51,8 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if( $request->ajax() ) {
-            $token = $user->createToken('laravelAdmin')->accessToken;
-            return response()->json(compact('token'));
-        }
+        $token = $user->createToken('laravelAdmin')->accessToken;
+        // Cookie::queue(Cookie::make('access_token', $token, 24*60));
         return false;
     }
 
@@ -69,6 +68,7 @@ class LoginController extends Controller
         $user->token()->revoke();
         $user->token()->delete();
         $this->guard()->logout();
+        Cookie::forget('access_token');
 
         $request->session()->invalidate();
 

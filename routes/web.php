@@ -19,6 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::view('/admin', 'admin.index');
+Route::view('/admin', 'admin.index')->name("admin");
 
 Route::get('/uploads/{id}', 'UploadController@show');

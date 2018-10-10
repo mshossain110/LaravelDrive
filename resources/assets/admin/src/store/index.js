@@ -9,16 +9,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   root: true,
   state: {
+    isAuthenticated: false,
     snackbar: {},
-    access_token: Cookies.get('access_token') || '',
     status: '',
     hasLoadedOnce: false,
   },
   getters: {
     snackbar:  state =>state.snackbar,
     isAuthenticated: state => !!state.access_token,
-    authStatus: state => state.status,
-    authErrors: state => state.errors,
   },
   mutations: {
     setSnackbar (state, payload) {
@@ -27,26 +25,8 @@ export default new Vuex.Store({
     setSnackbarHide (state) {
       state.snackbar.show = !state.snackbar.show
     },
-    authRequest: (state) => {
-      state.status = 'loading';
-    },
-    authSuccess: (state, access_token) => {
-      state.status = 'success';
-      state.access_token = access_token;
-      state.hasLoadedOnce = true;
-    },
-    authError: (state, err) => {
-      let errors=err.errors?err.errors:{};
-      if(err.error=="invalid_credentials"){
-        errors.invalid_credentials=['The user credentials were incorrect.'];
-      }
-
-      state.status = 'error';
-      state.hasLoadedOnce = true;
-      state.errors.record(errors);
-    },
-    authLogout: (state) => {
-      state.access_token = '';
+    auth (state, payload) {
+      state.isAuthenticated = payload;
     }
   },
   actions: {
@@ -55,7 +35,8 @@ export default new Vuex.Store({
       let remember = payload.remember ? payload.remember : false;
       let data = {
         'email':payload.email,
-        'password':payload.password
+        'password':payload.password,
+        'remember': remember,
       }
 
       if(payload.action=='register'){
@@ -76,25 +57,8 @@ export default new Vuex.Store({
           'password_confirmation':payload.password_confirmation
         }
       }
-
-
-        return new Promise((resolve, reject) => {
-          commit('authRequest');
-          axios.post(actionUrl, data)
-            .then((resp) => {
-              let access_token = 'Bearer ' + resp.data.token;
-              Cookies.set('access_token', access_token, { expires: remember ? 365 : 1 });
-              axios.defaults.headers.common['Authorization'] = access_token;
-
-              commit('authSuccess', access_token);
-              resolve(access_token);
-            })
-            .catch((err) => {
-              commit('authError', err.response.data);
-              Cookies.remove('access_token');
-              reject(err);
-            })
-        })
+      commit('authRequest');
+      axios.post(actionUrl, data)
     },
     authLogout: ({commit}) => {
         // Cookies.remove('access_token');
