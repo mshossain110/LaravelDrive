@@ -34,7 +34,7 @@ if (token) {
 let bearer = LA.token
 
 if (bearer) {
-    window.axios.defaults.headers.common['Authorization'] = bearer
+    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer
 }
 
 /**

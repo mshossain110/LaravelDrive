@@ -33,7 +33,7 @@ class AdminComposer {
     {
         $data = [
             'user' => Auth::check() ? Auth::user() : null,
-            'token' => Auth::check()? Auth::user()->createToken('laravelAdmin')->accessToken: null,
+            'token' => Auth::check()? Auth::user()->token(): null,
         ];
         
         $view->with($data);

@@ -52,11 +52,11 @@ Vue.use(Vuetify, {
 
 Vue.use(VueRouter);
 
+Vue.mixin(mixin);
 
-const AppVue = new Vue({
+new Vue({
     el: '#root',
     store,
     router,
-    mixin,
     render: h => h(App),
 });

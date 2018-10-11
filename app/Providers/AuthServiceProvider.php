@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\UserMeta;
 use App\Policies\UserMetaPolicy;
+use Carbon\Carbon;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,9 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes(function ($router) {
             $router->forAccessTokens();
         });
+
+        Passport::tokensExpireIn(Carbon::now()->addDays(7));
+
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(14));
     }
 }

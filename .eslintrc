@@ -24,6 +24,9 @@
         }
     },
     "rules": {
-        
+        "no-global-assign": ["error", {"exceptions": ["Object"]}],
+        "globals": {
+            "LA": true
+        }
     }
 }

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import UsersStore from '@ap/users/store'
 import MediaStore from '@ap/media/store'
-import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
@@ -49,7 +48,6 @@ export default new Vuex.Store({
       });
     },
     authLogout: ({commit}) => {
-        // Cookies.remove('access_token');
         return new Promise((resolve, reject) => {
           axios.post('/logout')
             .then(() => {

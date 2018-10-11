@@ -42,13 +42,8 @@
             <v-btn icon>
                 <v-icon>notifications</v-icon>
             </v-btn>
+            <user-info v-if="isAuthenticated" />
 
-            <v-btn
-                @click.prevent="logout"
-                icon
-                large>
-                Sign Out
-            </v-btn>
         </v-toolbar>
 
         <v-content>
@@ -98,11 +93,13 @@
 import { mapState } from 'vuex';
 import MenuItems from './MenuItems.vue';
 import Login from '@ac/auth/login.vue'
+import UserInfo from './UserInfo.vue';
 
 export default {
     components: {
         MenuItems,
         Login,
+        UserInfo
     },
     props: {
 
@@ -120,12 +117,7 @@ export default {
         hideSnackbar() {
             this.$store.commit('setSnackbarHide');
         },
-        logout: function () {
-            this.$store.dispatch('authLogout')
-                .then(() => {
-                    // this.$router.push('/')
-                })
-        }
+
     },
 };
 </script>
