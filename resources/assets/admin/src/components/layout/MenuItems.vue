@@ -1,5 +1,5 @@
 <template>
-    <v-list dense>
+    <v-list dense class="la-side-menu">
         <template v-for="item in items">
             <v-layout
                 v-if="item.heading"
@@ -8,15 +8,15 @@
                 align-center
                 >
             
-                <v-flex xs6>
+                <v-flex xs12>
                     <v-subheader v-if="item.heading">
                         {{ item.heading }}
                     </v-subheader>
                 </v-flex>
         
-                <v-flex xs6 class="text-xs-center">
+                <!-- <v-flex xs6 class="text-xs-center">
                     <a href="#!" class="body-2 black--text">EDIT</a>
-                </v-flex>
+                </v-flex> -->
             </v-layout>
     
     
@@ -54,7 +54,7 @@
             </v-list-group>
     
     
-            <v-list-tile v-else :key="item.text" :to="{name:item.name }">
+            <v-list-tile v-else :key="item.name" :to="{name:item.name }">
                 <v-list-tile-action>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-tile-action>
@@ -77,19 +77,17 @@
             return {
                 items: [
                     { icon: 'dashboard', text: 'Dashboard', name: 'dashboard' },
-                    { 
-                        icon: 'people',
-                        text: 'Users',
-                        name: 'users',
-                        model: false,
-                        children: [
-                            { icon: 'people', text: 'Users', name: 'users' },
-                            { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
-                        ]
-                    },
-                    { icon: 'perm_media', text: 'Media', name: 'media' },
-                  
-                    { icon: 'settings', text: 'Settings' }
+                    { heading: 'Users' },
+                    { icon: 'people', text: 'Users', name: 'users' },
+                    { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
+                    { heading: 'My Drive' },
+                    { icon: 'perm_media', text: 'Files', name: 'media' },
+                    { icon: 'people', text: 'Shared with me', name: 'shared' },
+                    { icon: 'watch_later', text: 'Recent', name: 'recent' },
+                    { icon: 'star', text: 'Starred', name: 'starred' },
+                    { icon: 'delete_forever', text: 'Trash', name: 'trash' },
+                    { heading: 'Admin Settings' },
+                    { icon: 'settings', text: 'Settings', name:'settings' }
                 ]
             }
         },
@@ -103,5 +101,21 @@
 </script>
 
 <style>
+    .la-side-menu .v-list__tile__action{
+        min-width: 36px;
+    }
+    .la-side-menu a.v-list__tile  {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: normal !important;
+    }
+
+    .la-side-menu a:hover {
+        text-decoration: none
+    }
+
+    .la-side-menu .v-subheader {
+        border-top: 1px solid #ddd;
+    }
     
 </style>

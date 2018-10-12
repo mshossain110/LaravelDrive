@@ -3,6 +3,7 @@
         <v-navigation-drawer
             :clipped="$vuetify.breakpoint.lgAndUp"
             v-model="drawer"
+            width="240"
             fixed
             app>
             <menu-items />
@@ -17,7 +18,7 @@
             fixed>
 
             <v-toolbar-title
-                style="width: 300px"
+                style="width: 240px"
                 class="ml-0 pl-3">
                 <v-toolbar-side-icon @click.stop="drawer = !drawer" />
                 <span class="hidden-sm-and-down"><img src="./../../images/logo.png"  width="150px"/></span>
