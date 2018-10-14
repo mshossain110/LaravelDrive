@@ -74,7 +74,8 @@ class UserController extends ApiController
             'password',
             'role',
             'avatar',
-            'permissions'
+            'permissions',
+            'status'
         ]);
 
     	$user = $this->user->update( $id, $data);

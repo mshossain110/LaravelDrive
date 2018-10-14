@@ -1,13 +1,15 @@
 <template>
     <v-layout
         row
-        wrap>
+        wrap 
+        class="d-block">
         <v-flex xs12 >
             <v-toolbar
                 flat
                 light
-                height="60px"
-                color="secondary">
+                height="40px"
+                class="ub-h"
+                color="white">
                 <v-toolbar-title class="headline">
                     <v-icon>people</v-icon>
                     Users
@@ -71,5 +73,7 @@ export default {
 </script>
 
 <style>
-
+    .ub-h .v-toolbar__content {
+        border-bottom: 1px solid #ddd;
+    }
 </style>

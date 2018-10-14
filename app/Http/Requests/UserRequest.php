@@ -28,8 +28,8 @@ class UserRequest extends FormRequest
         $rules = [
             'firstname'   => 'alpha|min:2|max:255|nullable',
             'lastname'    => 'alpha|min:2|max:255|nullable',
-            'permissions' => 'array',
-            'roles'       => 'array',
+            'permissions' => 'array|nullable',
+            'roles'       => 'array|nullable',
             'password'    => 'min:6|max:255|confirmed',
             'name'        => "min:3|max:255|unique:users,name,$userId",
             'email'       => "email|min:3|max:255|unique:users,email,$userId"

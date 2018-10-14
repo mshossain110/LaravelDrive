@@ -54,6 +54,7 @@
                     <div class="text-xs-center">
                         <v-chip
                             :class="props.item.status"
+                            @click="activation(props.item)"
                             small>
                             {{ props.item.status }}
                         </v-chip>
@@ -154,6 +155,14 @@ export default {
                 this.$store.dispatch('Users/deleteUser', user.id);
             }
         },
+        activation (user) {
+            let status = user.status == "Inactive" ? 1:0; 
+            Vue.set(user, 'status', status)
+            this.$store.dispatch('Users/updateUser', user)
+                .then(()=>{
+                    this.$forceUpdate();
+                });
+        }
     },
 };
 </script>
