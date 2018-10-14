@@ -7,12 +7,42 @@
             <v-toolbar
                 flat
                 light
-                height="60px"
-                color="secondary">
+                height="40px"
+                class="la-pt"
+                color="white">
                 
-                <v-toolbar-title class="headline">
-                    <v-icon>people</v-icon>
-                    Media
+                <v-toolbar-title>
+                    <v-icon>perm_media</v-icon>
+                    My Files
+                    <v-menu offset-y>
+                        <v-btn
+                            slot="activator"
+                            icon
+                            >
+                                <v-icon>arrow_drop_down</v-icon>
+                            </v-btn>
+
+                        <v-list>
+                            <v-list-tile @click="createFolder()">
+                                <v-list-tile-title>
+                                    <v-icon>create_new_folder</v-icon> 
+                                    New Folder
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile class="la-upload">
+                                <v-list-tile-title>
+                                    <v-icon>create_new_folder</v-icon> 
+                                    Upload  Folder
+                                </v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile class="la-upload">
+                                <v-list-tile-title>
+                                    <v-icon>add_photo_alternate</v-icon>
+                                    Upload  Files
+                                </v-list-tile-title>
+                            </v-list-tile>
+                        </v-list>
+                    </v-menu>
                 </v-toolbar-title>
 
                 <v-spacer />
@@ -45,20 +75,11 @@
             style="display: block;"
             @dragenter="activeDropzone($event)">
             <v-layout row wrap id="filecontainer" >
-                <v-flex
-                    v-if="newFolder"
-                    xs4
-                    sm3
-                    lg2
-                    >
-                    <media-item :media="{name: null, type: 'folder'}" :editable="newFolder" @rename="createNewFolder"></media-item>
-                </v-flex>
+                
                 <v-flex
                     v-for="img in mediaItems"
                     :key="img.id"
-                    xs4
-                    sm3
-                    lg2
+                    
                     >
                     <media-item :media="img"></media-item>
                     </v-flex>
@@ -256,5 +277,25 @@ div#laraveladmin {
 }
 .media-item .v-card__actions button.v-btn .v-icon {
     font-size: 12px;
+}
+.la-pt .v-toolbar__title {
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: normal;
+}
+.la-pt .v-icon {
+    font-size: 18px;
+}
+.la-pt .v-menu {
+    margin-left: -14px;
+}
+#filecontainer .flex {
+    width: calc(20% - 20px);
+    margin-top: 16px;
+    margin-right: 20px;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    max-width: 210px;
 }
 </style>

@@ -1,46 +1,38 @@
 <template>
-    <v-card   flat class="media-item mr-3 mt-3">
+    <div   flat class="media-item">
         <div @click="clickde()" class="card-inner">
-            <v-responsive  width="166px" v-if="getMediaIcon.icon" :class="getMediaIcon.type" :style="{ color: getMediaIcon.color }" >
-                <v-avatar size="166" tile v-html="getMediaIcon.icon"></v-avatar>
-            </v-responsive>
+            <div class="la-file-name"  >
+                <div class="fi" :class="getMediaIcon.type" :style="{ color: getMediaIcon.color }">
+                    <div class="la-fia" v-if="getMediaIcon.avatar">
+                        <v-avatar   size="166" tile v-html="getMediaIcon.icon"></v-avatar>
+                    </div>
+                    
+                    <div v-else class="la-fii">
+                        <v-img
+                            v-if="media.type == 'image'"
+                            :src="fileUrl"
+                            height="166"
+                            :lazy-src="fileUrl" >
+                            </v-img>
+                    </div>
+                    
 
-            <v-responsive width="166px" v-if="media.type == 'image' && !getMediaIcon.icon">
-                <v-img
-                    :src="fileUrl"
-                    :lazy-src="fileUrl"
-                    height="150px"
-                    class="grey lighten-2" >
-
-                    <v-layout
-                        slot="placeholder"
-                        fill-height
-                        align-center
-                        justify-center
-                        ma-0
-                        >
-                        <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                    </v-layout>
-
-                </v-img>
-            </v-responsive>
-
-            <v-card-actions>
-                <span class="filename" v-text="media.name" v-if="!media.edit"></span>
-                <input
-                    class="form-control"
-                    ref="medaiName"
-                    v-if="editable"
-                    v-model="media.name"
-                    :autofocus="editable"
-                    @keyup.enter="renameMedia"
-                    @blur="renameMedia"
-                    type="text"
-                    required />
-            </v-card-actions>
+                </div>
+                <div class="fn">
+                    <div class="fn-i">
+                        <span class="fn-i-i" :style="{ color: getMediaIcon.color }" size="15" tile v-html="getMediaIcon.icon">
+                          </span>
+                        <div class="fn-i-t">
+                            <span class="filename" v-text="media.name" v-if="!media.edit"></span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+           
         </div>
 
-    </v-card>
+    </div>
 </template>
 
 
@@ -64,112 +56,134 @@ export default {
             return [
                     {
                         type: 'folder',
-                        icon: '<span class="lafi material-icons"  size="100">folder</span>',
+                        icon: '<span class="lafi material-icons">folder</span>',
                         color: "#fbc02d",
+                        avatar: true,
                     },
                     {
                         type: 'text',
                         icon: '<span class="lafi flaticon-txt"></span>',
                         color: '#2196f3',
+                        avatar: true,
                     },
                     {
                         type: 'audio',
                         icon: '<span class="lafi flaticon-mp3"></span>',
                         color: '#ff9800',
+                        avatar: true,
                     },
                     {
                         type: 'pdf',
                         icon: '<span class="lafi flaticon-pdf"></span>',
                         color: '#f44336',
+                        avatar: true,
                     },
                     {
                         type: 'archive',
                         icon: '<span class="lafi flaticon-zip"></span>',
                         color: '#FBC02D',
+                        avatar: true,
                     },
                     {
                         type: 'video',
                         icon: '<span class="lafi flaticon-mp4"></span>',
                         color: '#f44336',
+                        avatar: true,
                     },
                     {
                         type: 'ai',
                         icon: '<span class="lafi flaticon-ai"></span>',
                         color: '#D9D7CA',
+                        avatar: true,
                     },
                     {
                         type: 'avi',
                         icon: '<span class="lafi flaticon-avi"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'css',
                         icon: '<span class="lafi flaticon-css"></span>',
                         color: '#0096E6',
+                        avatar: true,
                     },
                     {
                         type: 'csv',
                         icon: '<span class="lafi flaticon-csv"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'dbf',
                         icon: '<span class="lafi flaticon-dbf"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'doc',
                         icon: '<span class="lafi flaticon-doc"></span>',
                         color: '#8697CB',
+                        avatar: true,
                     },
                     {
                         type: 'html',
                         icon: '<span class="lafi flaticon-html"></span>',
                         color: '#EC6630',
+                        avatar: true,
                     },
                     {
                         type: 'flash',
                         icon: '<span class="lafi flaticon-flash"></span>',
                         color: '#7A2F32',
+                        avatar: true,
                     },
                     {
                         type: 'iso',
                         icon: '<span class="lafi flaticon-iso"></span>',
                         color: '#E9E9E0',
+                        avatar: true,
                     },
                     {
                         type: 'javascript',
                         icon: '<span class="lafi flaticon-javascript"></span>',
                         color: '#EEAF4B',
+                        avatar: true,
                     },
                     {
                         type: 'mp3',
                         icon: '<span class="lafi flaticon-mp3"></span>',
                         color: '#7D6599',
+                        avatar: true,
                     },
                     {
                         type: 'ppt',
                         icon: '<span class="lafi flaticon-ppt"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'psd',
                         icon: '<span class="lafi flaticon-psd"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'xls',
                         icon: '<span class="lafi flaticon-xls"></span>',
                         color: '#C8BDB8',
+                        avatar: true,
                     },
                     {
                         type: 'xml',
                         icon: '<span class="lafi flaticon-xml"></span>',
                         color: '#F29C1F',
+                        avatar: true,
                     },
                     {
                         type: 'image',
-                        icon: false
+                        icon: '<span class="lafi flaticon-jpg"></span>',
+                        avatar: false,
                     }
                 ].find( icon => 
                     icon.type == this.media.type
@@ -221,21 +235,61 @@ export default {
 </script>
 
 <style>
+#filecontainer .media-item  .card-inner {
+    border: 1px solid #e8eaed;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    position: relative;
+    width: 100%;
+}
+.media-item .fn {
+    height: 48px;
+    width: 100%;
+    border-radius: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.media-item .fn .fn-i {
+    display: flex;
+    padding: 5px;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    
+}
+.media-item .fn-i-i {
+    padding: 0px 10px;
+}
 
-.lafi.material-icons {
+.media-item .fn .fn-i-t {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+.media-item .fn-i-i span {
+    font-size: 16px;
+    vertical-align: middle;
+}
+.media-item .fn .fn-i-i [class^="flaticon-"]:before, .media-item .fn .fn-i-i  [class*=" flaticon-"]:before,
+.media-item .fn .fn-i-i [class^="flaticon-"]:after, .media-item .fn .fn-i-i  [class*=" flaticon-"]:after { 
+    font-size: 16px;
+    
+}
+
+.media-item .fi .lafi.material-icons {
     font-size: 90px;
 
 }
 
-[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after { 
+.media-item .fi [class^="flaticon-"]:before, .media-item .fi [class*=" flaticon-"]:before,
+.media-item .fi [class^="flaticon-"]:after, .media-item .fi [class*=" flaticon-"]:after { 
     font-size: 90px;
     margin: 0;
 }
-.filename {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+
     
 </style>
