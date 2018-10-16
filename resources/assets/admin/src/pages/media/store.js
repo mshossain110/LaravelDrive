@@ -4,7 +4,10 @@ export default {
   state: {
     mediaItems: [],
     folders: [],
-    pagination: {}
+    pagination: {},
+    fileInfoSideBar: false,
+    selectedMedia: {},
+    selectedFilesId: [],
   },
   getters: {
     mediaItems (state) {
@@ -13,6 +16,12 @@ export default {
     pagination (state) {
       return state.pagination
     },
+    fileInfoSideBar (state) {
+      return state.fileInfoSideBar
+    },
+    selectedMedia (state) {
+      return state.selectedMedia
+    }
     
   },
   mutations: {
@@ -27,6 +36,23 @@ export default {
     },
     addFolder (state, payload) {
       state.mediaItems.unshift(payload);
+    },
+    toggleSidebar (state, payload = null) {
+      if (payload !== null) {
+        state.fileInfoSideBar = payload;
+      } else {
+        state.fileInfoSideBar = !state.fileInfoSideBar
+      }
+    },
+    selectMediaItem (state, payload) {
+      state.selectedMedia = payload;
+    },
+    selectFiles (state, payload) {
+      if (payload.isMultiSelect) {
+        state.selectedFilesId.push(payload.id);
+      } else {
+        state.selectedFilesId = [payload.id];
+      }
     }
   },
   actions: {

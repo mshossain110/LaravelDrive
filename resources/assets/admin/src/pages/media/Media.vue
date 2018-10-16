@@ -4,109 +4,33 @@
     <v-layout class="d-block">
         
         <v-flex xs12>
-            <v-toolbar
-                flat
-                light
-                height="40px"
-                class="la-pt"
-                color="white">
-                
-                <v-toolbar-title>
-                    <v-icon>perm_media</v-icon>
-                    My Files
-                    <v-menu offset-y>
-                        <v-btn
-                            slot="activator"
-                            icon
-                            >
-                                <v-icon>arrow_drop_down</v-icon>
-                            </v-btn>
-
-                        <v-list>
-                            <v-list-tile @click="createFolder()">
-                                <v-list-tile-title>
-                                    <v-icon>create_new_folder</v-icon> 
-                                    New Folder
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list-tile class="la-upload">
-                                <v-list-tile-title>
-                                    <v-icon>create_new_folder</v-icon> 
-                                    Upload  Folder
-                                </v-list-tile-title>
-                            </v-list-tile>
-                            <v-list-tile class="la-upload">
-                                <v-list-tile-title>
-                                    <v-icon>add_photo_alternate</v-icon>
-                                    Upload  Files
-                                </v-list-tile-title>
-                            </v-list-tile>
-                        </v-list>
-                    </v-menu>
-                </v-toolbar-title>
-
-                <v-spacer />
-
-                <v-btn icon class="la-upload">
-                    <v-icon>add_photo_alternate</v-icon>
-                </v-btn>
-                <v-btn icon @click="createFolder()">
-                    <v-icon>create_new_folder</v-icon>
-                </v-btn>
-                <v-btn icon>
-                    <v-icon>view_module</v-icon>
-                </v-btn>
-                <v-btn icon>
-                    <v-icon>view_list</v-icon>
-                </v-btn>
-
-                <v-btn icon>
-                    <v-icon>filter_list</v-icon>
-                </v-btn>
-                <v-btn icon @click="drawer= !drawer">
-                    <v-icon>chevron_right</v-icon>
-                </v-btn>
-            </v-toolbar>
+            <media-toolbar />
         </v-flex>
     </v-layout>
 
     <v-layout fill-height
-            v-if="isLoaded"
-            style="display: block;"
-            @dragenter="activeDropzone($event)">
-            <v-layout row wrap id="filecontainer" >
-                
-                <v-flex
-                    v-for="img in mediaItems"
-                    :key="img.id"
-                    
-                    >
-                    <media-item :media="img"></media-item>
-                    </v-flex>
-            </v-layout>
-
-            <v-navigation-drawer
-                v-model="drawer"
-                absolute
-                hide-overlay
-                clipped
-                stateless
-                height
-                right
+        v-if="isLoaded"
+        @dragenter="activeDropzone($event)" 
+        :class="{'my-file': true, 'sidebar-open': fileInfoSideBar}">
+        <v-layout row wrap id="filecontainer">
+            <v-flex
+                v-for="img in mediaItems"
+                :key="img.id"
                 >
-                
+                    <media-item :media="img"></media-item>
+            </v-flex>
+        </v-layout>
 
-                here will be show image detals
-            </v-navigation-drawer>
+        <media-info v-if="fileInfoSideBar" />
 
-            <dropzone 
-                ref="myVueDropzone" 
-                id="laraveladmin"
-                @vdropzone-sending="dropzoneSending"
-                :options="dropzoneOptions" 
-                :style="dropzonestyle" 
-                @vdropzone-drop="deactiveDropzone" 
-                @vdropzone-drag-leave="deactiveDropzone"/>
+        <dropzone 
+            ref="myVueDropzone" 
+            id="laraveladmin"
+            @vdropzone-sending="dropzoneSending"
+            :options="dropzoneOptions" 
+            :style="dropzonestyle" 
+            @vdropzone-drop="deactiveDropzone" 
+            @vdropzone-drag-leave="deactiveDropzone"/>
     </v-layout>
 </v-layout>
 </template>
@@ -116,15 +40,19 @@
 import { mapState } from 'vuex';
 import Dropzone from '@ac/dropzone';
 import MediaItem from './mediaItem.vue';
+import MediaToolbar from './mediaToolbar.vue';
+import MediaInfo from './MediaInfo.vue';
+import Mixins from './mixin';
 
 export default {
     components: {
         Dropzone,
         MediaItem,
+        MediaToolbar,
+        MediaInfo
     },
     data () {
         return {
-            drawer: false,
             mediaareaStyle: {},
             newFolder: false,
             dropzoneOptions: {
@@ -156,20 +84,16 @@ export default {
                     </div>
                 `
             },
-            isfilesLoaded: false,
-            isfolderLoaded: false,
             dropzonestyle: {
                 display: 'none',
                 opacity: 0,
             }
         }
     },
+    mixins: [Mixins],
     created () {
         this.loadMediaItems();
-        this.$store.dispatch('Media/getFolders')
-            .then(() =>{
-                this.isfolderLoaded = true;
-            });
+        this.loadFolders();
     },
     mounted () {
 
@@ -189,7 +113,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'folders']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'folders', 'fileInfoSideBar']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded;
         },
@@ -227,27 +151,7 @@ export default {
                 opacity: 0,
             }
         },
-        createFolder () {
-            this.newFolder = true;
-        },
-        createNewFolder (media) {
-            const item = {
-                name: media.name,
-            }
-
-            this.$store.dispatch('Media/addFolder', item)
-                .then((res) => {
-                    this.newFolder = false;
-                })
-        },
-        loadMediaItems (params) {
-            params = params || {};
-            params.parent_id = typeof this.$route.params.folderId !== 'undefined' ?  this.$route.params.folderId: '';
-            this.$store.dispatch('Media/getMediaItems', params)
-            .then((res) => {
-                this.isfilesLoaded = true;
-            });
-        },
+        
         dropzoneSending (file, xhr, formData) {
             let path = file.fullPath;
             if ( typeof file.fullPath === 'undefined' ) {
@@ -289,6 +193,15 @@ div#laraveladmin {
 .la-pt .v-menu {
     margin-left: -14px;
 }
+.my-file {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+#filecontainer {
+    margin: 0;
+    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 #filecontainer .flex {
     width: calc(20% - 20px);
     margin-top: 16px;
@@ -297,5 +210,11 @@ div#laraveladmin {
     position: relative;
     vertical-align: top;
     max-width: 210px;
+}
+.sidebar-open #filecontainer {
+    margin-right: 300px;
+}
+.sidebar-open #filecontainer .flex {
+    width: calc(25% - 20px);
 }
 </style>

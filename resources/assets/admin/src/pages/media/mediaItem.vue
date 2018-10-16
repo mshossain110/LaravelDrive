@@ -1,10 +1,10 @@
 <template>
-    <div   flat class="media-item">
+    <div   flat class="media-item" @click="selectItem" :class="{ 'seleted': isSelected }">
         <div @click="clickde()" class="card-inner">
             <div class="la-file-name"  >
-                <div class="fi" :class="getMediaIcon.type" :style="{ color: getMediaIcon.color }">
-                    <div class="la-fia" v-if="getMediaIcon.avatar">
-                        <v-avatar   size="166" tile v-html="getMediaIcon.icon"></v-avatar>
+                <div class="fi" :class="mediaIcon.type" :style="{ color: mediaIcon.color }">
+                    <div class="la-fia" v-if="mediaIcon.avatar">
+                        <v-avatar   size="166" tile v-html="mediaIcon.icon"></v-avatar>
                     </div>
                     
                     <div v-else class="la-fii">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="fn">
                     <div class="fn-i">
-                        <span class="fn-i-i" :style="{ color: getMediaIcon.color }" size="15" tile v-html="getMediaIcon.icon">
+                        <span class="fn-i-i" :style="{ color: mediaIcon.color }" size="15" tile v-html="mediaIcon.icon">
                           </span>
                         <div class="fn-i-t">
                             <span class="filename" v-text="media.name" v-if="!media.edit"></span>
@@ -37,6 +37,11 @@
 
 
 <script>
+
+import Mixins from './mixin';
+import { mapState } from 'vuex';
+
+
 export default {
     props: {
         media: {
@@ -51,146 +56,17 @@ export default {
             submitting: false,
         }
     },
+    mixins: [Mixins],
     computed: {
-        getMediaIcon () {
-            return [
-                    {
-                        type: 'folder',
-                        icon: '<span class="lafi material-icons">folder</span>',
-                        color: "#fbc02d",
-                        avatar: true,
-                    },
-                    {
-                        type: 'text',
-                        icon: '<span class="lafi flaticon-txt"></span>',
-                        color: '#2196f3',
-                        avatar: true,
-                    },
-                    {
-                        type: 'audio',
-                        icon: '<span class="lafi flaticon-mp3"></span>',
-                        color: '#ff9800',
-                        avatar: true,
-                    },
-                    {
-                        type: 'pdf',
-                        icon: '<span class="lafi flaticon-pdf"></span>',
-                        color: '#f44336',
-                        avatar: true,
-                    },
-                    {
-                        type: 'archive',
-                        icon: '<span class="lafi flaticon-zip"></span>',
-                        color: '#FBC02D',
-                        avatar: true,
-                    },
-                    {
-                        type: 'video',
-                        icon: '<span class="lafi flaticon-mp4"></span>',
-                        color: '#f44336',
-                        avatar: true,
-                    },
-                    {
-                        type: 'ai',
-                        icon: '<span class="lafi flaticon-ai"></span>',
-                        color: '#D9D7CA',
-                        avatar: true,
-                    },
-                    {
-                        type: 'avi',
-                        icon: '<span class="lafi flaticon-avi"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'css',
-                        icon: '<span class="lafi flaticon-css"></span>',
-                        color: '#0096E6',
-                        avatar: true,
-                    },
-                    {
-                        type: 'csv',
-                        icon: '<span class="lafi flaticon-csv"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'dbf',
-                        icon: '<span class="lafi flaticon-dbf"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'doc',
-                        icon: '<span class="lafi flaticon-doc"></span>',
-                        color: '#8697CB',
-                        avatar: true,
-                    },
-                    {
-                        type: 'html',
-                        icon: '<span class="lafi flaticon-html"></span>',
-                        color: '#EC6630',
-                        avatar: true,
-                    },
-                    {
-                        type: 'flash',
-                        icon: '<span class="lafi flaticon-flash"></span>',
-                        color: '#7A2F32',
-                        avatar: true,
-                    },
-                    {
-                        type: 'iso',
-                        icon: '<span class="lafi flaticon-iso"></span>',
-                        color: '#E9E9E0',
-                        avatar: true,
-                    },
-                    {
-                        type: 'javascript',
-                        icon: '<span class="lafi flaticon-javascript"></span>',
-                        color: '#EEAF4B',
-                        avatar: true,
-                    },
-                    {
-                        type: 'mp3',
-                        icon: '<span class="lafi flaticon-mp3"></span>',
-                        color: '#7D6599',
-                        avatar: true,
-                    },
-                    {
-                        type: 'ppt',
-                        icon: '<span class="lafi flaticon-ppt"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'psd',
-                        icon: '<span class="lafi flaticon-psd"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'xls',
-                        icon: '<span class="lafi flaticon-xls"></span>',
-                        color: '#C8BDB8',
-                        avatar: true,
-                    },
-                    {
-                        type: 'xml',
-                        icon: '<span class="lafi flaticon-xml"></span>',
-                        color: '#F29C1F',
-                        avatar: true,
-                    },
-                    {
-                        type: 'image',
-                        icon: '<span class="lafi flaticon-jpg"></span>',
-                        avatar: false,
-                    }
-                ].find( icon => 
-                    icon.type == this.media.type
-                ) || {};
+        ...mapState('Media', ['selectedFilesId']),
+        mediaIcon () {
+            return this.getMediaIcon(this.media.type)
         },
         fileUrl () {
             return window.location.origin +'/'+ this.media.url;
+        },
+        isSelected () {
+            return this.selectedFilesId.findIndex(x => x == this.media.id) !== -1 ;
         }
     },
     methods: {
@@ -229,6 +105,12 @@ export default {
                     }
                 })
             }
+        },
+        selectItem (event) {
+            let isMultiSelect = event.ctrlKey || event.metaKey;
+            
+            this.$store.commit("Media/selectFiles", { isMultiSelect: isMultiSelect, id: this.media.id });
+            this.$store.commit("Media/selectMediaItem", this.media);
         }
     }
 }
@@ -243,6 +125,9 @@ export default {
     box-shadow: none;
     position: relative;
     width: 100%;
+}
+#filecontainer .media-item.seleted  .card-inner {
+    border: 1px solid #226cdb;
 }
 .media-item .fn {
     height: 48px;
@@ -277,6 +162,7 @@ export default {
 .media-item .fn .fn-i-i [class^="flaticon-"]:before, .media-item .fn .fn-i-i  [class*=" flaticon-"]:before,
 .media-item .fn .fn-i-i [class^="flaticon-"]:after, .media-item .fn .fn-i-i  [class*=" flaticon-"]:after { 
     font-size: 16px;
+    margin: 0;
     
 }
 
