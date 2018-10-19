@@ -6,6 +6,7 @@ export default {
     folders: [],
     pagination: {},
     fileInfoSideBar: false,
+    newFolderModal: false,
     selectedMedia: {},
     selectedFilesId: [],
   },
@@ -21,8 +22,7 @@ export default {
     },
     selectedMedia (state) {
       return state.selectedMedia
-    }
-    
+    },    
   },
   mutations: {
     setMediaItems (state, payload) {
@@ -36,6 +36,7 @@ export default {
     },
     addFolder (state, payload) {
       state.mediaItems.unshift(payload);
+      state.folders.unshift(payload)
     },
     toggleSidebar (state, payload = null) {
       if (payload !== null) {
@@ -53,6 +54,9 @@ export default {
       } else {
         state.selectedFilesId = [payload.id];
       }
+    },
+    newFolderModal (state, payload) {
+      state.newFolderModal = payload;
     }
   },
   actions: {

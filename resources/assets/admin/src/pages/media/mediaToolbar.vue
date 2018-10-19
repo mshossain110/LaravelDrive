@@ -19,7 +19,7 @@
                     </v-btn>
 
                 <v-list>
-                    <v-list-tile @click="createFolder()">
+                    <v-list-tile @click="openNewFolderModal()">
                         <v-list-tile-title>
                             <v-icon>create_new_folder</v-icon> 
                             New Folder
@@ -46,7 +46,7 @@
         <v-btn icon class="la-upload">
             <v-icon>add_photo_alternate</v-icon>
         </v-btn>
-        <v-btn icon @click="createFolder()">
+        <v-btn icon @click="openNewFolderModal()">
             <v-icon>create_new_folder</v-icon>
         </v-btn>
         <v-btn icon>

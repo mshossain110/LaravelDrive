@@ -129,6 +129,11 @@ export default {
 #filecontainer .media-item.seleted  .card-inner {
     border: 1px solid #226cdb;
 }
+#filecontainer .media-item .la-fia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .media-item .fn {
     height: 48px;
     width: 100%;

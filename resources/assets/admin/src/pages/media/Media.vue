@@ -32,6 +32,8 @@
             @vdropzone-drop="deactiveDropzone" 
             @vdropzone-drag-leave="deactiveDropzone"/>
     </v-layout>
+
+    <new-folder-form :open="newFolderModal" />
 </v-layout>
 </template>
 
@@ -43,18 +45,18 @@ import MediaItem from './mediaItem.vue';
 import MediaToolbar from './mediaToolbar.vue';
 import MediaInfo from './MediaInfo.vue';
 import Mixins from './mixin';
+import NewFolderForm from './NewFolderForm.vue';
 
 export default {
     components: {
         Dropzone,
         MediaItem,
         MediaToolbar,
-        MediaInfo
+        MediaInfo,
+        NewFolderForm
     },
     data () {
         return {
-            mediaareaStyle: {},
-            newFolder: false,
             dropzoneOptions: {
                 url: '/api/file',
                 thumbnailWidth: 200,
@@ -95,17 +97,7 @@ export default {
         this.loadMediaItems();
         this.loadFolders();
     },
-    mounted () {
-
-    },
     watch : {
-        drawer (newvalue) {
-            if (newvalue) {
-                this.mediaareaStyle = { padding: '40px 0px 0px 300px;' };
-            } else {
-                this.mediaareaStyle = {}
-            }
-        },
         '$route' (to, from) {
             this.loadMediaItems({
                 parent_id: to.params.folderId,
@@ -113,26 +105,10 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'folders', 'fileInfoSideBar']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded;
         },
-        currentFolder () {
-            const hash = this.$route.params.folderId;
-            const i = this.folders.findIndex(m => m.hash === hash);
-            if ( -1 === i) {
-                return false;
-            }else {
-                return this.folders[i];
-            }
-        },
-        currentFolderId () {
-            if (this.currentFolder) {
-                return this.currentFolder.id;
-            }else {
-                return 0
-            }
-        }
     },
     methods: {
         activeDropzone (event) {

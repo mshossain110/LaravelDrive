@@ -1,3 +1,5 @@
+import { mapState } from 'vuex';
+
 export default {
     data () {
         return {
@@ -7,22 +9,25 @@ export default {
         }
     },
     computed: {
-        
+        ...mapState('Media', ['mediaItems', 'pagination', 'folders', 'fileInfoSideBar']),
+        currentFolder () {
+            const hash = this.$route.params.folderId;
+            const i = this.folders.findIndex(m => m.hash === hash);
+            if ( -1 === i) {
+                return false;
+            }else {
+                return this.folders[i];
+            }
+        },
+        currentFolderId () {
+            if (this.currentFolder) {
+                return this.currentFolder.id;
+            }else {
+                return 0
+            }
+        }
     },
     methods: {
-        createFolder () {
-            this.newFolder = true;
-        },
-        createNewFolder (media) {
-            const item = {
-                name: media.name,
-            }
-
-            this.$store.dispatch('Media/addFolder', item)
-                .then(() => {
-                    this.newFolder = false;
-                })
-        },
         loadMediaItems (params) {
             params = params || {};
             params.parent_id = typeof this.$route.params.folderId !== 'undefined' ?  this.$route.params.folderId: '';
@@ -39,6 +44,9 @@ export default {
             .then(() =>{
                 this.isfolderLoaded = true;
             });
+        },
+        openNewFolderModal () {
+            this.$store.commit('Media/newFolderModal', true);
         },
         getMediaIcon (type) {
 

@@ -36,8 +36,9 @@ class FolderController extends ApiController
     public function store( FolderRequest $request){
         $validated = $request->validated();
 
-        $data           = $request->only(['name', 'description', 'parent_id']);
+        $data              = $request->only(['name', 'description', 'parent_id']);
         $data['parent_id'] = isset($data['parent_id']) ? intval($data['parent_id']): 0;
+        $data['file_name'] = str_random(40);
 
         
         $folder = $this->folder->store($data);
