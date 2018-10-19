@@ -1,5 +1,5 @@
 <template>
-    <div   flat class="media-item" @click="selectItem" :class="{ 'seleted': isSelected }">
+    <div class="media-item" @click="selectItem" :class="{ 'seleted': isSelected }" :click-outside="unselect" >
         <div @click="clickde()" class="card-inner">
             <div class="la-file-name"  >
                 <div class="fi" :class="mediaIcon.type" :style="{ color: mediaIcon.color }">
@@ -31,7 +31,7 @@
             </div>
            
         </div>
-
+    
     </div>
 </template>
 
@@ -111,6 +111,10 @@ export default {
             
             this.$store.commit("Media/selectFiles", { isMultiSelect: isMultiSelect, id: this.media.id });
             this.$store.commit("Media/selectMediaItem", this.media);
+        },
+        unselect () {
+            this.$store.commit("Media/selectFiles", {  });
+            this.$store.commit("Media/selectMediaItem", {});
         }
     }
 }

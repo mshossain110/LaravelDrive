@@ -10,11 +10,13 @@
 
     <v-layout fill-height
         v-if="isLoaded"
-        @dragenter="activeDropzone($event)" 
+        @dragenter="activeDropzone($event)"
+        @contextmenu="showContextMenu"
         :class="{'my-file': true, 'sidebar-open': fileInfoSideBar}">
         <v-layout row wrap id="filecontainer">
             <v-flex
                 v-for="img in mediaItems"
+                @contextmenu="showContextMenu2($event, img)"
                 :key="img.id"
                 >
                     <media-item :media="img"></media-item>
@@ -31,6 +33,9 @@
             :style="dropzonestyle" 
             @vdropzone-drop="deactiveDropzone" 
             @vdropzone-drag-leave="deactiveDropzone"/>
+
+        <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
+        <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" :file="cm.file" />
     </v-layout>
 
     <new-folder-form :open="newFolderModal" />
@@ -46,6 +51,7 @@ import MediaToolbar from './mediaToolbar.vue';
 import MediaInfo from './MediaInfo.vue';
 import Mixins from './mixin';
 import NewFolderForm from './NewFolderForm.vue';
+import ContextMenu from './ContextMenu.vue'
 
 export default {
     components: {
@@ -53,10 +59,14 @@ export default {
         MediaItem,
         MediaToolbar,
         MediaInfo,
-        NewFolderForm
+        NewFolderForm,
+        ContextMenu
     },
     data () {
         return {
+            cm: {},
+            cm2: {},
+            fileCm: false,
             dropzoneOptions: {
                 url: '/api/file',
                 thumbnailWidth: 200,
@@ -135,6 +145,37 @@ export default {
             }
             formData.append('path', '/' + path);
             formData.append('parent_id', this.currentFolderId);
+        },
+        showContextMenu (e, item) {
+            // console.log("main");
+            // return;
+            if (this.fileCm) {
+                this.fileCm = false;
+                return;
+            }
+            e.preventDefault();
+                // this.cm2.show = false;      
+            this.cm = {
+                    show: true,
+                    x: e.clientX,
+                    y: e.clientY,
+                    file: item,
+                } 
+        },
+        showContextMenu2 (e, item) {
+            // console.log("file")
+            // // return;
+            e.preventDefault();
+            this.fileCm = true;
+            // this.cm = {
+            //         show: false,
+            //     }
+                this.cm = {
+                    show: true,
+                    x: e.clientX,
+                    y: e.clientY,
+                    file: item,
+                }        
         }
     }
 }

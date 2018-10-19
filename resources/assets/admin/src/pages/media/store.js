@@ -9,6 +9,9 @@ export default {
     newFolderModal: false,
     selectedMedia: {},
     selectedFilesId: [],
+    contextMenu: {
+      show: false, x: 0, y: 0
+    }
   },
   getters: {
     mediaItems (state) {
@@ -57,6 +60,9 @@ export default {
     },
     newFolderModal (state, payload) {
       state.newFolderModal = payload;
+    },
+    contextMenu (state, payload) {
+      state.contextMenu = payload;
     }
   },
   actions: {
