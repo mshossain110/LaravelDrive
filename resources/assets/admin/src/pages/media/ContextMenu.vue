@@ -11,7 +11,7 @@
           v-for="(item, index) in items"
           :key="index"
           ripple
-          @click.prevent="item.action"
+          @click="item.action"
         >
             <v-list-tile-action v-if="item.icon">
                 <v-icon>{{ item.icon }}</v-icon>
@@ -134,19 +134,24 @@ export default {
                     {
                         title: "Upload files",
                         icon: 'cloud_upload',
-                        action: ''
+                        action: this.openDropZone
                     },
                     {
                         title: "Upload Folder",
                         icon: 'folder_open',
-                        action: ''
+                        action: this.uploadFolder
                     }
                 ]
             }
         }
     },
     methods: {
-        
+        openDropZone () {
+            Bus.$emit('openDropZone')
+        },
+        uploadFolder () {
+            Bus.$emit('uploadFolder')
+        }
     }
 }
 </script>

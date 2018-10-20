@@ -29,7 +29,7 @@
             ref="myVueDropzone" 
             id="laraveladmin"
             @vdropzone-sending="dropzoneSending"
-            :options="dropzoneOptions" 
+            :options="dropZoneOptions" 
             :style="dropzonestyle" 
             @vdropzone-drop="deactiveDropzone" 
             @vdropzone-drag-leave="deactiveDropzone"/>
@@ -67,11 +67,43 @@ export default {
             cm: {},
             cm2: {},
             fileCm: false,
-            dropzoneOptions: {
+            dropzonestyle: {
+                display: 'none',
+                opacity: 0,
+            }
+        }
+    },
+    mixins: [Mixins],
+    created () {
+        this.loadMediaItems();
+        this.loadFolders();
+        
+    },
+    mounted () {
+        Bus.$on('openDropZone', ()=> {
+            this.openUploader();
+        });
+        Bus.$on('uploadFolder', ()=> {
+            this.uploadFolder();
+        });
+    },
+    watch : {
+        '$route' (to, from) {
+            this.loadMediaItems({
+                parent_id: to.params.folderId,
+            });
+        }
+    },
+    computed: {
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal']),
+        isLoaded () {
+            return this.isfilesLoaded && this.isfolderLoaded;
+        },
+        dropZoneOptions () {
+            return {
                 url: '/api/file',
                 thumbnailWidth: 200,
                 parallelUploads: 1,
-                clickable: [".la-upload"],
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
@@ -94,31 +126,9 @@ export default {
                         <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
                     </div>
                     </div>
-                `
-            },
-            dropzonestyle: {
-                display: 'none',
-                opacity: 0,
+                `,
             }
         }
-    },
-    mixins: [Mixins],
-    created () {
-        this.loadMediaItems();
-        this.loadFolders();
-    },
-    watch : {
-        '$route' (to, from) {
-            this.loadMediaItems({
-                parent_id: to.params.folderId,
-            });
-        }
-    },
-    computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal']),
-        isLoaded () {
-            return this.isfilesLoaded && this.isfolderLoaded;
-        },
     },
     methods: {
         activeDropzone (event) {
@@ -139,22 +149,21 @@ export default {
         },
         
         dropzoneSending (file, xhr, formData) {
-            let path = file.fullPath;
-            if ( typeof file.fullPath === 'undefined' ) {
+            let path = file.fullPath || file.webkitRelativePath || file.mozRelativePath;
+            if ( typeof path === 'undefined' ) {
                 path = file.name;
             }
             formData.append('path', '/' + path);
             formData.append('parent_id', this.currentFolderId);
         },
         showContextMenu (e, item) {
-            // console.log("main");
-            // return;
+            e.preventDefault();     
+            
             if (this.fileCm) {
                 this.fileCm = false;
                 return;
             }
-            e.preventDefault();
-                // this.cm2.show = false;      
+
             this.cm = {
                     show: true,
                     x: e.clientX,
@@ -163,19 +172,27 @@ export default {
                 } 
         },
         showContextMenu2 (e, item) {
-            // console.log("file")
-            // // return;
             e.preventDefault();
             this.fileCm = true;
-            // this.cm = {
-            //         show: false,
-            //     }
-                this.cm = {
-                    show: true,
-                    x: e.clientX,
-                    y: e.clientY,
-                    file: item,
-                }        
+            this.cm = {
+                show: true,
+                x: e.clientX,
+                y: e.clientY,
+                file: item,
+            }        
+        },
+        openUploader () {
+            this.$refs.myVueDropzone.dropzone.init();
+            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click();
+        },
+        uploadFolder () {
+            this.$refs.myVueDropzone.dropzone.init();
+            let input = this.$refs.myVueDropzone.dropzone.hiddenFileInput;
+            input.setAttribute("type", "file");
+            input.setAttribute("webkitDirectory", true);
+            input.setAttribute("mozDirectory", true);
+            input.setAttribute("directory", true);
+            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click();
         }
     }
 }

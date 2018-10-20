@@ -54,6 +54,8 @@ Vue.use(VueRouter);
 
 Vue.mixin(mixin);
 
+window.Bus = new Vue();
+
 new Vue({
     el: '#root',
     store,

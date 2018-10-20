@@ -25,13 +25,13 @@
                             New Folder
                         </v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile class="la-upload">
+                    <v-list-tile @click="uploadFolder">
                         <v-list-tile-title>
                             <v-icon>create_new_folder</v-icon> 
                             Upload  Folder
                         </v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile class="la-upload">
+                    <v-list-tile @click="openDropZone">
                         <v-list-tile-title>
                             <v-icon>add_photo_alternate</v-icon>
                             Upload  Files
@@ -43,7 +43,7 @@
 
         <v-spacer />
 
-        <v-btn icon class="la-upload">
+        <v-btn icon @click="openDropZone()">
             <v-icon>add_photo_alternate</v-icon>
         </v-btn>
         <v-btn icon @click="openNewFolderModal()">
@@ -81,7 +81,12 @@ export default {
         ...mapState('Media', ['fileInfoSideBar']),
     },
     methods: {
-        
+        openDropZone () {
+            Bus.$emit('openDropZone')
+        },
+        uploadFolder () {
+            Bus.$emit('uploadFolder')
+        }
     }
 }
 </script>
