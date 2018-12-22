@@ -19,12 +19,21 @@
         </v-card-title>
        
 
-        <v-card-text class="recursive-folder">
-            
-                
-            <ul class="recursive-folder-ul ">
-                <recursive-folder v-for="folder in getNestedFolders" :key="folder.id"  :folder="folder"></recursive-folder>
-            </ul>   
+        <v-card-text class="recursive-folder">                
+           <v-treeview
+            v-model="moveid"
+            :items="getNestedFolders"
+            activatable
+            active-class="grey lighten-4 indigo--text"
+            selected-color="indigo"
+            open-on-click
+            selectable
+            expand-icon="mdi-chevron-down"
+            on-icon="mdi-bookmark"
+            off-icon="mdi-bookmark-outline"
+            indeterminate-icon="mdi-bookmark-minus"
+          >
+          </v-treeview> 
             
         </v-card-text>
 
@@ -56,8 +65,10 @@ export default {
     },
     data () {
         return {
+            active: [],
             name: '',
             open: false,
+            moveid: 0,
         }
     },
     mixins: [Mixin],
@@ -99,15 +110,4 @@ export default {
     border-top: 1px solid #ddd;
 }
 
-.recursive-folder ul {
-    list-style: none;
-    display: block;
-    padding: 0;
-    margin: 0;
-}
-.recursive-folder ul li {
-    list-style: none;
-    padding: 2px 0px;
-    margin: 0px;
-}
 </style>
