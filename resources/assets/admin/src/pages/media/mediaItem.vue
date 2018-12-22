@@ -1,6 +1,6 @@
 <template>
-    <div class="media-item" @click="selectItem" :class="{ 'seleted': isSelected }" :click-outside="unselect" >
-        <div @click="clickde()" class="card-inner">
+    <div class="media-item" :class="{ 'seleted': isSelected }"  >
+        <div class="card-inner">
             <div class="la-file-name"  >
                 <div class="fi" :class="mediaIcon.type" :style="{ color: mediaIcon.color }">
                     <div class="la-fia" v-if="mediaIcon.avatar">
@@ -56,7 +56,7 @@ export default {
             submitting: false,
         }
     },
-    mixins: [Mixins],
+    mixins: [Mixins],   
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         mediaIcon () {
@@ -94,28 +94,8 @@ export default {
 
             this.$emit('rename', this.media)
 
-        },
-        clickde () {
-            
-            if (this.media.type == 'folder') {
-                this.$router.push({
-                    name: 'singleFolder',
-                    params: {
-                        folderId: this.media.hash
-                    }
-                })
-            }
-        },
-        selectItem (event) {
-            let isMultiSelect = event.ctrlKey || event.metaKey;
-            
-            this.$store.commit("Media/selectFiles", { isMultiSelect: isMultiSelect, id: this.media.id });
-            this.$store.commit("Media/selectMediaItem", this.media);
-        },
-        unselect () {
-            this.$store.commit("Media/selectFiles", {  });
-            this.$store.commit("Media/selectMediaItem", {});
         }
+
     }
 }
 </script>

@@ -1,4 +1,22 @@
 
+function getNestedFolders(arr, parent=0) {
+  let out = [];
+  arr = arr || [];
+  arr.forEach((e, i)=> {
+      if (e.parent_id == parent) {
+          let children = getNestedFolders(arr.slice(i+1), e.id);
+
+          if (children.length) {
+              e.children = children
+          } else {
+            e.children = [];
+          }
+          out.push(e);
+      }
+  });
+  return out;
+}
+
 export default {
   namespaced: true,
   state: {
@@ -25,7 +43,10 @@ export default {
     },
     selectedMedia (state) {
       return state.selectedMedia
-    },    
+    },
+    getNestedFolders (state) {
+      return getNestedFolders(state.folders.slice(), 0);
+    }
   },
   mutations: {
     setMediaItems (state, payload) {
@@ -57,6 +78,10 @@ export default {
       } else {
         state.selectedFilesId = [payload.id];
       }
+    },
+    deselectFile (state) {
+      state.selectedFilesId = [];
+      state.selectedMedia = {};
     },
     newFolderModal (state, payload) {
       state.newFolderModal = payload;

@@ -36,7 +36,7 @@ class FolderRepository
     public function getList()
     {
         return $this->model
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'ASC')
             ->get();
     }
 

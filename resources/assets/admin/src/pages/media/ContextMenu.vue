@@ -101,7 +101,7 @@ export default {
                     {
                         title: "Move to",
                         icon: 'call_missed_outgoing',
-                        action: ''
+                        action: this.moveTo
                     },
                     {
                         title: "Rename",
@@ -151,6 +151,9 @@ export default {
         },
         uploadFolder () {
             Bus.$emit('uploadFolder')
+        },
+        moveTo () {
+             Bus.$emit('moveTo', true );
         }
     }
 }

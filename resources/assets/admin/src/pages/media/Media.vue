@@ -17,6 +17,7 @@
             <v-flex
                 v-for="img in mediaItems"
                 @contextmenu="showContextMenu2($event, img)"
+                @click="OnClickItem($event, img)" 
                 :key="img.id"
                 >
                     <media-item :media="img"></media-item>
@@ -36,9 +37,11 @@
 
         <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
         <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" :file="cm.file" />
+        
     </v-layout>
 
     <new-folder-form :open="newFolderModal" />
+    <move-to  />
 </v-layout>
 </template>
 
@@ -52,6 +55,7 @@ import MediaInfo from './MediaInfo.vue';
 import Mixins from './mixin';
 import NewFolderForm from './NewFolderForm.vue';
 import ContextMenu from './ContextMenu.vue'
+import MoveTo from './MoveTo.vue'
 
 export default {
     components: {
@@ -60,13 +64,15 @@ export default {
         MediaToolbar,
         MediaInfo,
         NewFolderForm,
-        ContextMenu
+        ContextMenu,
+        MoveTo
     },
     data () {
         return {
             cm: {},
             cm2: {},
             fileCm: false,
+            clickedOnItem: false,
             dropzonestyle: {
                 display: 'none',
                 opacity: 0,
@@ -86,7 +92,12 @@ export default {
         Bus.$on('uploadFolder', ()=> {
             this.uploadFolder();
         });
+        document.addEventListener('click', ()=>{
+            this.deselect()
+        });
     },
+
+
     watch : {
         '$route' (to, from) {
             this.loadMediaItems({
@@ -179,7 +190,8 @@ export default {
                 x: e.clientX,
                 y: e.clientY,
                 file: item,
-            }        
+            }
+            this.OnClickItem(e, item);      
         },
         openUploader () {
             this.$refs.myVueDropzone.dropzone.init();
@@ -193,6 +205,30 @@ export default {
             input.setAttribute("mozDirectory", true);
             input.setAttribute("directory", true);
             this.$refs.myVueDropzone.dropzone.hiddenFileInput.click();
+        },
+        OnClickItem (event, item) {
+            this.clickedOnItem = true;
+            let isMultiSelect = event.ctrlKey || event.metaKey;
+
+            if (!isMultiSelect && item.type == 'folder') {
+                this.$router.push({
+                    name: 'singleFolder',
+                    params: {
+                        folderId: item.hash
+                    }
+                })
+            }
+            
+            this.$store.commit("Media/selectFiles", { isMultiSelect: isMultiSelect, id: item.id });
+            this.$store.commit("Media/selectMediaItem", item);
+        },
+        deselect () {
+            if (this.clickedOnItem) {
+                this.clickedOnItem = false;
+                return;
+            }
+
+            this.$store.commit("Media/deselectFile");
         }
     }
 }
