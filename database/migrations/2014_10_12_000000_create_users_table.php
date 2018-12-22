@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('permissions')->nullable();
             $table->string('avatar')->nullable();
             $table->integer('status')->default(0);
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('last_loged_in')->useCurrent();
             $table->ipAddress('ip')->nullable();;
             $table->rememberToken();

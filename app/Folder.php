@@ -49,6 +49,7 @@ class Folder extends Model
      */
     public static function boot()
     {
+        parent::boot();
         Folder::observe(FolderObserver::class);
     }
     /**
