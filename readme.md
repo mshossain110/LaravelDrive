@@ -35,6 +35,19 @@ Laravel Drive allows you to create your own fully-featured, self-hosted file sha
  - PHP >= 7.0.0
  - Laravel >= 5.5.0
  - Fileinfo PHP Extension
+ 
+## How to install
+-------------
+1. Clone the repo  ```git clone https://github.com/mshossain110/LaravelDrive.git```
+2. Move Directory ```cd LarvelDrive```
+3. Install composer ```composer install```
+4. Copy .env file ```cp .env.example .env```
+5. Generate key ```php artisan key:generate```
+6. Create database and edit ```.env``` file to add database, MAIL_DRIVER
+7. Install Passport ```php artisan passport:install```
+8. Migrate database ```php artisan migrate```
+9. Install npm ```npm i```
+10. Watch file ```npm run watch```
 
 ## License
 ------------
