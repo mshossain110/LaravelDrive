@@ -68,7 +68,7 @@ export default {
             active: [],
             name: '',
             open: false,
-            moveid: 0,
+            moveid: [],
         }
     },
     mixins: [Mixin],
