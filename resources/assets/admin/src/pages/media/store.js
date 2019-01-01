@@ -88,6 +88,20 @@ export default {
     },
     contextMenu (state, payload) {
       state.contextMenu = payload;
+    },
+    addStar (state, ids) {
+      state.mediaItems.map(item => {
+        if (ids.findIndex(id => id == item.id) !== -1) {
+          item.stared = true;
+        }
+      })
+    },
+    removeStart (state, ids) {
+      state.mediaItems.map(item => {
+        if (ids.findIndex(id => id == item.id) !== -1) {
+          item.stared = false;
+        }
+      })
     }
   },
   actions: {
@@ -129,6 +143,30 @@ export default {
         axios.post('/api/folder', params)
           .then((res) => {
             commit('addFolder', res.data.data)
+            resolve(res.data)
+          })
+          .catch((error) => {
+            reject(error.response)
+          })
+      })
+    },
+    addStar ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        axios.post('/api/tag/star', params)
+          .then((res) => {
+            commit('addStar', params.ids)
+            resolve(res.data)
+          })
+          .catch((error) => {
+            reject(error.response)
+          })
+      })
+    },
+    removeStar ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        axios.post('/api/tag/unstar', params)
+          .then((res) => {
+            commit('removeStart', params.ids)
             resolve(res.data)
           })
           .catch((error) => {

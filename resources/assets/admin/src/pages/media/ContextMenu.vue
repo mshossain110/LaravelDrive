@@ -75,7 +75,9 @@ export default {
         }
     },
     computed: {
+        ...mapState('Media', ['selectedFilesId']),
         items () {
+            console.log(this.file);
             if (this.file.hasOwnProperty('id')) {
                 return [
                     {
@@ -94,9 +96,9 @@ export default {
                         action: ''
                     },
                     {
-                        title: "Add a star",
+                        title: this.file.stared ? "Removed from star" : "Add a star",
                         icon: 'grade',
-                        action: ''
+                        action: this.manageStar
                     },
                     {
                         title: "Move to",
@@ -153,7 +155,15 @@ export default {
             Bus.$emit('uploadFolder')
         },
         moveTo () {
-             Bus.$emit('moveTo', true );
+            Bus.$emit('moveTo', true );
+        },
+        manageStar () {
+            if (this.file.hasOwnProperty('id') && !this.file.stared){
+                this.$store.dispatch('Media/addStar', {ids: this.selectedFilesId});
+            } else {
+                this.$store.dispatch('Media/removeStar', {ids: this.selectedFilesId});
+            }
+            
         }
     }
 }

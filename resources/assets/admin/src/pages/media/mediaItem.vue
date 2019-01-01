@@ -18,6 +18,7 @@
                     
 
                 </div>
+                
                 <div class="fn">
                     <div class="fn-i">
                         <span class="fn-i-i" :style="{ color: mediaIcon.color }" size="15" tile v-html="mediaIcon.icon">
@@ -28,6 +29,8 @@
                     </div>
                     
                 </div>
+                
+                <span class="fstared material-icons" v-if="media.stared"  size="15" tile>stars</span>
             </div>
            
         </div>
@@ -164,6 +167,13 @@ export default {
 .media-item .fi [class^="flaticon-"]:after, .media-item .fi [class*=" flaticon-"]:after { 
     font-size: 90px;
     margin: 0;
+}
+
+.media-item span.fstared {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    color: #d4a002;
 }
 
     

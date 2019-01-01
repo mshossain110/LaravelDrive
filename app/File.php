@@ -114,4 +114,17 @@ class File extends Model
         return $this->name;
     }
 
+    /**
+     * Get all of the tags for the post.
+     */
+    public function tags()
+    {
+        return $this->morphToMany('App\Tag', 'taggable');
+    }
+
+    public function getStaredAttribute()
+    {
+        return $this->tags()->where('name', 'starred')->exists();
+    }
+
 }

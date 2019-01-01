@@ -25,6 +25,7 @@ class FileTransformer extends TransformerAbstract {
 			'file_size'   => $file->file_size,
 			'hash'	      => $file->hash,
 			'url'         => $file->url,
+			'stared'	  => $file->stared,
 			'file_name'   => $file->file_name,
 			'parent_id'   => $file->parent_id,
 			'created_at'  => $file->created_at,
