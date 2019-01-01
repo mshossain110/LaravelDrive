@@ -77,7 +77,7 @@ export default {
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         items () {
-            console.log(this.file);
+
             if (this.file.hasOwnProperty('id')) {
                 return [
                     {
@@ -163,7 +163,7 @@ export default {
             } else {
                 this.$store.dispatch('Media/removeStar', {ids: this.selectedFilesId});
             }
-            
+
         }
     }
 }

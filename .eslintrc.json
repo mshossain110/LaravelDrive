@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "parser": "babel-eslint",
+        "sourceType": "module"
+    },
+    "extends": [
+        "standard",
+        "plugin:vue/recommended"
+    ],
+    "globals": {
+        "axios": true,
+        "Vue": true
+    },
+    "rules": {
+        "indent": ["error", 4],
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "warn",
+        "no-unreachable": "warn",
+        "no-unused-vars": "warn",
+        "constructor-super": "warn",
+        "valid-typeof": "warn"
+    }
+}

@@ -82,7 +82,7 @@ export default {
     computed: {
         ...mapState('Media', ['folders']),
         ...mapGetters( 'Media', ['getNestedFolders'] )
-        
+
     },
     methods: {
         onSubmit () {
@@ -96,10 +96,10 @@ export default {
                 .then(() => {
                     this.open = false
                 })
-            
+
         },
         nestedView () {
-            return 
+            return
         }
     }
 }

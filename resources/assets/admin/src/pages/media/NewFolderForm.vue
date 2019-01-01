@@ -70,7 +70,7 @@ export default {
     },
     mixins: [Mixin],
     computed: {
-        
+
     },
     methods: {
         onSubmit () {
@@ -84,7 +84,7 @@ export default {
                 .then(() => {
                     this.close()
                 })
-            
+
         },
         close () {
             this.$store.commit('Media/newFolderModal', false);

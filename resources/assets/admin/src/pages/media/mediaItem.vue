@@ -44,7 +44,6 @@
 import Mixins from './mixin';
 import { mapState } from 'vuex';
 
-
 export default {
     props: {
         media: {
@@ -59,7 +58,7 @@ export default {
             submitting: false,
         }
     },
-    mixins: [Mixins],   
+    mixins: [Mixins],
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         mediaIcon () {
@@ -74,7 +73,7 @@ export default {
     },
     methods: {
         renameMedia () {
-            
+
             if (this.submitting) {
                 return;
             }

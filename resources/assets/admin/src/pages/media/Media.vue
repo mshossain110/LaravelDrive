@@ -83,7 +83,7 @@ export default {
     created () {
         this.loadMediaItems();
         this.loadFolders();
-        
+
     },
     mounted () {
         Bus.$on('openDropZone', ()=> {
@@ -96,7 +96,6 @@ export default {
             this.deselect()
         });
     },
-
 
     watch : {
         '$route' (to, from) {
@@ -158,7 +157,7 @@ export default {
                 opacity: 0,
             }
         },
-        
+
         dropzoneSending (file, xhr, formData) {
             let path = file.fullPath || file.webkitRelativePath || file.mozRelativePath;
             if ( typeof path === 'undefined' ) {
@@ -168,8 +167,8 @@ export default {
             formData.append('parent_id', this.currentFolderId);
         },
         showContextMenu (e, item) {
-            e.preventDefault();     
-            
+            e.preventDefault();
+
             if (this.fileCm) {
                 this.fileCm = false;
                 return;
@@ -180,7 +179,7 @@ export default {
                     x: e.clientX,
                     y: e.clientY,
                     file: item,
-                } 
+                }
         },
         showContextMenu2 (e, item) {
             e.preventDefault();
@@ -191,7 +190,7 @@ export default {
                 y: e.clientY,
                 file: item,
             }
-            this.OnClickItem(e, item);      
+            this.OnClickItem(e, item);
         },
         openUploader () {
             this.$refs.myVueDropzone.dropzone.init();
@@ -218,7 +217,7 @@ export default {
                     }
                 })
             }
-            
+
             this.$store.commit("Media/selectFiles", { isMultiSelect: isMultiSelect, id: item.id });
             this.$store.commit("Media/selectMediaItem", item);
         },
