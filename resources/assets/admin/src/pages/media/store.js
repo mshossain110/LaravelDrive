@@ -112,6 +112,14 @@ export default {
             if (i !== -1) {
                 state.mediaItems[i] = payload
             }
+        },
+        deleteItem (state, payload) {
+            payload.ids.map(id => {
+                let i = state.mediaItems.findIndex(item => item.id === id)
+                if (i !== -1) {
+                    state.mediaItems.splice(i, 1)
+                }
+            })
         }
     },
     actions: {
@@ -150,9 +158,14 @@ export default {
         },
         deleteItem ({ commit }, params) {
             return new Promise((resolve, reject) => {
-                axios.delete(`/api/file/${params.id}`, { params })
+                console.log(params)
+                axios.delete(`/api/file/delete`, { params })
                     .then((res) => {
-                        console.log(res.data)
+                        commit('deleteItem', params)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        reject(error.response)
                     })
             })
         },

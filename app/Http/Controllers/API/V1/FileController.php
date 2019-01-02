@@ -83,5 +83,18 @@ class FileController extends ApiController
 
         return $this->respondWithMessage("file deleted successfully.");
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAll ( Request $request ) {
+        $ids = $request->get('ids');
+        $this->file->deleteMultiple($ids);
+
+        return $this->respondWithMessage("file deleted successfully.");
+    }
     
 }

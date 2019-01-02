@@ -25,6 +25,7 @@ Route::group([
     Route::get('permissions', 'RoleController@getAbilities');
 
     Route::resource('folder', 'FolderController');
+    Route::delete('file/delete', 'FileController@destroyAll');
     Route::resource('file', 'FileController');
 
     Route::post('tag/star', 'StarredController@add');

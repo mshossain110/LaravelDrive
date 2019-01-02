@@ -168,19 +168,17 @@ class FileRepository
 
 
     /**
-     * Delete multiple users.
+     * Delete multiple files.
      *
      * @param array $ids
      * @return bool|null
      */
     public function deleteMultiple($ids)
     {
-        foreach ($ids as $id) {
-            $user = $this->user->find($id);
-            if (is_null($user)) continue;
-
-            $user->roles()->detach();
-            $user->delete();
+        if (is_array($ids)) {
+            $this->model->whereIn('id', $ids)->delete();
+        } else {
+            $this->model->where('id', $ids)->delete();
         }
 
         return $ids;

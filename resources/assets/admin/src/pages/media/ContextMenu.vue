@@ -123,7 +123,7 @@ export default {
                     {
                         title: "Delete",
                         icon: 'delete',
-                        action: ''
+                        action: this.deleteItems
                     }
                 ]
             } else {
@@ -167,6 +167,10 @@ export default {
         },
         openRenameModel () {
             this.$store.commit("Media/renamefilemodal", true);
+        },
+
+        deleteItems () {
+            this.$store.dispatch('Media/deleteItem', {ids: this.selectedFilesId});
         }
     }
 }

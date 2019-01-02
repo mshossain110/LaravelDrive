@@ -10,7 +10,7 @@ use App\Traits\HashesId;
 
 class File extends Model
 {
-    use HandlesPaths, HashesId;
+    use HandlesPaths, HashesId, SoftDeletes;
     
     protected $fillable = [
         'name',

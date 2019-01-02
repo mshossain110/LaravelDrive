@@ -30,9 +30,9 @@ class FileRequest extends FormRequest
             'description' => "string|min:2|max:255|nullable",
         ];
 
-        if ($this->method() === 'POST') {
-            $rules['name']    = 'required|'.$rules['name'];
-        }
+        // if ($this->method() === 'POST') {
+        //     $rules['name']    = 'required|'.$rules['name'];
+        // }
 
         return $rules;
     }
