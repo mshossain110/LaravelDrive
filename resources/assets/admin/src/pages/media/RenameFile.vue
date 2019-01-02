@@ -10,14 +10,14 @@
         <v-card-title
           class="headline grey lighten-2"
         >
-          New Folder
+          Rename File
         </v-card-title>
 
         <v-card-text>
           
                 <v-text-field
                 v-validate="'required'"
-                v-model="name"
+                v-model="selectedMedia.name"
                 :error-messages="errors.collect('name')"
                 label="Name"
                 data-vv-name="name"
@@ -34,7 +34,7 @@
             type="submit"
             flat
           >
-            Craete
+            Rename
           </v-btn>
           <v-btn
             color="error"
@@ -51,6 +51,7 @@
 
 
 <script>
+import { mapState } from "vuex";
 import Mixin from './mixin';
 
 export default {
@@ -65,30 +66,29 @@ export default {
     },
     data () {
         return {
-            name: ''
+            //name: this.selectedMedia.name,
         }
     },
     mixins: [Mixin],
     computed: {
-
+        ...mapState('Media', [ 'selectedMedia']),
     },
     methods: {
         onSubmit () {
             this.$validator.validateAll();
             const item = {
-                name: this.name,
-                parent_id: this.currentFolderId
+                name: this.selectedMedia.name,
+                id: this.selectedMedia.id
             }
 
-            this.$store.dispatch('Media/addFolder', item)
+            this.$store.dispatch('Media/updateItem', item)
                 .then(() => {
                     this.close()
                 })
 
         },
         close () {
-            this.$store.commit('Media/newFolderModal', false);
-            this.name = "";
+            this.$store.commit('Media/renamefilemodal', false);
         }
     }
 }

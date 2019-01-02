@@ -108,7 +108,7 @@ export default {
                     {
                         title: "Rename",
                         icon: 'edit',
-                        action: ''
+                        action: this.openRenameModel
                     },
                     {
                         title: "Make a copy",
@@ -164,6 +164,9 @@ export default {
                 this.$store.dispatch('Media/removeStar', {ids: this.selectedFilesId});
             }
 
+        },
+        openRenameModel () {
+            this.$store.commit("Media/renamefilemodal", true);
         }
     }
 }

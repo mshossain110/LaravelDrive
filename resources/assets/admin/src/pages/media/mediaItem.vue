@@ -30,7 +30,7 @@
                     
                 </div>
                 
-                <span class="fstared material-icons" v-if="media.stared"  size="15" tile>stars</span>
+                <span class="fstared material-icons" v-if="media.stared"  size="15" tile>star</span>
             </div>
            
         </div>

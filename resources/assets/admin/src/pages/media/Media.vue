@@ -41,6 +41,7 @@
     </v-layout>
 
     <new-folder-form :open="newFolderModal" />
+    <rename-file :open="renamefilemodal"></rename-file>
     <move-to  />
 </v-layout>
 </template>
@@ -54,6 +55,7 @@ import MediaToolbar from './mediaToolbar.vue';
 import MediaInfo from './MediaInfo.vue';
 import Mixins from './mixin';
 import NewFolderForm from './NewFolderForm.vue';
+import RenameFile from './RenameFile.vue';
 import ContextMenu from './ContextMenu.vue'
 import MoveTo from './MoveTo.vue'
 
@@ -64,6 +66,7 @@ export default {
         MediaToolbar,
         MediaInfo,
         NewFolderForm,
+        RenameFile,
         ContextMenu,
         MoveTo
     },
@@ -105,7 +108,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'renamefilemodal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded;
         },
@@ -209,7 +212,7 @@ export default {
             this.clickedOnItem = true;
             let isMultiSelect = event.ctrlKey || event.metaKey;
 
-            if (!isMultiSelect && item.type == 'folder') {
+            if (!isMultiSelect && item.type == 'folder' && !this.fileCm) {
                 this.$router.push({
                     name: 'singleFolder',
                     params: {

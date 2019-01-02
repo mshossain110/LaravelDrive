@@ -25,6 +25,7 @@ export default {
         pagination: {},
         fileInfoSideBar: false,
         newFolderModal: false,
+        renamefilemodal: false,
         selectedMedia: {},
         selectedFilesId: [],
         contextMenu: {
@@ -86,6 +87,9 @@ export default {
         newFolderModal (state, payload) {
             state.newFolderModal = payload
         },
+        renamefilemodal (state, payload) {
+            state.renamefilemodal = payload
+        },
         contextMenu (state, payload) {
             state.contextMenu = payload
         },
@@ -102,6 +106,12 @@ export default {
                     item.stared = false
                 }
             })
+        },
+        updateItem (state, payload) {
+            let i = state.mediaItems.findIndex(item => item.id === payload.id)
+            if (i !== -1) {
+                state.mediaItems[i] = payload
+            }
         }
     },
     actions: {
@@ -123,6 +133,26 @@ export default {
                             },
                             { root: true })
                         reject(error.response)
+                    })
+            })
+        },
+        updateItem ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.put(`/api/file/${params.id}`, params)
+                    .then((res) => {
+                        commit('updateItem', res.data)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        reject(error.response)
+                    })
+            })
+        },
+        deleteItem ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.delete(`/api/file/${params.id}`, { params })
+                    .then((res) => {
+                        console.log(res.data)
                     })
             })
         },

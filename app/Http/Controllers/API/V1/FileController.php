@@ -67,7 +67,7 @@ class FileController extends ApiController
     public function update ( FileRequest $request, $id ) {
         $validated = $request->validated();
         $data      = $request->only(['name', 'description']);
-    	$file      = $filethis->file->update( $id, $data);
+    	$file      = $this->file->update( $id, $data);
 
     	return $this->respondWithItem($file, new FileTransformer);
     }

@@ -26,13 +26,13 @@ class FileRequest extends FormRequest
         $fileId = $this->input('id');
 
         $rules = [
-            'name'        => "alpha|max:255|nullable",
+            'name'        => "string|max:255|nullable",
             'description' => "string|min:2|max:255|nullable",
         ];
 
-        // if ($this->method() === 'POST') {
-        //     $rules['name']    = 'required|'.$rules['name'];
-        // }
+        if ($this->method() === 'POST') {
+            $rules['name']    = 'required|'.$rules['name'];
+        }
 
         return $rules;
     }
