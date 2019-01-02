@@ -26,6 +26,7 @@ Route::group([
 
     Route::resource('folder', 'FolderController');
     Route::delete('file/delete', 'FileController@destroyAll');
+    Route::post('file/copy', 'CopyFileController@copy');
     Route::resource('file', 'FileController');
 
     Route::post('tag/star', 'StarredController@add');

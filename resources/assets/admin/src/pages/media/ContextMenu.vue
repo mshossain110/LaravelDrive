@@ -113,7 +113,7 @@ export default {
                     {
                         title: "Make a copy",
                         icon: 'file_copy',
-                        action: ''
+                        action: this.copyFiles
                     },
                     {
                         title: "Download",
@@ -171,6 +171,9 @@ export default {
 
         deleteItems () {
             this.$store.dispatch('Media/deleteItem', {ids: this.selectedFilesId});
+        },
+        copyFiles () {
+            this.$store.dispatch('Media/copyFile', {ids: this.selectedFilesId});
         }
     }
 }

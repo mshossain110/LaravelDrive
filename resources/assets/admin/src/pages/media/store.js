@@ -120,6 +120,9 @@ export default {
                     state.mediaItems.splice(i, 1)
                 }
             })
+        },
+        copyFile (state, payload) {
+            state.mediaItems = state.mediaItems.concat(payload.data)
         }
     },
     actions: {
@@ -210,6 +213,19 @@ export default {
                 axios.post('/api/tag/unstar', params)
                     .then((res) => {
                         commit('removeStart', params.ids)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        reject(error.response)
+                    })
+            })
+        },
+        copyFile ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.post('/api/file/copy', params)
+                    .then((res) => {
+                        console.log(res.data)
+                        commit('copyFile', res.data)
                         resolve(res.data)
                     })
                     .catch((error) => {
