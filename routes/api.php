@@ -31,5 +31,7 @@ Route::group([
 
     Route::post('tag/star', 'StarredController@add');
     Route::post('tag/unstar', 'StarredController@remove');
+
+    Route::post('/download', 'DownloadController@download');
 });
 

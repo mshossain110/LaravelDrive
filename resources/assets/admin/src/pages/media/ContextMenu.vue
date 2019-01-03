@@ -118,7 +118,7 @@ export default {
                     {
                         title: "Download",
                         icon: 'cloud_download',
-                        action: ''
+                        action: this.downloadFile
                     },
                     {
                         title: "Delete",
@@ -174,6 +174,9 @@ export default {
         },
         copyFiles () {
             this.$store.dispatch('Media/copyFile', {ids: this.selectedFilesId});
+        },
+        downloadFile () {
+            this.$store.dispatch('Media/downloadFile', {ids: this.selectedFilesId});
         }
     }
 }
