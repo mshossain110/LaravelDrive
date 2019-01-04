@@ -43,16 +43,10 @@ class DownloadController extends ApiController
     {
         $ids = $request->get('ids');
 
-        if (sizeof( $ids ) === 1) {
-            if ((int) $ids[0] === 0) {
-                $id = $this->file->decodeHash($ids[0]);
-            } else {
-                $id = $ids[0];
-            }
-    
-            $entry = $this->file->findOrFail($id);
-            
-            return $this->downloadResponse->singleDownload($entry);
+        if (sizeof( $ids ) > 1) {
+            return $this->downloadResponse->multipleDownload($ids);
+        } else {
+            return $this->downloadResponse->singleDownload($ids[0]);
         }
     }
 }

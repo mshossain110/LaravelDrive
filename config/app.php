@@ -150,7 +150,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Chumper\Zipper\ZipperServiceProvider::class,
         /*
          * Application Service Providers...
          */

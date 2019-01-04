@@ -19,6 +19,9 @@ trait HashesId
 
     public function decodeHash($hash)
     {
+        if ( (int) $hash !== 0 ) {
+            return $hash;
+        }
         return (int) explode('|', base64_decode($hash))[0];
     }
 }
