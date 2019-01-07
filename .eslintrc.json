@@ -14,10 +14,13 @@
     ],
     "globals": {
         "axios": true,
-        "Vue": true
+        "Vue": true,
+        "Bus": true
     },
     "rules": {
         "indent": ["error", 4],
+        "vue/html-indent": ["error", 4],
+        "no-console": "warn",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
         "no-undef": "warn",

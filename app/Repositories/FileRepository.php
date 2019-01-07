@@ -355,6 +355,16 @@ class FileRepository
     {
         Storage::disk('uploads_local')->putFileAs($entry->file_name, $contents, $entry->file_name);
     }
+    
+    /**
+     * @param FileEntry $entry
+     * @param UploadedFile $contents
+     */
+    public function movePrivateUpload(file $entry, UploadedFile $file)
+    {
+        $file->move(Storage::disk('uploads_local')->path($entry->file_name), $entry->file_name);
+        // Storage::disk('uploads_local')->move($file, "$entry->file_name/$entry->file_name");
+    }
 
         /**
      * @param FileEntry $entry

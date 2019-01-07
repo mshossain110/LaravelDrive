@@ -1,84 +1,93 @@
 <template>
-    <v-toolbar
+    <VToolbar
+        id="mediaToolbar"
         flat
         light
         height="40px"
-        id="mediaToolbar"
         class="la-pt"
-        color="white">
-        
-        <v-toolbar-title>
-            <v-icon>perm_media</v-icon>
+        color="white"
+    >
+        <VToolbarTitle>
+            <VIcon>perm_media</VIcon>
             My Files
-            <v-menu offset-y>
-                <v-btn
+            <VMenu offset-y>
+                <VBtn
                     slot="activator"
                     icon
-                    >
-                        <v-icon>arrow_drop_down</v-icon>
-                    </v-btn>
+                >
+                    <VIcon>arrow_drop_down</VIcon>
+                </VBtn>
 
-                <v-list>
-                    <v-list-tile @click="openNewFolderModal()">
-                        <v-list-tile-title>
-                            <v-icon>create_new_folder</v-icon> 
+                <VList>
+                    <VListTile @click="openNewFolderModal()">
+                        <VListTileTitle>
+                            <VIcon>create_new_folder</VIcon>
                             New Folder
-                        </v-list-tile-title>
-                    </v-list-tile>
-                    <v-list-tile @click="uploadFolder">
-                        <v-list-tile-title>
-                            <v-icon>create_new_folder</v-icon> 
+                        </VListTileTitle>
+                    </VListTile>
+                    <VListTile @click="uploadFolder">
+                        <VListTileTitle>
+                            <VIcon>create_new_folder</VIcon>
                             Upload  Folder
-                        </v-list-tile-title>
-                    </v-list-tile>
-                    <v-list-tile @click="openDropZone">
-                        <v-list-tile-title>
-                            <v-icon>add_photo_alternate</v-icon>
+                        </VListTileTitle>
+                    </VListTile>
+                    <VListTile @click="openDropZone">
+                        <VListTileTitle>
+                            <VIcon>add_photo_alternate</VIcon>
                             Upload  Files
-                        </v-list-tile-title>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
-        </v-toolbar-title>
+                        </VListTileTitle>
+                    </VListTile>
+                </VList>
+            </VMenu>
+        </VToolbarTitle>
 
-        <v-spacer />
+        <VSpacer />
 
-        <v-btn icon @click="openDropZone()">
-            <v-icon>add_photo_alternate</v-icon>
-        </v-btn>
-        <v-btn icon @click="openNewFolderModal()">
-            <v-icon>create_new_folder</v-icon>
-        </v-btn>
-        <v-btn icon>
-            <v-icon>view_module</v-icon>
-        </v-btn>
-        <v-btn icon>
-            <v-icon>view_list</v-icon>
-        </v-btn>
+        <VBtn
+            icon
+            @click="openDropZone()"
+        >
+            <VIcon>add_photo_alternate</VIcon>
+        </VBtn>
+        <VBtn
+            icon
+            @click="openNewFolderModal()"
+        >
+            <VIcon>create_new_folder</VIcon>
+        </VBtn>
+        <VBtn icon>
+            <VIcon>view_module</VIcon>
+        </VBtn>
+        <VBtn icon>
+            <VIcon>view_list</VIcon>
+        </VBtn>
 
-        <v-btn icon>
-            <v-icon>filter_list</v-icon>
-        </v-btn>
-        <v-btn icon @click="toggleSidebar()" :class="{'active': fileInfoSideBar}">
-            <v-icon>info</v-icon>
-        </v-btn>
-    </v-toolbar>
+        <VBtn icon>
+            <VIcon>filter_list</VIcon>
+        </VBtn>
+        <VBtn
+            icon
+            :class="{'active': fileInfoSideBar}"
+            @click="toggleSidebar()"
+        >
+            <VIcon>info</VIcon>
+        </VBtn>
+    </VToolbar>
 </template>
-
 
 <script>
 import Mixins from './mixin'
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 export default {
+
+    mixins: [Mixins],
     data () {
         return {
 
         }
     },
-
-    mixins: [Mixins],
     computed: {
-        ...mapState('Media', ['fileInfoSideBar']),
+        ...mapState('Media', ['fileInfoSideBar'])
     },
     methods: {
         openDropZone () {

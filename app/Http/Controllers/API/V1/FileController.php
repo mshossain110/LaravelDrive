@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
 use App\Transformers\FileTransformer;
 use App\Http\Requests\FileRequest;
+use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+
 use App\File;
 use Auth;
 use DB;
@@ -51,10 +57,50 @@ class FileController extends ApiController
         $path         = $request->get('path');
         $parent_id    = $request->get('parent_id');
         $uploadedFile = $request->file('file');
-        $fileEntry    = $this->file->createFile($uploadedFile, ['parent_id' => $parent_id, 'path' => $path] );
+        $chunkupload = true;
 
-        $this->file->storePrivateUpload($fileEntry, $uploadedFile);
-        return $this->respondWithItem($fileEntry, new FileTransformer);
+        if ($chunkupload) {
+
+                    // create the file receiver
+            $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
+
+            // check if the upload is success, throw exception or return response you need
+            if ($receiver->isUploaded() === false) {
+                throw new UploadMissingFileException();
+            }
+
+            // receive the file
+            $save = $receiver->receive();
+
+            // check if the upload has finished (in chunk mode it will send smaller files)
+            if ($save->isFinished()) {
+                // save the file and return any response you need, current example uses `move` function. If you are
+                // not using move, you need to manually delete the file by unlink($save->getFile()->getPathname())
+                //return $this->saveFile($save->getFile());
+                $fileEntry    = $this->file->createFile($save->getFile(), ['parent_id' => $parent_id, 'path' => $path] );
+
+                $this->file->movePrivateUpload($fileEntry, $save->getFile());
+                return $this->respondWithItem($fileEntry, new FileTransformer);
+
+            }
+
+            // we are in chunk mode, lets send the current progress
+            /** @var AbstractHandler $handler */
+            $handler = $save->handler();
+
+            return response()->json([
+                "done" => $handler->getPercentageDone(),
+                'status' => true
+            ]);
+        }
+        
+
+
+        // $fileEntry    = $this->file->createFile($uploadedFile, ['parent_id' => $parent_id, 'path' => $path] );
+
+        // $this->file->storePrivateUpload($fileEntry, $uploadedFile);
+        // return $this->respondWithItem($fileEntry, new FileTransformer);
+
     }
 
     /**

@@ -53,6 +53,9 @@ export default {
         setMediaItems (state, payload) {
             state.mediaItems = payload
         },
+        setMediaItem (state, payload) {
+            state.mediaItems.push(payload)
+        },
         setPagination (state, payload) {
             state.pagination = payload
         },
@@ -161,7 +164,6 @@ export default {
         },
         deleteItem ({ commit }, params) {
             return new Promise((resolve, reject) => {
-                console.log(params)
                 axios.delete(`/api/file/delete`, { params })
                     .then((res) => {
                         commit('deleteItem', params)
@@ -224,7 +226,6 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.post('/api/file/copy', params)
                     .then((res) => {
-                        console.log(res.data)
                         commit('copyFile', res.data)
                         resolve(res.data)
                     })
@@ -279,7 +280,6 @@ export default {
                             }
                             resolve(res)
                         } catch (ex) {
-                            console.error(ex)
                             reject(ex)
                         }
                     })

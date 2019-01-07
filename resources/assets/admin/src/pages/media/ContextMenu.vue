@@ -1,46 +1,48 @@
 <template>
-    <v-menu
-      v-model="showMenu"
-      :position-x="x"
-      :position-y="y"
-      absolute
-      offset-y
-    >
-      <v-list id="contextmenu">
-        <v-list-tile
-          v-for="(item, index) in items"
-          :key="index"
-          ripple
-          @click="item.action"
-        >
-            <v-list-tile-action v-if="item.icon">
-                <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
+  <VMenu
+    v-model="showMenu"
+    :position-x="x"
+    :position-y="y"
+    absolute
+    offset-y
+  >
+    <VList id="contextmenu">
+      <VListTile
+        v-for="(item, index) in items"
+        :key="index"
+        ripple
+        @click="item.action"
+      >
+        <VListTileAction v-if="item.icon">
+          <VIcon>{{ item.icon }}</VIcon>
+        </VListTileAction>
+        <VListTileTitle>{{ item.title }}</VListTileTitle>
+      </VListTile>
+    </VList>
+  </VMenu>
 </template>
 
-
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 import Mixins from './mixin'
 
 export default {
+    mixins: [Mixins],
     props: {
         value: {
             type: Boolean
         },
         x: {
-            default: 0,
+            type: Number,
+            default: 0
         },
         y: {
+            type: Number,
             default: 0
         },
         file: {
             type: Object,
-            default() {
+            default () {
                 return {
 
                 }
@@ -49,79 +51,77 @@ export default {
     },
     data () {
         return {
-            showMenu: this.value,
+            showMenu: this.value
         }
     },
-    mixins: [Mixins],
     watch: {
 
         value (newVal) {
-            this.showMenu = false;
-            this.$nextTick( () => {
-                 this.showMenu = newVal;
-            } );
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = newVal
+            })
         },
         x () {
-            this.showMenu = false;
-            this.$nextTick( () => {
-                 this.showMenu = true;
-            } );
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = true
+            })
         },
         y () {
-            this.showMenu = false;
-            this.$nextTick( () => {
-                 this.showMenu = true;
-            } );
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = true
+            })
         }
     },
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         items () {
-
             if (this.file.hasOwnProperty('id')) {
                 return [
                     {
-                        title: "Preview",
+                        title: 'Preview',
                         icon: 'visibility',
                         action: ''
                     },
                     {
-                        title: "Manage people",
+                        title: 'Manage people',
                         icon: 'supervisor_account',
                         action: ''
                     },
                     {
-                        title: "Get shareable link",
+                        title: 'Get shareable link',
                         icon: 'link',
                         action: ''
                     },
                     {
-                        title: this.file.stared ? "Removed from star" : "Add a star",
+                        title: this.file.stared ? 'Removed from star' : 'Add a star',
                         icon: 'grade',
                         action: this.manageStar
                     },
                     {
-                        title: "Move to",
+                        title: 'Move to',
                         icon: 'call_missed_outgoing',
                         action: this.moveTo
                     },
                     {
-                        title: "Rename",
+                        title: 'Rename',
                         icon: 'edit',
                         action: this.openRenameModel
                     },
                     {
-                        title: "Make a copy",
+                        title: 'Make a copy',
                         icon: 'file_copy',
                         action: this.copyFiles
                     },
                     {
-                        title: "Download",
+                        title: 'Download',
                         icon: 'cloud_download',
                         action: this.downloadFile
                     },
                     {
-                        title: "Delete",
+                        title: 'Delete',
                         icon: 'delete',
                         action: this.deleteItems
                     }
@@ -129,17 +129,17 @@ export default {
             } else {
                 return [
                     {
-                        title: "New Folder",
+                        title: 'New Folder',
                         icon: 'create_new_folder',
                         action: this.openNewFolderModal
                     },
                     {
-                        title: "Upload files",
+                        title: 'Upload files',
                         icon: 'cloud_upload',
                         action: this.openDropZone
                     },
                     {
-                        title: "Upload Folder",
+                        title: 'Upload Folder',
                         icon: 'folder_open',
                         action: this.uploadFolder
                     }
@@ -155,28 +155,27 @@ export default {
             Bus.$emit('uploadFolder')
         },
         moveTo () {
-            Bus.$emit('moveTo', true );
+            Bus.$emit('moveTo', true)
         },
         manageStar () {
-            if (this.file.hasOwnProperty('id') && !this.file.stared){
-                this.$store.dispatch('Media/addStar', {ids: this.selectedFilesId});
+            if (this.file.hasOwnProperty('id') && !this.file.stared) {
+                this.$store.dispatch('Media/addStar', { ids: this.selectedFilesId })
             } else {
-                this.$store.dispatch('Media/removeStar', {ids: this.selectedFilesId});
+                this.$store.dispatch('Media/removeStar', { ids: this.selectedFilesId })
             }
-
         },
         openRenameModel () {
-            this.$store.commit("Media/renamefilemodal", true);
+            this.$store.commit('Media/renamefilemodal', true)
         },
 
         deleteItems () {
-            this.$store.dispatch('Media/deleteItem', {ids: this.selectedFilesId});
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId })
         },
         copyFiles () {
-            this.$store.dispatch('Media/copyFile', {ids: this.selectedFilesId});
+            this.$store.dispatch('Media/copyFile', { ids: this.selectedFilesId })
         },
         downloadFile () {
-            this.$store.dispatch('Media/downloadFile', {ids: this.selectedFilesId});
+            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
         }
     }
 }

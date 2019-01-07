@@ -160,6 +160,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+    
+        Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class,
 
     ],
 

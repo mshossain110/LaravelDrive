@@ -1,113 +1,190 @@
 <template>
-    <v-navigation-drawer
+    <VNavigationDrawer
         class="media-info"
         :value="fileInfoSideBar"
         absolute
         right
+    >
+        <div
+            v-if="hasItem"
+            class="mi-fh"
         >
-       <div class="mi-fh" v-if="hasItem" >
+            <span
+                class="fn-i-i"
+                :style="{ color: mediaIcon.color }"
+                size="15"
+                tile
+                v-html="mediaIcon.icon"
+            />
+            <h3>{{ selectedMedia.name }}</h3>
+        </div>
 
-           <span class="fn-i-i" :style="{ color: mediaIcon.color }" size="15" tile v-html="mediaIcon.icon"></span>
-           <h3>{{ selectedMedia.name }}</h3>
-       </div>
+        <div
+            v-else
+            class="mi-fh pa-3"
+        >
+            <span
+                class="fn-i-i"
+                :style="{ color: mediaIcon.color }"
+                size="15"
+                tile
+                v-html="mediaIcon.icon"
+            />
+            <h3>My Files </h3>
+        </div>
 
-       <div class="mi-fh pa-3" v-else >
+        <div class="la-toggle-bn">
+            <a
+                v-if="tabActive == 1"
+                href="#"
+                :class="{'active': tabActive == 1 }"
+            >
+                Details
+            </a>
+            <a
+                v-if="tabActive == 1"
+                href="#"
+                :class="{'active': tabActive == 2 }"
+            >
+                Activities
+            </a>
+        </div>
 
-           <span class="fn-i-i" :style="{ color: mediaIcon.color }" size="15" tile v-html="mediaIcon.icon"></span>
-           <h3>My Files </h3>
-       </div>
-
-       <div class="la-toggle-bn" >
-           <a href="#" v-if="tabActive == 1" :class="{'active': tabActive == 1 }" >Details</a>
-           <a href="#" v-if="tabActive == 1" :class="{'active': tabActive == 2 }"  >Activities</a>
-       </div>
-
-       <div class="details pa-3" v-if="hasItem" >
-           <v-img
+        <div
+            v-if="hasItem"
+            class="details pa-3"
+        >
+            <VImg
                 :src="fileUrl"
-                :lazy-src="fileUrl" >
-                </v-img>
-            
+                :lazy-src="fileUrl"
+            />
+
             <div class="las-info-list">
                 <div class="las-ii">
-                    <span class="la-ik">File Name</span>
-                    <span class="la-iv">{{ selectedMedia.name }}</span>
+                    <span class="la-ik">
+                        File Name
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.name }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Type</span>
-                    <span class="la-iv">{{ selectedMedia.type }}</span>
+                    <span class="la-ik">
+                        Type
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.type }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Size</span>
-                    <span class="la-iv">{{ selectedMedia.file_size }}</span>
+                    <span class="la-ik">
+                        Size
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.file_size }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Storate Used</span>
-                    <span class="la-iv">{{ selectedMedia.file_size }}</span>
+                    <span class="la-ik">
+                        Storate Used
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.file_size }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Location</span>
-                    <span class="la-iv">{{ selectedMedia.url }}</span>
+                    <span class="la-ik">
+                        Location
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.url }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Owner</span>
-                    <span class="la-iv">{{ selectedMedia.file_name }}</span>
+                    <span class="la-ik">
+                        Owner
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.file_name }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Created</span>
-                    <span class="la-iv">{{ selectedMedia.created_at.date }}</span>
+                    <span class="la-ik">
+                        Created
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.created_at.date }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Modified</span>
-                    <span class="la-iv">{{ selectedMedia.updated_at.date }}</span>
+                    <span class="la-ik">
+                        Modified
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.updated_at.date }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">Description</span>
-                    <span class="la-iv">{{ selectedMedia.description }}</span>
+                    <span class="la-ik">
+                        Description
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.description }}
+                    </span>
                 </div>
                 <div class="las-ii">
-                    <span class="la-ik">File Name</span>
-                    <span class="la-iv">{{ selectedMedia.file_name }}</span>
+                    <span class="la-ik">
+                        File Name
+                    </span>
+                    <span class="la-iv">
+                        {{ selectedMedia.file_name }}
+                    </span>
                 </div>
             </div>
-       </div>
+        </div>
 
-       <div class="no-item pa-3" v-else >
-           <v-icon color="gray" large>home</v-icon>
+        <div
+            v-else
+            class="no-item pa-3"
+        >
+            <VIcon
+                color="gray"
+                large
+            >
+                home
+            </VIcon>
 
-           <h4>Select a file or folder to view its details.</h4>
-       </div> 
-
-    </v-navigation-drawer>
+            <h4>Select a file or folder to view its details.</h4>
+        </div>
+    </VNavigationDrawer>
 </template>
 
-
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import Mixins from './mixin';
+import Mixins from './mixin'
 
 export default {
+    mixins: [Mixins],
     data () {
         return {
-            tabActive: 1,
+            tabActive: 1
         }
     },
-    mixins: [Mixins],
     computed: {
         ...mapState('Media', ['fileInfoSideBar', 'selectedMedia']),
         mediaIcon () {
             if (this.hasItem) {
                 return this.getMediaIcon(this.selectedMedia.type)
             } else {
-                return this.getMediaIcon('folder');
+                return this.getMediaIcon('folder')
             }
         },
         fileUrl () {
-            return window.location.origin +'/'+ this.selectedMedia.url;
+            return window.location.origin + '/' + this.selectedMedia.url
         },
         hasItem () {
-            return this.selectedMedia.hasOwnProperty('id');
+            return this.selectedMedia.hasOwnProperty('id')
         }
     },
     methods: {
@@ -158,6 +235,5 @@ export default {
         flex: 0 0 120px;
         color: #757373;
     }
-   
 
 </style>
