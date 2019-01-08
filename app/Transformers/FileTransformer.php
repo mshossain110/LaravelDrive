@@ -7,6 +7,10 @@ use League\Fractal\TransformerAbstract;
 
 class FileTransformer extends TransformerAbstract {
 
+	protected $defaultIncludes = [
+		'owner'
+	];
+
 	protected $availableIncludes = [
 
 	];
@@ -48,6 +52,12 @@ class FileTransformer extends TransformerAbstract {
         }
 
         return null;
-    }
+	}
+	
+	public function includeOwner (File $item) {
+		$owner = $item->owner;
+
+		return $this->item($owner, new UserTransformer);
+	}
 
 }

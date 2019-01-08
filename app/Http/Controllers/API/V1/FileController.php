@@ -34,6 +34,7 @@ class FileController extends ApiController
 
         $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
                 ->where('parent_id', $folder ? $folder->id : 0)
+                ->where('created_by', Auth::id())
                 ->get();
 
     	return $this->respondWithCollection($files, new FileTransformer);

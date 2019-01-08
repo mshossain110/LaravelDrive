@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\FileObserver;
 use App\Traits\HandlesPaths;
 use App\Traits\HashesId;
+use App\User;
 
 class File extends Model
 {
@@ -125,6 +126,11 @@ class File extends Model
     public function getStaredAttribute()
     {
         return $this->tags()->where('name', 'starred')->exists();
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo('App\User', 'created_by');
     }
 
 }
