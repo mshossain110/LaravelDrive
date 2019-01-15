@@ -34,5 +34,17 @@ Route::group([
     Route::post('tag/unstar', 'StarredController@remove');
 
     Route::post('/download', 'DownloadController@download');
+
+    //sharing
+    Route::post('shareable-links/{linkId}/import', 'SharesController@addCurrentUser');
+    Route::post('shares/add-users', 'SharesController@addUsers');
+    Route::put('shares/update-users', 'SharesController@updateUsers');
+    Route::delete('shares/remove-user/{userId}', 'SharesController@removeUser');
+
+    //SHAREABLE LINKS
+    Route::get('file/{id}/shareable-link', 'ShareableLinksController@show');
+    Route::post('file/{id}/shareable-link', 'ShareableLinksController@store');
+    Route::put('shareable-links/{id}', 'ShareableLinksController@update');
+    Route::delete('shareable-links/{id}', 'ShareableLinksController@destroy');
 });
 
