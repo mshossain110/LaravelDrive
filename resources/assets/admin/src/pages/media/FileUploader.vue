@@ -8,7 +8,7 @@
 
             @vdropzone-files-added="fileAdded"
             @vdropzone-success="success"
-            @vdropzone-success-multiple="successMultiple"
+
             @vdropzone-processing="processing"
             @vdropzone-chunks-uploaded="chunksUploaded"
             @vdropzone-upload-progress="uploadProgress"

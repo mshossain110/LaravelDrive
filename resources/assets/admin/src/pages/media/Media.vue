@@ -40,6 +40,7 @@
         </VLayout>
 
         <NewFolderForm :open="newFolderModal" />
+        <ShareFile :open="shareFileModal" />
         <RenameFile :open="renamefilemodal" />
         <MoveTo />
     </VLayout>
@@ -53,6 +54,7 @@ import MediaToolbar from './mediaToolbar.vue'
 import MediaInfo from './MediaInfo.vue'
 import Mixins from './mixin'
 import NewFolderForm from './NewFolderForm.vue'
+import ShareFile from './ShareFile.vue'
 import RenameFile from './RenameFile.vue'
 import ContextMenu from './ContextMenu.vue'
 import MoveTo from './MoveTo.vue'
@@ -66,7 +68,8 @@ export default {
         NewFolderForm,
         RenameFile,
         ContextMenu,
-        MoveTo
+        MoveTo,
+        ShareFile
     },
     mixins: [Mixins],
     data () {
@@ -79,7 +82,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'renamefilemodal']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
         }

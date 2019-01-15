@@ -25,6 +25,7 @@ export default {
         pagination: {},
         fileInfoSideBar: false,
         newFolderModal: false,
+        shareFileModal: false,
         renamefilemodal: false,
         selectedMedia: {},
         selectedFilesId: [],
@@ -89,6 +90,9 @@ export default {
         },
         newFolderModal (state, payload) {
             state.newFolderModal = payload
+        },
+        shareFileModal (state, payload) {
+            state.shareFileModal = payload
         },
         renamefilemodal (state, payload) {
             state.renamefilemodal = payload

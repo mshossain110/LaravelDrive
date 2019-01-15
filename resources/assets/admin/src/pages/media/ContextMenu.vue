@@ -1,25 +1,25 @@
 <template>
-  <VMenu
-    v-model="showMenu"
-    :position-x="x"
-    :position-y="y"
-    absolute
-    offset-y
-  >
-    <VList id="contextmenu">
-      <VListTile
-        v-for="(item, index) in items"
-        :key="index"
-        ripple
-        @click="item.action"
-      >
-        <VListTileAction v-if="item.icon">
-          <VIcon>{{ item.icon }}</VIcon>
-        </VListTileAction>
-        <VListTileTitle>{{ item.title }}</VListTileTitle>
-      </VListTile>
-    </VList>
-  </VMenu>
+    <VMenu
+        v-model="showMenu"
+        :position-x="x"
+        :position-y="y"
+        absolute
+        offset-y
+    >
+        <VList id="contextmenu">
+            <VListTile
+                v-for="(item, index) in items"
+                :key="index"
+                ripple
+                @click="item.action"
+            >
+                <VListTileAction v-if="item.icon">
+                    <VIcon>{{ item.icon }}</VIcon>
+                </VListTileAction>
+                <VListTileTitle>{{ item.title }}</VListTileTitle>
+            </VListTile>
+        </VList>
+    </VMenu>
 </template>
 
 <script>
@@ -86,9 +86,9 @@ export default {
                         action: ''
                     },
                     {
-                        title: 'Manage people',
+                        title: 'Share',
                         icon: 'supervisor_account',
-                        action: ''
+                        action: this.shareFiles
                     },
                     {
                         title: 'Get shareable link',
@@ -156,6 +156,9 @@ export default {
         },
         moveTo () {
             Bus.$emit('moveTo', true)
+        },
+        shareFiles () {
+            this.$store.commit('Media/shareFileModal', true)
         },
         manageStar () {
             if (this.file.hasOwnProperty('id') && !this.file.stared) {
