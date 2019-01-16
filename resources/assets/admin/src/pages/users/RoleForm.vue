@@ -1,27 +1,32 @@
 <template>
-    <v-form
+    <VForm
         class="role-form"
-        @submit.prevent="submitRole()">
-        <v-flex
-            xs12>
-            <v-text-field
+        @submit.prevent="submitRole()"
+    >
+        <VFlex
+            xs12
+        >
+            <VTextField
                 v-model="role.name"
                 placeholder="Add Role"
                 full-width
                 hide-details
                 light
                 flat
-                @focus="showFullForm()"/>
-        </v-flex>
+                @focus="showFullForm()"
+            />
+        </VFlex>
         <template
             v-if="showForm"
-            transition="slide-y-transition">
-            <v-flex
-                xs12>
-                <textarea v-model="role.description" >Description </textarea>
-            </v-flex>
-            <v-flex xs12>
-                <multiselect
+            transition="slide-y-transition"
+        >
+            <VFlex
+                xs12
+            >
+                <textarea v-model="role.description">Description </textarea>
+            </VFlex>
+            <VFlex xs12>
+                <Multiselect
                     v-model="role.permissions"
                     :options="permissions"
                     :multiple="true"
@@ -29,49 +34,51 @@
                     :searchable="false"
                     group-values="permissions"
                     group-label="model"
-                    placeholder="Add Permissions">
-
+                    placeholder="Add Permissions"
+                >
                     <span slot="noResult">
                         Oops! No Permissions found.
                         Consider changing the search query.
                     </span>
-                </multiselect>
-            </v-flex>
-            <v-flex xs12>
-                <v-btn
+                </Multiselect>
+            </VFlex>
+            <VFlex xs12>
+                <VBtn
                     :loading="loading"
                     color="primery"
                     type="submit"
                     depressed
                     ripple
                     small
-                    right>
+                    right
+                >
                     Submit
-                </v-btn>
-                <v-btn
+                </VBtn>
+                <VBtn
                     color="error"
                     depressed
                     ripple
                     small
                     right
-                    @click="hideFullForm()">
+                    @click="hideFullForm()"
+                >
                     close
-                </v-btn>
-            </v-flex>
+                </VBtn>
+            </VFlex>
         </template>
-    </v-form>
+    </VForm>
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect';
-import { mapState } from 'vuex';
+import Multiselect from 'vue-multiselect'
+import { mapState } from 'vuex'
 
 export default {
     components: {
-        Multiselect,
+        Multiselect
     },
     $_veeValidate: {
-        validator: 'new',
+        validator: 'new'
     },
     props: {
         role: {
@@ -82,70 +89,70 @@ export default {
                     name: '',
                     description: '',
                     permissions: [],
-                    status: true,
-                };
-            },
+                    status: true
+                }
+            }
         },
         halfForm: {
             type: Boolean,
-            default: true,
-        },
+            default: true
+        }
     },
 
     data () {
         return {
             loading: false,
-            showForm: this.halfForm,
-        };
+            showForm: this.halfForm
+        }
     },
     computed: {
-        ...mapState('Users', ['permissions']),
+        ...mapState('Users', ['permissions'])
     },
     created () {
-        this.$store.dispatch('Users/getPermissions');
+        this.$store.dispatch('Users/getPermissions')
     },
     methods: {
         submitRole () {
-            this.loading = true;
+            this.loading = true
             const role = {
                 id: this.role.id,
                 name: this.role.name,
                 description: this.role.description,
                 permissions: this.role.permissions,
-                status: this.role.status,
-            };
+                status: this.role.status
+            }
             if (!this.role.id) {
                 this.$store.dispatch('Users/addRole', role)
                     .then(() => {
-                        this.loading = false;
+                        this.loading = false
 
-                        this.$emit('close', 'true');
-                        this.showForm = false;
+                        this.$emit('close', 'true')
+                        this.showForm = false
                     })
                     .catch(() => {
-                        this.loading = false;
-                    });
+                        this.loading = false
+                    })
             } else {
                 this.$store.dispatch('Users/updateRole', role)
                     .then(() => {
-                        this.loading = false;
-                        this.$emit('close', 'true');
-                        this.showForm = false;
+                        this.loading = false
+                        this.$emit('close', 'true')
+                        this.showForm = false
                     })
                     .catch(() => {
-                        this.loading = false;
-                    });
+                        this.loading = false
+                    })
             }
         },
         showFullForm () {
-            this.showForm = true;
+            this.showForm = true
         },
         hideFullForm () {
-            this.$emit('close', 'true');
-            this.showForm = false;
-        },
-    },
-};
+            this.$emit('close', 'true')
+            this.showForm = false
+        }
+    }
+}
 </script>
 
 <style lang="css">

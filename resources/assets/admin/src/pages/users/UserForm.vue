@@ -1,88 +1,99 @@
 <template>
-    <v-card>
-        <form @submit.prevent="submit()" >
-            <v-card-title>
+    <VCard>
+        <form @submit.prevent="submit()">
+            <VCardTitle>
                 <span
                     v-if="user.id"
-                    class="headline">
+                    class="headline"
+                >
                     Update User
                 </span>
                 <span
                     v-else
-                    class="headline">
+                    class="headline"
+                >
                     New User
                 </span>
-            </v-card-title>
+            </VCardTitle>
 
-            <v-card-text>
-                <v-container grid-list-md>
-                    <v-layout wrap>
-                        <v-flex
+            <VCardText>
+                <VContainer grid-list-md>
+                    <VLayout wrap>
+                        <VFlex
                             xs12
                             sm6
-                            md6>
-                            <v-text-field
+                            md6
+                        >
+                            <VTextField
                                 v-model="user.firstname"
                                 :error-messages="errors.collect('firstname')"
-                                label="First Name"/>
-                        </v-flex>
-                        <v-flex
+                                label="First Name"
+                            />
+                        </VFlex>
+                        <VFlex
                             xs12
                             sm6
-                            md6>
-                            <v-text-field
+                            md6
+                        >
+                            <VTextField
                                 v-model="user.lastname"
                                 :error-messages="errors.collect('lastname')"
-                                label="Last Name" />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field
-                                v-validate="'required|min:6'"
+                                label="Last Name"
+                            />
+                        </VFlex>
+                        <VFlex xs12>
+                            <VTextField
                                 v-model="user.name"
+                                v-validate="'required|min:6'"
                                 :counter="6"
                                 :disabled="Boolean(user.id)"
                                 :error-messages="errors.collect('name')"
                                 data-vv-name="name"
                                 label="User Name*"
-                                required />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field
-                                v-validate="'required|email'"
+                                required
+                            />
+                        </VFlex>
+                        <VFlex xs12>
+                            <VTextField
                                 v-model="user.email"
+                                v-validate="'required|email'"
                                 :disabled="Boolean(user.id)"
                                 :error-messages="errors.collect('email')"
                                 label="E-mail*"
                                 data-vv-name="email"
-                                required />
+                                required
+                            />
+                        </VFlex>
 
-                        </v-flex>
-
-                        <v-flex xs12>
-                            <v-text-field
-                                v-validate="{ required: !user.id, min: 6 }"
+                        <VFlex xs12>
+                            <VTextField
                                 ref="password"
                                 v-model="user.password"
+                                v-validate="{ required: !user.id, min: 6 }"
                                 :error-messages="errors.collect('password')"
                                 name="password"
                                 type="password"
                                 label="Password"
-                                data-vv-name="password" />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field
-                                v-validate="{ required: !user.id, confirmed: 'password' }"
+                                data-vv-name="password"
+                            />
+                        </VFlex>
+                        <VFlex xs12>
+                            <VTextField
                                 v-model="user.password_confirmation"
+                                v-validate="{ required: !user.id, confirmed: 'password' }"
                                 :error-messages="errors.collect('password_confirmation')"
                                 name="password_confirmation"
                                 type="password"
                                 label="Confirmed Password"
-                                data-vv-name="password_confirmation" />
-                        </v-flex>
+                                data-vv-name="password_confirmation"
+                            />
+                        </VFlex>
 
-                        <v-flex xs12>
-                            <label class="typo__label">Permissions</label>
-                            <multiselect
+                        <VFlex xs12>
+                            <label class="typo__label">
+                                Permissions
+                            </label>
+                            <Multiselect
                                 v-model="user.permissions"
                                 :options="permissions"
                                 :multiple="true"
@@ -90,51 +101,51 @@
                                 :searchable="false"
                                 group-values="permissions"
                                 group-label="model"
-                                placeholder="Add Permissions">
-
+                                placeholder="Add Permissions"
+                            >
                                 <span slot="noResult">
                                     Oops! No Permissions found.
                                     Consider changing the search query.
                                 </span>
-                            </multiselect>
-                        </v-flex>
-
-                    </v-layout>
-                </v-container>
+                            </Multiselect>
+                        </VFlex>
+                    </VLayout>
+                </VContainer>
 
                 <small>*indicates required field</small>
-            </v-card-text>
-            <v-divider />
-            <v-card-actions>
-                <v-spacer/>
-                <v-btn
+            </VCardText>
+            <VDivider />
+            <VCardActions>
+                <VSpacer />
+                <VBtn
                     color="blue darken-1"
                     flat
-                    @click.native="$emit('close', false)">
+                    @click.native="$emit('close', false)"
+                >
                     Close
-                </v-btn>
-                <v-btn
+                </VBtn>
+                <VBtn
                     color="blue darken-1"
                     flat
-                    type="submit">
+                    type="submit"
+                >
                     Save
-                </v-btn>
-            </v-card-actions>
+                </VBtn>
+            </VCardActions>
         </form>
-    </v-card>
+    </VCard>
 </template>
 
-
 <script>
-import Multiselect from 'vue-multiselect';
-import { mapState } from 'vuex';
+import Multiselect from 'vue-multiselect'
+import { mapState } from 'vuex'
 
 export default {
     components: {
-        Multiselect,
+        Multiselect
     },
     $_veeValidate: {
-        validator: 'new',
+        validator: 'new'
     },
     props: {
         user: {
@@ -149,24 +160,24 @@ export default {
                     password_confirmation: '',
                     permissions: [],
                     role: 0,
-                    avatar: '',
-                };
-            },
-        },
+                    avatar: ''
+                }
+            }
+        }
     },
 
     data: () => ({
 
     }),
     computed: {
-        ...mapState('Users', ['permissions']),
+        ...mapState('Users', ['permissions'])
     },
     created () {
-        this.$store.dispatch('Users/getPermissions');
+        this.$store.dispatch('Users/getPermissions')
     },
     methods: {
         submit () {
-            this.$validator.validateAll();
+            this.$validator.validateAll()
             const user = {
                 id: this.user.id,
                 firstname: this.user.firstname,
@@ -177,19 +188,19 @@ export default {
                 password_confirmation: this.user.password_confirmation,
                 permissions: this.user.permissions,
                 role: this.user.role,
-                avatar: this.user.avatar,
-            };
+                avatar: this.user.avatar
+            }
             if (!this.user.id) {
                 this.$store.dispatch('Users/addUser', user)
                     .then(() => {
-                        this.clear();
-                        this.$emit('close', false);
-                    });
+                        this.clear()
+                        this.$emit('close', false)
+                    })
             } else {
                 this.$store.dispatch('Users/updateUser', user)
                     .then(() => {
-                        this.$emit('close', false);
-                    });
+                        this.$emit('close', false)
+                    })
             }
         },
         clear () {
@@ -200,9 +211,9 @@ export default {
                 email: '',
                 permissions: [],
                 role: 0,
-                avatar: '',
-            };
-        },
-    },
-};
+                avatar: ''
+            }
+        }
+    }
+}
 </script>

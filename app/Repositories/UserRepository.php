@@ -160,4 +160,12 @@ class UserRepository
 
         return $ids;
     }
+
+    public function searchUser ($query) {
+        return $this->model->where('name', 'like', "%$query%")
+            ->orWhere('email', 'like', "%$query%")
+            ->orWhere('firstname', 'like', "%$query%")
+            ->orWhere('lastname', 'like', "%$query%")
+            ->get();
+    }
 }

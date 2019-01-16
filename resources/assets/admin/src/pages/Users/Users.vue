@@ -1,75 +1,77 @@
 <template>
-    <v-layout
+    <VLayout
         row
-        wrap 
-        class="d-block">
-        <v-flex xs12 >
-            <v-toolbar
+        wrap
+        class="d-block"
+    >
+        <VFlex xs12>
+            <VToolbar
                 flat
                 light
                 height="40px"
                 class="ub-h"
-                color="white">
-                <v-toolbar-title class="headline">
-                    <v-icon>people</v-icon>
+                color="white"
+            >
+                <VToolbarTitle class="headline">
+                    <VIcon>people</VIcon>
                     Users
-                </v-toolbar-title>
+                </VToolbarTitle>
 
-                <v-spacer />
+                <VSpacer />
 
-                <v-btn
+                <VBtn
                     icon
-                    @click="openform = true">
-                    <v-icon>person_add</v-icon>
-                </v-btn>
+                    @click="openform = true"
+                >
+                    <VIcon>person_add</VIcon>
+                </VBtn>
 
-                <v-btn icon>
-                    <v-icon>apps</v-icon>
-                </v-btn>
+                <VBtn icon>
+                    <VIcon>apps</VIcon>
+                </VBtn>
 
-                <v-btn icon>
-                    <v-icon>refresh</v-icon>
-                </v-btn>
+                <VBtn icon>
+                    <VIcon>refresh</VIcon>
+                </VBtn>
 
-                <v-btn icon>
-                    <v-icon>more_vert</v-icon>
-                </v-btn>
-            </v-toolbar>
-        </v-flex>
+                <VBtn icon>
+                    <VIcon>more_vert</VIcon>
+                </VBtn>
+            </VToolbar>
+        </VFlex>
 
-        <v-flex xs12>
-            <users-table />
-        </v-flex>
+        <VFlex xs12>
+            <UsersTable />
+        </VFlex>
 
-        <v-dialog
+        <VDialog
             v-model="openform"
-            max-width="500px">
-            <user-form @close="openform = false"/>
-        </v-dialog>
-
-    </v-layout>
+            max-width="500px"
+        >
+            <UserForm @close="openform = false" />
+        </VDialog>
+    </VLayout>
 </template>
 
-
 <script>
-import UsersTable from './UsersTable.vue';
-import UserForm from './UserForm.vue';
+import UsersTable from './UsersTable.vue'
+import UserForm from './UserForm.vue'
 
 export default {
     components: {
         UsersTable,
-        UserForm,
+        UserForm
     },
     data () {
         return {
-            openform: false,
-        };
+            openform: false
+        }
     },
     computed: {
     },
     methods: {
-    },
-};
+    }
+}
 </script>
 
 <style>

@@ -14,53 +14,28 @@
                 </VCardTitle>
 
                 <VCardText>
-                    <VFlex xs12>
-                        <VAutocomplete
-                            v-model="friends"
-                            :items="people"
-                            box
-                            chips
-                            label="Select"
-                            item-text="name"
-                            item-value="name"
-                            multiple
-                            @change="searchUser"
-                        >
-                            <template
-                                slot="selection"
-                                slot-scope="data"
-                            >
-                                <VChip
-                                    :selected="data.selected"
-                                    close
-                                    class="chip--select-multi"
-                                    @input="remove(data.item)"
-                                >
-                                    <VAvatar>
-                                        <img :src="data.item.avatar">
-                                    </VAvatar>
-                                    {{ data.item.name }}
-                                </VChip>
-                            </template>
-                            <template
-                                slot="item"
-                                slot-scope="data"
-                            >
-                                <template v-if="typeof data.item !== 'object'">
-                                    <VListTileContent v-text="data.item" />
-                                </template>
-                                <template v-else>
-                                    <VListTileAvatar>
-                                        <img :src="data.item.avatar">
-                                    </VListTileAvatar>
-                                    <VListTileContent>
-                                        <VListTileTitle v-html="data.item.name" />
-                                        <VListTileSubTitle v-html="data.item.group" />
-                                    </VListTileContent>
-                                </template>
-                            </template>
-                        </VAutocomplete>
-                    </VFlex>
+                    <Multiselect
+                        v-model="users"
+                        :options="people"
+                        multiple
+                        searchable
+                        label="name"
+                        :close-on-select="false"
+                        track-by="name"
+                        placeholder="Add User"
+                        @search-change="searchUser"
+                    >
+                        <span slot="noResult">
+                            Oops! No User found.
+                            Consider changing the search query.
+                        </span>
+                    </Multiselect>
+                    <VSelect
+                        v-model="permission"
+                        :items="permissions"
+                        label="Solo field"
+                        solo
+                    />
                 </VCardText>
 
                 <VCardActions>
@@ -69,7 +44,7 @@
                         type="submit"
                         flat
                     >
-                        Craete
+                        Done
                     </VBtn>
                     <VBtn
                         color="error"
@@ -86,8 +61,13 @@
 
 <script>
 import Mixin from './mixin'
+import Multiselect from 'vue-multiselect'
+import { mapState } from 'vuex'
 
 export default {
+    components: {
+        Multiselect
+    },
     $_veeValidate: {
         validator: 'new'
     },
@@ -107,37 +87,60 @@ export default {
             5: 'https://cdn.vuetifyjs.com/images/lists/5.jpg'
         }
         return {
-            friends: ['Sandra Adams', 'Britta Holt'],
+            users: [],
+            people: [],
+            usersearchtime: false,
+            isLoading: false,
             isUpdating: false,
             name: 'Midnight Crew',
-
-            people: [
-                { header: 'Group 1' },
-                { name: 'Sandra Adams', group: 'Group 1', avatar: srcs[1] },
-                { name: 'Ali Connors', group: 'Group 1', avatar: srcs[2] },
-                { name: 'Trevor Hansen', group: 'Group 1', avatar: srcs[3] },
-                { name: 'Tucker Smith', group: 'Group 1', avatar: srcs[2] },
-                { divider: true },
-                { header: 'Group 2' },
-                { name: 'Britta Holt', group: 'Group 2', avatar: srcs[4] },
-                { name: 'Jane Smith ', group: 'Group 2', avatar: srcs[5] },
-                { name: 'John Smith', group: 'Group 2', avatar: srcs[1] },
-                { name: 'Sandra Williams', group: 'Group 2', avatar: srcs[3] }
+            permission: '',
+            permissions: [
+                'Can edit', 'Can download', 'Can view'
             ]
         }
     },
     computed: {
-
+        ...mapState('Media', ['selectedFilesId'])
     },
     methods: {
         onSubmit () {
-
+            let emails = []
+            this.users.map(u => {
+                emails.push(u.email)
+            })
+            let param = {
+                emails: emails,
+                entries: this.selectedFilesId,
+                permissions: { edit: true, view: true, download: true }
+            }
+            axios.post('/api/shares/add-users', param)
+                .then(res => {
+                    console.log(res.data)
+                })
         },
         close () {
             this.$store.commit('Media/shareFileModal', false)
         },
-        searchUser () {
+        searchUser (query) {
+            if (!query.length) return
 
+            this.isLoading = true
+
+            if (this.usersearchtime) {
+                clearTimeout(this.usersearchtime)
+            }
+
+            this.usersearchtime = setTimeout(() => {
+                axios.get('/api/users/search?s=' + query)
+                    .then(response => {
+                        this.people = response.data.data
+                        this.isLoading = false
+                    })
+            }, 500)
+        },
+        remove (item) {
+            let i = this.friends.findIndex(x => x === item.name)
+            this.friends.splice(i, 1)
         }
     }
 }
@@ -146,5 +149,8 @@ export default {
 <style>
 .mpu .v-card__actions {
     border-top: 1px solid #ddd;
+}
+.share-file {
+
 }
 </style>

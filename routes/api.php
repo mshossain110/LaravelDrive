@@ -17,8 +17,9 @@ Route::group([
     'namespace' => 'Api\V1',
 ], function () {
 
-    Route::resource('users', 'UserController', ['except' => ['edit']]);
     Route::delete('users/delete-multiple', 'UserController@deleteMultiple');
+    Route::get('users/search', 'UserController@search');
+    Route::resource('users', 'UserController', ['except' => ['edit']]);
 
     Route::resource('roles', 'RoleController', ['except' => ['edit']]);
     Route::post('roles/{role_id}/attach_users', 'RoleController@attachUser');

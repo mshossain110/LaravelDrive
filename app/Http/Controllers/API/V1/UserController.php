@@ -138,4 +138,16 @@ class UserController extends ApiController
 
         return $this->respondWithMessage("Successfully deleted");
     }
+
+    public function search (Request $request) {
+        $query = $request->get('s');
+        
+        $this->validate($request, [
+            's' => 'required|string|min:1'
+        ]);
+
+        $users = $this->user->searchUser($query);
+        
+        return $this->respondWithCollection($users, new UserTransformer);
+    }
 }
