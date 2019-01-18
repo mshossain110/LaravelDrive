@@ -1,48 +1,51 @@
-const path = require('path');
+const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 /**
  * required variables
  */
-var plugins = [];
+var plugins = []
 
-plugins.push (
+plugins.push(
     new VueLoaderPlugin()
 )
 
 function adminPath (dir = '') {
-    return path.join(__dirname, './resources/assets/admin/src', dir);
+    return path.join(__dirname, './resources/assets/admin/src', dir)
+}
+function assetsPath (dir = '') {
+    return path.join(__dirname, './resources/assets/', dir)
 }
 
 function publicPath (dir = '') {
-    return path.join(__dirname, './public/js', dir);
+    return path.join(__dirname, './public/js', dir)
 }
-
 
 // webpack configaration
 
 module.exports = {
     entry: {
         config: adminPath('config/config.js'),
-        admin: adminPath('main.js')
+        admin: adminPath('main.js'),
+        auth: assetsPath('auth/auth.js')
     },
 
     output: {
         filename: '[name].js',
         path: publicPath(),
-        publicPath: '',
+        publicPath: ''
     },
 
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
-            '@ac' : adminPath('components'),
-            '@ap' : adminPath('pages'),
-            '@au' : adminPath('utils'),
+            '@ac': adminPath('components'),
+            '@ap': adminPath('pages'),
+            '@au': adminPath('utils')
         }
     },
-    
+
     devtool: 'inline-source-map',
 
     module: {
@@ -60,8 +63,8 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
-                },
+                    loader: 'babel-loader'
+                }
             },
 
             {
@@ -70,8 +73,8 @@ module.exports = {
                     'vue-style-loader',
                     'style-loader',
                     'css-loader',
-                    'stylus-loader',
-                ],
+                    'stylus-loader'
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg|woff(2)?|ttf|eot)$/,
@@ -80,9 +83,9 @@ module.exports = {
                     name: '[name].[ext]',
                     outputPath: '../images/',
                     publicPath: '/images/',
-                    useRelativePath: process.env.NODE_ENV === "production"
+                    useRelativePath: process.env.NODE_ENV === 'production'
                 }
-            },
+            }
         ]
     },
 
