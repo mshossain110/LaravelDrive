@@ -47,27 +47,6 @@
                 margin: 0 auto;
             }
 
-            .form-wrap h3 {
-                margin-bottom: 25px;
-                margin-top: 0;
-                text-transform: uppercase;
-                font-weight: 700;
-                font-size: 20px;
-                text-align: center;
-            }
-
-            .form-wrap p {
-                text-align: center;
-            }
-            .form-wrap  a {
-                text-decoration: none;
-                font-size: 13px;
-                font-weight: 700;
-                color: #598bd6;
-            }
-            .form-wrap a:hover {
-                color: #1a5dc3;
-            }
             .form-wrap form, .form-wrap .social-login {
                 position: relative;
                 padding: 25px;
@@ -92,38 +71,7 @@
                 color: #999;
                 font-size: 14px;
             }
-            .form-wrap label {
-                margin-bottom: 12px;
-                display: block;
-                color: #444;
-                text-transform: uppercase;
-                font-size: 12px;
-                letter-spacing: 0.5px;
-                font-weight: 600;
-            }
-
-            .release-contnet {
-                display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
-            }
-
-            .form-wrap .release-contnet #remember {
-                width: 20px;
-                display: inline;
-                height: auto;
-            }
             
-            .login-button button {
-                width: 100%;
-                padding: 10px;
-                background: #0162f5;
-                color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                text-transform: uppercase;
-                margin-top: 30px;
-            }
             .or-wrap {
                 height: 1px;
                 margin: 40px 0px;

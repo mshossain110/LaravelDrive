@@ -1,5 +1,6 @@
 <template>
     <form
+        class="loginform"
         @submit.prevent="login"
     >
         <h3>Login To Our App</h3>
@@ -12,7 +13,6 @@
                 </label>
                 <input
                     v-model="email"
-                    v-validate="'required'"
                     :class="{'input': true, 'is-danger': errors.has('email') }"
                     type="text"
                     name="name"
@@ -31,7 +31,6 @@
                 </label>
                 <input
                     v-model="password"
-                    v-validate="'required'"
                     :class="{'input': true, 'is-danger': errors.has('email') }"
                     type="password"
                     name="password"
@@ -41,7 +40,7 @@
                     v-show="errors.has('email')"
                     class="help is-danger"
                 >
-                    {{ errors.first('email') }}
+                    {{ errors.first('password') }}
                 </span>
             </div>
             <div class="release-contnet">
@@ -77,7 +76,8 @@
 
 <script>
 import axios from 'axios'
-import { Validator } from 'vee-validate'
+
+import Errors from './../Errors.js'
 
 let CsrfToken = document.head.querySelector('meta[name="csrf-token"]')
 export default {
@@ -89,7 +89,8 @@ export default {
         return {
             email: '',
             password: null,
-            remember: false
+            remember: false,
+            errors: new Errors()
         }
     },
     computed: {
@@ -99,15 +100,10 @@ export default {
     },
     methods: {
         login () {
-            this.$validator.validateAll()
             const { email, password, remember } = this
             this.authRequest({ email, password, remember })
-                .then(() => {
-                    // reset state, flags and clears errors.
-                    this.$nextTick(() => {
-                        this.$validator.reset()
-                    })
-                    location.reload()
+                .then((data) => {
+                    location.replace(data.redirectTo)
                 })
         },
         clear () {
@@ -131,11 +127,10 @@ export default {
                     }
                 })
                     .then((res) => {
-                        console.log(res)
                         resolve(res.data)
                     })
                     .catch((err) => {
-                        console.error(err.response)
+                        this.errors.record(err.response.data.errors)
                         reject(err.response.data)
                     })
             })
@@ -143,3 +138,81 @@ export default {
     }
 }
 </script>
+
+<style>
+    .loginform h3 {
+        margin-bottom: 25px;
+        margin-top: 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 20px;
+        text-align: center;
+    }
+    .loginform .help.is-danger {
+        color:red;
+        font-size: 10px;
+    }
+
+    .loginform .input.is-danger {
+        border-color: red;
+    }
+
+    .loginform p {
+        text-align: center;
+    }
+    .loginform  a {
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        color: #598bd6;
+    }
+    .loginform a:hover {
+        color: #1a5dc3;
+    }
+    form.loginform {
+        position: relative;
+        padding: 25px;
+        background-color: #FFF;
+        color: #333;
+    }
+
+    .loginform .form-group {
+        position: relative;
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    .loginform label {
+        margin-bottom: 12px;
+        display: block;
+        color: #444;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .release-contnet {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .login-button .release-contnet #remember {
+        display: inline;
+        width: 20px;
+        height: auto;
+    }
+
+    .login-button button {
+        width: 100%;
+        padding: 10px;
+        background: #0162f5;
+        color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-transform: uppercase;
+        margin-top: 30px;
+    }
+
+</style>

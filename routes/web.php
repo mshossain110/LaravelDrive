@@ -12,13 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
 });
 
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::view('/admin', 'admin.index')->name("admin");
+Route::get('/admin', 'HomeController@admin')->name("admin");
 
 Route::get('/uploads/{id}', 'UploadController@show');

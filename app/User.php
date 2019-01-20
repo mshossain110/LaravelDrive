@@ -91,9 +91,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\UserMeta');
     }
-
-    public function myfunc () {
-        info('called my func');
-    }
     
 }

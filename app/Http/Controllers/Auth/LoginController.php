@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -52,10 +52,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        info("commitnt");
         $token = $user->createToken('laravelAdmin')->accessToken;
         // Cookie::queue(Cookie::make('access_token', $token, 24*60));
-        return false;
+        return ['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token ];
     }
 
         /**
