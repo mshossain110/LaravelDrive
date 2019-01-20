@@ -46,32 +46,6 @@
                 width: 400px;
                 margin: 0 auto;
             }
-
-            .form-wrap form, .form-wrap .social-login {
-                position: relative;
-                padding: 25px;
-                background-color: #FFF;
-                color: #333;
-            }
-            
-            
-
-            .form-wrap .form-group {
-                position: relative;
-                margin-bottom: 25px;
-                text-align: left;
-            }
-
-            .form-wrap input {
-                height: 45px;
-                padding: 5px 15px;
-                width: 100%;
-                border: solid 1px #f4f4f4;
-                transition: all ease-in-out 0.3s;
-                color: #999;
-                font-size: 14px;
-            }
-            
             .or-wrap {
                 height: 1px;
                 margin: 40px 0px;
@@ -90,43 +64,6 @@
                 width: 40px;
                 text-align: center;
             }
-            .social-login h3 {
-                margin-bottom: 5px;
-            }
-            .social-login ul {
-                display: block;
-                overflow: hidden;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-
-            .social-login ul li {
-                display: inline-block;
-                margin: 0;
-                overflow: hidden;
-            }
-
-            .social-login ul li a {
-                display: block;
-                text-decoration: none;
-                overflow: hidden;
-            }
-
-            .social-login ul li img {
-                width: 28px;
-                height: auto;
-            }
-
-            /* .login-form-wrap {
-                display: none;
-            } */
-            .registration-form-wrap {
-                display: none;
-            }
-
-            
-
 
         </style>
     </head>
@@ -137,116 +74,17 @@
             <div class="container">
                 <div class="auth-outer" id="members">
                     <div class="form-wrap login-form-wrap">
-                        <div class="login-form">
+                    
+                        <div v-if="isLogin" class="form-inner">
                             <Login />
-                            <div class="or-wrap"><span>OR</span></div>
-                            <div class="social-login">
-                                <h3>
-                                    Social login
-                                </h3>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-fb.png" alt="facebook">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-in.png" alt="twitter">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-tw.png" alt="google plush">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-gl.png" alt="linked in">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="new">
-                                    <span>Are you new user? <a href="#" class="Sign-up">Sign up</a></span>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="form-wrap registration-form-wrap">
-                                                <!-- registration form -->
-                        <div class="registration-form">
-                        <form role="form" action="" method="post" class="f1">
-                                
-                                <h3>Register To Our App</h3>
-                        		<p>Fill in the form to get instant access</p>
-                                
-                                <div>
-                                    <div class="form-group">
-                        			    <label  for="f1-first-name">First name</label>
-                                        <input type="text" name="f1-first-name" placeholder="First name..." class="f1-first-name form-control" id="f1-first-name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label  for="f1-last-name">Last name</label>
-                                        <input type="text" name="f1-last-name" placeholder="Last name..." class="f1-last-name form-control" id="f1-last-name">
-                                    </div>
-        
 
-                                    <div class="form-group">
-                                        <label  for="f1-email">Email</label>
-                                        <input type="text" name="f1-email" placeholder="Email..." class="f1-email form-control" id="f1-email">
-                                    </div>
-                                    <div class="form-group">
-                                        <label  for="f1-password">Password</label>
-                                        <input type="password" name="f1-password" placeholder="Password..." class="f1-password form-control" id="f1-password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label  for="f1-repeat-password">Repeat password</label>
-                                        <input type="password" name="f1-repeat-password" placeholder="Repeat password..." 
-                                                            class="f1-repeat-password form-control" id="f1-repeat-password">
-                                    </div>
-
-                                    <div class="login-button">
-                                        <button type="submit" name="login">Login</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="or-wrap"><span>OR</span></div>
-                            <div class="social-login">
-                                <h3>
-                                    Social login
-                                </h3>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-fb.png" alt="facebook">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-in.png" alt="twitter">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-tw.png" alt="google plush">
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="/images/social/login-gl.png" alt="linked in">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="new">
-                                    <span>Are you existing user? <a href="#" class="Sign-up">Login</a></span>
-                                </div>
-                            </div>
-
-                            
+                        <div v-if="isRegister" class="form-inner">
+                            <Register />
                         </div>
-                    </div>
-                    <div class="from-wrap forget-form">
-
+                        
+                        
+                        <div class="or-wrap"><span>OR</span></div>
                     </div>
                 </div>
             </div>

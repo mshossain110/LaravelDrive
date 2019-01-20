@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -47,7 +48,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('auth.login');
     }
 
     /**
@@ -77,6 +78,21 @@ class RegisterController extends Controller
             'name'      => $data['name'],
             'email'     => $data['email'],
             'password'  => Hash::make($data['password']),
+            'firstname' => isset($data['firstname']) ? $data['firstname']: null,
+            'lastname' => isset($data['lastname']) ? $data['lastname']: null,
         ]);
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        $token = $user->createToken('laravelAdmin')->accessToken;
+        return ['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token ];
     }
 }

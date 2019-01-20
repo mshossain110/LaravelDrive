@@ -8,9 +8,6 @@
 
         <div>
             <div class="form-group">
-                <label for="name">
-                    User name / Email
-                </label>
                 <input
                     v-model="email"
                     :class="{'input': true, 'is-danger': errors.has('email') }"
@@ -26,12 +23,9 @@
                 </span>
             </div>
             <div class="form-group">
-                <label for="password">
-                    Password
-                </label>
                 <input
                     v-model="password"
-                    :class="{'input': true, 'is-danger': errors.has('email') }"
+                    :class="{'input': true, 'is-danger': errors.has('password') }"
                     type="password"
                     name="password"
                     placeholder="Password..."
@@ -55,12 +49,20 @@
                 </div>
                 <div class="forget-button">
                     <a
-                        href="#"
+                        href="/password/reset/"
                         class=""
                     >
                         Forgot Your Password?
                     </a>
                 </div>
+            </div>
+            <div class="register">
+                <a
+                    href="/register"
+                    class=""
+                >
+                    Register Now
+                </a>
             </div>
             <div class="login-button">
                 <button
@@ -82,9 +84,6 @@ import Errors from './../Errors.js'
 let CsrfToken = document.head.querySelector('meta[name="csrf-token"]')
 export default {
     name: 'Login',
-    $_veeValidate: {
-        validator: 'new'
-    },
     data () {
         return {
             email: '',
@@ -93,16 +92,12 @@ export default {
             errors: new Errors()
         }
     },
-    computed: {
-        authErrors () {
-            return this.$store.getters.authErrors
-        }
-    },
     methods: {
         login () {
             const { email, password, remember } = this
             this.authRequest({ email, password, remember })
                 .then((data) => {
+                    this.clear()
                     location.replace(data.redirectTo)
                 })
         },
@@ -110,7 +105,6 @@ export default {
             this.email = ''
             this.password = null
             this.remember = null
-            this.$validator.reset()
         },
         authRequest (params) {
             let remember = params.remember ? params.remember : false
@@ -148,15 +142,6 @@ export default {
         font-size: 20px;
         text-align: center;
     }
-    .loginform .help.is-danger {
-        color:red;
-        font-size: 10px;
-    }
-
-    .loginform .input.is-danger {
-        border-color: red;
-    }
-
     .loginform p {
         text-align: center;
     }
@@ -169,6 +154,24 @@ export default {
     .loginform a:hover {
         color: #1a5dc3;
     }
+    .loginform input {
+        height: 45px;
+        padding: 5px 15px;
+        width: 100%;
+        border: solid 1px #f4f4f4;
+        transition: all ease-in-out 0.3s;
+        color: #999;
+        font-size: 14px;
+    }
+    .loginform .help.is-danger {
+        color:red;
+        font-size: 10px;
+    }
+
+    .loginform .input.is-danger {
+        border-color: red;
+    }
+
     form.loginform {
         position: relative;
         padding: 25px;
@@ -198,7 +201,7 @@ export default {
         justify-content: space-between;
     }
 
-    .login-button .release-contnet #remember {
+    .loginform .release-contnet #remember {
         display: inline;
         width: 20px;
         height: auto;
@@ -213,6 +216,12 @@ export default {
         border-radius: 5px;
         text-transform: uppercase;
         margin-top: 30px;
+    }
+
+    .loginform .register {
+        margin: -23px 0px 0px 0px;
+        padding: 0;
+        text-align: right;
     }
 
 </style>
