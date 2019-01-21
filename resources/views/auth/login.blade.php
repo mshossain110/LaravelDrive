@@ -85,6 +85,9 @@
                         
                         
                         <div class="or-wrap"><span>OR</span></div>
+                        <div class="social-login">
+                            <Social />
+                        </div>
                     </div>
                 </div>
             </div>
