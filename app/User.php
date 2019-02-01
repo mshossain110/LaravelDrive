@@ -40,15 +40,26 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     static $status = [
-        '0' => 'Inactive',
-        '1' => 'Active',
-        '2' => "Pandding",
-        '3' => "Baned"
+        '0' => 'inactive',
+        '1' => 'active',
+        '2' => "pandding",
+        '3' => "baned"
     ];
 
     public function getStatusAttribute ( $value ) {
         if ( array_key_exists( $value, self::$status ) ) {
             return self::$status[$value];
+        }
+    }
+
+    public function setStatusAttribute( $value ) {
+        $value = strtolower( $value );
+        $key   = array_search( $value, self::$status );
+
+        if ( array_key_exists( $value, self::$status ) ) {
+            $this->attributes['status'] = $value;
+        } else {
+            $this->attributes['status'] = $key;
         }
     }
 

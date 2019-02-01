@@ -2,14 +2,15 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "cross-env webpack --mode development --progress --hide-modules",
+        "development": "cross-env NODE_ENV=development webpack --mode development --progress --hide-modules",
         "watch": "npm run development -- --watch",
         "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env webpack --mode development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot",
+        "hot": "cross-env NODE_ENV=development webpack --mode development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot",
         "prod": "npm run production",
-        "production": "cross-env webpack --mode production --no-progress --hide-modules"
+        "production": "cross-env NODE_ENV=production webpack --mode production --no-progress --hide-modules"
     },
     "devDependencies": {
+        "autoprefixer": "^9.4.7",
         "babel-core": "^6.26.3",
         "babel-eslint": "^9.0.0",
         "babel-loader": "^7.1.5",
@@ -31,7 +32,14 @@
         "eslint-plugin-vue-libs": "^3.0.0",
         "file-loader": "^2.0.0",
         "lodash": "^4.17.11",
+        "mini-css-extract-plugin": "^0.5.0",
+        "optimize-css-assets-webpack-plugin": "^5.0.1",
+        "postcss-import": "^12.0.1",
+        "postcss-load-config": "^2.0.0",
+        "postcss-loader": "^3.0.0",
+        "postcss-nested": "^4.1.1",
         "style-loader": "^0.22.1",
+        "uglifyjs-webpack-plugin": "^2.1.1",
         "vue-eslint-parser": "^4.0.3",
         "vue-loader": "^15.4.2",
         "vue-style-loader": "^4.1.2",

@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->ipAddress('ip')->nullable();;
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
