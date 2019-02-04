@@ -1,30 +1,40 @@
 <template>
-    <v-app id="inspire" light>
-        <v-navigation-drawer
-            :clipped="$vuetify.breakpoint.lgAndUp"
+    <VApp
+        id="inspire"
+        light
+    >
+        <VNavigationDrawer
             v-model="drawer"
+            :clipped="$vuetify.breakpoint.lgAndUp"
             width="240"
             fixed
-            app>
-            <menu-items />
-        </v-navigation-drawer>
+            app
+        >
+            <MenuItems />
+        </VNavigationDrawer>
 
-        <v-toolbar
+        <VToolbar
             :clipped-left="$vuetify.breakpoint.lgAndUp"
             color="white"
             flat
             light
             app
-            fixed>
-
-            <v-toolbar-title
+            fixed
+        >
+            <VToolbarTitle
                 style="width: 240px"
-                class="ml-0 pl-3">
-                <v-toolbar-side-icon @click.stop="drawer = !drawer" />
-                <span class="hidden-sm-and-down"><img src="./../../images/logo.png"  width="150px"/></span>
-            </v-toolbar-title>
+                class="ml-0 pl-3"
+            >
+                <VToolbarSideIcon @click.stop="drawer = !drawer" />
+                <span class="hidden-sm-and-down">
+                    <img
+                        src="./../../images/logo.png"
+                        width="150px"
+                    >
+                </span>
+            </VToolbarTitle>
 
-            <v-text-field
+            <VTextField
                 flat
                 solo
                 box
@@ -32,69 +42,70 @@
                 prepend-inner-icon="search"
                 placeholder="Search"
                 class="hidden-sm-and-down la-search"
-            ></v-text-field>
+            />
 
-            <v-spacer />
+            <VSpacer />
 
-            <v-btn icon>
-                <v-icon>apps</v-icon>
-            </v-btn>
+            <VBtn icon>
+                <VIcon>apps</VIcon>
+            </VBtn>
 
-            <v-btn icon>
-                <v-icon>notifications</v-icon>
-            </v-btn>
-            <user-info v-if="isAuthenticated" />
+            <VBtn icon>
+                <VIcon>notifications</VIcon>
+            </VBtn>
+            <UserInfo v-if="isAuthenticated" />
+        </VToolbar>
 
-        </v-toolbar>
-
-        <v-content>
-            <v-container
+        <VContent>
+            <VContainer
                 fluid
-                fill-height>
-                <v-layout >
-
-                    <transition>
-                        <keep-alive>
-                            <router-view/>
-                        </keep-alive>
-                    </transition>
+                fill-height
+            >
+                <VLayout>
+                    <Transition>
+                        <KeepAlive>
+                            <RouterView />
+                        </KeepAlive>
+                    </Transition>
                     <template v-if="snackbar.show">
-                        <v-snackbar
+                        <VSnackbar
                             v-model="snackbar.show"
                             :color="snackbar.color"
                             :right="true"
                             :bottom="true"
-                            :timeout="6000">
+                            :timeout="6000"
+                        >
                             {{ snackbar.message }}
-                            <v-btn
+                            <VBtn
                                 dark
                                 flat
-                                @click="hideSnackbar()">
+                                @click="hideSnackbar()"
+                            >
                                 Close
-                            </v-btn>
-                        </v-snackbar>
+                            </VBtn>
+                        </VSnackbar>
                     </template>
 
                     <template v-if="!isAuthenticated">
-                        <v-dialog
+                        <VDialog
                             :value="!isAuthenticated"
                             persistent
                             width="500"
-                            >
-                            <login />
-                        </v-dialog>
+                        >
+                            <Login />
+                        </VDialog>
                     </template>
-                </v-layout>
-            </v-container>
-        </v-content>
-    </v-app>
+                </VLayout>
+            </VContainer>
+        </VContent>
+    </VApp>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import MenuItems from './MenuItems.vue';
+import { mapState } from 'vuex'
+import MenuItems from './MenuItems.vue'
 import Login from '@ac/auth/login.vue'
-import UserInfo from './UserInfo.vue';
+import UserInfo from './UserInfo.vue'
 
 export default {
     components: {
@@ -108,19 +119,19 @@ export default {
     data: () => (
         {
             dialog: false,
-            drawer: null,
+            drawer: null
         }
     ),
     computed: {
-        ...mapState(['snackbar', 'isAuthenticated']),
+        ...mapState(['snackbar', 'isAuthenticated'])
     },
     methods: {
-        hideSnackbar() {
-            this.$store.commit('setSnackbarHide');
-        },
+        hideSnackbar () {
+            this.$store.commit('setSnackbarHide')
+        }
 
-    },
-};
+    }
+}
 </script>
 
 <style>
@@ -128,4 +139,3 @@ export default {
     margin-top: 0px;
 }
 </style>
-
