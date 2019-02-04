@@ -42,6 +42,7 @@
                 </td>
                 <td>
                     <VAvatar
+                        v-if="props.item.avatar"
                         :title="props.item.firstname"
                         :size="32"
                         color="grey lighten-4"
@@ -50,6 +51,14 @@
                             :src="props.item.avatar"
                             :alt="props.item.firstname"
                         >
+                    </VAvatar>
+                    <VAvatar
+                        :style="getRandomColor()"
+                        :size="32"
+                    >
+                        <span class="white--text headline">
+                            {{ props.item.name.charAt(0).toUpperCase() }}
+                        </span>
                     </VAvatar>
                 </td>
                 <td>{{ props.item.firstname }}</td>
@@ -88,7 +97,7 @@
         <div class="text-xs-left pt-2">
             <VPagination
                 v-model="currentpage"
-                :length="pagination.count"
+                :length="pagination.total_pages"
             />
         </div>
         <VDialog
@@ -173,6 +182,15 @@ export default {
                 .then(() => {
                     this.$forceUpdate()
                 })
+        },
+        getRandomColor () {
+            const h = Math.floor(Math.random() * 360)
+            const s = Math.floor(Math.random() * 100) + '%'
+            const l = Math.floor(Math.random() * 60) + '%'
+
+            return {
+                backgroundColor: `hsl(${h},${s},${l})`
+            }
         }
     }
 }
