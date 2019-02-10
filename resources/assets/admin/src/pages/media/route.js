@@ -1,15 +1,15 @@
-import Media from './Media'
+import MyDrive from './MyDrive'
 
 const MediaRoute = [
     {
         path: 'media',
         name: 'media',
-        component: Media
+        component: MyDrive
     },
     {
         path: 'media/folder/:folderId',
         name: 'singleFolder',
-        component: Media
+        component: MyDrive
     }
 ]
 

@@ -1,81 +1,76 @@
 <template>
-    <v-dialog
-      :value="open"
-      class="mpu"
-      width="500"
-      persistent
+    <VDialog
+        :value="open"
+        class="mpu"
+        width="500"
+        persistent
     >
-    <form @submit.prevent="onSubmit">
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-        >
-          Rename File
-        </v-card-title>
+        <form @submit.prevent="onSubmit">
+            <VCard>
+                <VCardTitle
+                    class="headline grey lighten-2"
+                >
+                    Rename File
+                </VCardTitle>
 
-        <v-card-text>
-          
-                <v-text-field
-                v-validate="'required'"
-                v-model="selectedMedia.name"
-                :error-messages="errors.collect('name')"
-                label="Name"
-                data-vv-name="name"
-                required
-                ></v-text-field>
-                
-            
-        </v-card-text>
+                <VCardText>
+                    <VTextField
+                        v-model="selectedMedia.name"
+                        v-validate="'required'"
+                        :error-messages="errors.collect('name')"
+                        label="Name"
+                        data-vv-name="name"
+                        required
+                    />
+                </VCardText>
 
-        <v-card-actions>
-         
-          <v-btn
-            color="info"
-            type="submit"
-            flat
-          >
-            Rename
-          </v-btn>
-          <v-btn
-            color="error"
-            flat
-            @click="close"
-          >
-            Cancel
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      </form>
-    </v-dialog>
+                <VCardActions>
+                    <VBtn
+                        color="info"
+                        type="submit"
+                        flat
+                    >
+                        Rename
+                    </VBtn>
+                    <VBtn
+                        color="error"
+                        flat
+                        @click="close"
+                    >
+                        Cancel
+                    </VBtn>
+                </VCardActions>
+            </VCard>
+        </form>
+    </VDialog>
 </template>
 
-
 <script>
-import { mapState } from "vuex";
-import Mixin from './mixin';
+import { mapState } from 'vuex'
+import Mixin from './mixin'
 
 export default {
     $_veeValidate: {
-      validator: 'new'
+        validator: 'new'
     },
+    mixins: [Mixin],
     props: {
         open: {
             type: Boolean,
-            default: false,
+            default: false
         }
     },
     data () {
         return {
-            //name: this.selectedMedia.name,
+            // name: this.selectedMedia.name,
         }
     },
-    mixins: [Mixin],
     computed: {
-        ...mapState('Media', [ 'selectedMedia']),
+        ...mapState('Media', ['selectedMedia'])
     },
     methods: {
         onSubmit () {
-            this.$validator.validateAll();
+            this.$validator.validateAll()
             const item = {
                 name: this.selectedMedia.name,
                 id: this.selectedMedia.id
@@ -85,10 +80,9 @@ export default {
                 .then(() => {
                     this.close()
                 })
-
         },
         close () {
-            this.$store.commit('Media/renamefilemodal', false);
+            this.$store.commit('Media/renamefilemodal', false)
         }
     }
 }
