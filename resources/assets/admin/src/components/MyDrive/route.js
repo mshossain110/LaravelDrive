@@ -10,6 +10,11 @@ const MediaRoute = [
         path: 'media/folder/:folderId',
         name: 'singleFolder',
         component: MyDrive
+    },
+    {
+        path: 'media/starred',
+        name: 'starred',
+        component: MyDrive
     }
 ]
 

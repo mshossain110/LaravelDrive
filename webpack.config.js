@@ -55,7 +55,6 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
             '@ac': adminPath('components'),
-            '@ap': adminPath('pages'),
             '@au': adminPath('utils')
         }
     },

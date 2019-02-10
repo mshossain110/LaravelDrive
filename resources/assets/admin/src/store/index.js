@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UsersStore from '@ap/users/store'
-import MediaStore from '@ap/media/store'
+import UsersStore from '@ac/users/store'
+import MyDriveStore from '@ac/MyDrive/store'
 
 Vue.use(Vuex)
 
@@ -62,6 +62,6 @@ export default new Vuex.Store({
     },
     modules: {
         Users: UsersStore,
-        Media: MediaStore
+        Media: MyDriveStore
     }
 })

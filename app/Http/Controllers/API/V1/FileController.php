@@ -13,6 +13,7 @@ use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 use App\File;
+use App\Tag;
 use Auth;
 use DB;
 
@@ -29,13 +30,19 @@ class FileController extends ApiController
 
     public function index (Request $request) {
         $parent_id = $request->get('parent_id');
+        $starred = $request->get('starred');
 
-        $folder = $this->file->getFolder($parent_id);
+        if ($starred) {
+            $files = Tag::where('name', 'starred')->first()->files()->wherePivot('user_id', Auth::id())->get();
 
-        $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
-                ->where('parent_id', $folder ? $folder->id : 0)
-                ->where('created_by', Auth::id())
-                ->get();
+        } else {
+            $folder = $this->file->getFolder($parent_id);
+
+            $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
+                    ->where('parent_id', $folder ? $folder->id : 0)
+                    ->where('created_by', Auth::id())
+                    ->get();
+        }
 
     	return $this->respondWithCollection($files, new FileTransformer);
     }

@@ -2,7 +2,7 @@
     <VLayout class="d-block">
         <VLayout class="d-block">
             <VFlex xs12>
-                <MediaToolbar />
+                <MediaToolbar v-if="!isStarred" />
             </VFlex>
         </VLayout>
 
@@ -85,17 +85,33 @@ export default {
         ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
+        },
+        isStarred () {
+            return this.$route.name === 'starred'
         }
     },
     watch: {
         '$route' (to, from) {
-            this.loadMediaItems({
-                parent_id: to.params.folderId
-            })
+            let params = {}
+            if (to.params.folderId) {
+                params.parent_id = to.params.folderId
+            }
+            if (to.name === 'starred') {
+                params.starred = to.name === 'starred'
+            }
+
+            this.loadMediaItems(params)
         }
     },
     created () {
-        this.loadMediaItems()
+        let params = {}
+        if (this.$route.params.folderId) {
+            params.parent_id = this.$route.params.folderId
+        }
+        if (this.$route.name === 'starred') {
+            params.starred = this.$route.name === 'starred'
+        }
+        this.loadMediaItems(params)
         this.loadFolders()
     },
     mounted () {
