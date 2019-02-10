@@ -1,50 +1,78 @@
 <template>
-    <div class="media-item" :class="{ 'seleted': isSelected }"  >
+    <div
+        class="media-item"
+        :class="{ 'seleted': isSelected }"
+    >
         <div class="card-inner">
-            <div class="la-file-name"  >
-                <div class="fi" :class="mediaIcon.type" :style="{ color: mediaIcon.color }">
-                    <div class="la-fia" v-if="mediaIcon.avatar">
-                        <v-avatar   size="166" tile v-html="mediaIcon.icon"></v-avatar>
+            <div class="la-file-name">
+                <div
+                    class="fi"
+                    :class="mediaIcon.type"
+                    :style="{ color: mediaIcon.color }"
+                >
+                    <div
+                        v-if="mediaIcon.avatar"
+                        class="la-fia"
+                    >
+                        <VAvatar
+                            size="166"
+                            tile
+                            v-html="mediaIcon.icon"
+                        />
                     </div>
-                    
-                    <div v-else class="la-fii">
-                        <v-img
+
+                    <div
+                        v-else
+                        class="la-fii"
+                    >
+                        <VImg
                             v-if="media.type == 'image'"
                             :src="fileUrl"
                             height="166"
-                            :lazy-src="fileUrl" >
-                            </v-img>
+                            :lazy-src="fileUrl"
+                        />
                     </div>
-                    
-
                 </div>
-                
+
                 <div class="fn">
                     <div class="fn-i">
-                        <span class="fn-i-i" :style="{ color: mediaIcon.color }" size="15" tile v-html="mediaIcon.icon">
-                          </span>
+                        <span
+                            class="fn-i-i"
+                            :style="{ color: mediaIcon.color }"
+                            size="15"
+                            tile
+                            v-html="mediaIcon.icon"
+                        />
                         <div class="fn-i-t">
-                            <span class="filename" v-text="media.name" v-if="!media.edit"></span>
+                            <span
+                                v-if="!media.edit"
+                                class="filename"
+                                v-text="media.name"
+                            />
                         </div>
                     </div>
-                    
                 </div>
-                
-                <span class="fstared material-icons" v-if="media.stared"  size="15" tile>star</span>
+
+                <span
+                    v-if="media.stared"
+                    class="fstared material-icons"
+                    size="15"
+                    tile
+                >
+                    star
+                </span>
             </div>
-           
         </div>
-    
     </div>
 </template>
 
-
 <script>
 
-import Mixins from './mixin';
-import { mapState } from 'vuex';
+import Mixins from './mixin'
+import { mapState } from 'vuex'
 
 export default {
+    mixins: [Mixins],
     props: {
         media: {
             type: Object,
@@ -55,47 +83,44 @@ export default {
     data () {
         return {
             error: '',
-            submitting: false,
+            submitting: false
         }
     },
-    mixins: [Mixins],
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         mediaIcon () {
             return this.getMediaIcon(this.media.type)
         },
         fileUrl () {
-            return window.location.origin +'/'+ this.media.url;
+            return window.location.origin + '/' + this.media.url
         },
         isSelected () {
-            return this.selectedFilesId.findIndex(x => x == this.media.id) !== -1 ;
+            return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1
         }
     },
     methods: {
         renameMedia () {
-
             if (this.submitting) {
-                return;
+                return
             }
 
-            this.submitting = true;
+            this.submitting = true
 
-            if (this.media.name == '') {
+            if (this.media.name === '') {
                 this.$store.commit('setSnackbar',
-                        {
-                            message: 'Folder Name should not be null.',
-                            status: '',
-                            color: 'error',
-                            show: true,
-                        },
-                        { root: true });
-                this.$refs.medaiName.focus();
-                this.submitting = false;
-                return;
+                    {
+                        message: 'Folder Name should not be null.',
+                        status: '',
+                        color: 'error',
+                        show: true
+                    },
+                    { root: true })
+                this.$refs.medaiName.focus()
+                this.submitting = false
+                return
             }
 
             this.$emit('rename', this.media)
-
         }
 
     }
@@ -134,7 +159,6 @@ export default {
     justify-content: flex-start;
     align-items: center;
     height: 100%;
-    
 }
 .media-item .fn-i-i {
     padding: 0px 10px;
@@ -151,10 +175,9 @@ export default {
     vertical-align: middle;
 }
 .media-item .fn .fn-i-i [class^="flaticon-"]:before, .media-item .fn .fn-i-i  [class*=" flaticon-"]:before,
-.media-item .fn .fn-i-i [class^="flaticon-"]:after, .media-item .fn .fn-i-i  [class*=" flaticon-"]:after { 
+.media-item .fn .fn-i-i [class^="flaticon-"]:after, .media-item .fn .fn-i-i  [class*=" flaticon-"]:after {
     font-size: 16px;
     margin: 0;
-    
 }
 
 .media-item .fi .lafi.material-icons {
@@ -163,7 +186,7 @@ export default {
 }
 
 .media-item .fi [class^="flaticon-"]:before, .media-item .fi [class*=" flaticon-"]:before,
-.media-item .fi [class^="flaticon-"]:after, .media-item .fi [class*=" flaticon-"]:after { 
+.media-item .fi [class^="flaticon-"]:after, .media-item .fi [class*=" flaticon-"]:after {
     font-size: 90px;
     margin: 0;
 }
@@ -175,5 +198,4 @@ export default {
     color: #d4a002;
 }
 
-    
 </style>

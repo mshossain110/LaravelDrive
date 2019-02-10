@@ -110,7 +110,7 @@ class FileRepository
             $folderId = (int) $folderId;
         }
 
-        return $this->getById($folderId );
+        return $this->model->withTrashed()->findOrFail($folderId);
     }
 
     /**

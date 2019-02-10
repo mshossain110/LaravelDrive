@@ -31,19 +31,29 @@ class FileController extends ApiController
     public function index (Request $request) {
         $parent_id = $request->get('parent_id');
         $starred = $request->get('starred');
+        $trash = $request->get('trash');
 
         if ($starred) {
             $files = Tag::where('name', 'starred')->first()->files()->wherePivot('user_id', Auth::id())->get();
 
-        } else {
+        } 
+        else if($trash) {
             $folder = $this->file->getFolder($parent_id);
 
+            $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
+                ->where('parent_id', $folder ? $folder->id : 0)
+                ->where('created_by', Auth::id())
+                ->get();
+        } 
+        else {
+            $folder = $this->file->getFolder($parent_id);
+            
             $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
                     ->where('parent_id', $folder ? $folder->id : 0)
                     ->where('created_by', Auth::id())
                     ->get();
         }
-
+        
     	return $this->respondWithCollection($files, new FileTransformer);
     }
 

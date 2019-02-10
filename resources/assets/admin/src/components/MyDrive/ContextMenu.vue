@@ -78,73 +78,102 @@ export default {
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         items () {
-            if (this.file.hasOwnProperty('id')) {
-                return [
-                    {
-                        title: 'Preview',
-                        icon: 'visibility',
-                        action: ''
-                    },
-                    {
-                        title: 'Share',
-                        icon: 'supervisor_account',
-                        action: this.shareFiles
-                    },
-                    {
-                        title: 'Get shareable link',
-                        icon: 'link',
-                        action: ''
-                    },
-                    {
-                        title: this.file.stared ? 'Removed from star' : 'Add a star',
-                        icon: 'grade',
-                        action: this.manageStar
-                    },
-                    {
-                        title: 'Move to',
-                        icon: 'call_missed_outgoing',
-                        action: this.moveTo
-                    },
-                    {
-                        title: 'Rename',
-                        icon: 'edit',
-                        action: this.openRenameModel
-                    },
-                    {
-                        title: 'Make a copy',
-                        icon: 'file_copy',
-                        action: this.copyFiles
-                    },
-                    {
-                        title: 'Download',
-                        icon: 'cloud_download',
-                        action: this.downloadFile
-                    },
-                    {
-                        title: 'Delete',
-                        icon: 'delete',
-                        action: this.deleteItems
-                    }
-                ]
+            if (this.file.hasOwnProperty('id') && this.file.deleted_at === null) {
+                return this.menuitems.filter(i => i.show === 'items')
+            } else if (this.file.hasOwnProperty('id') && this.file.deleted_at !== null) {
+                return this.menuitems.filter(i => i.show === 'trash')
             } else {
-                return [
-                    {
-                        title: 'New Folder',
-                        icon: 'create_new_folder',
-                        action: this.openNewFolderModal
-                    },
-                    {
-                        title: 'Upload files',
-                        icon: 'cloud_upload',
-                        action: this.openDropZone
-                    },
-                    {
-                        title: 'Upload Folder',
-                        icon: 'folder_open',
-                        action: this.uploadFolder
-                    }
-                ]
+                return this.menuitems.filter(i => i.show === 'back')
             }
+        },
+
+        menuitems () {
+            return [
+                {
+                    title: 'Preview',
+                    icon: 'visibility',
+                    show: 'items',
+                    action: ''
+                },
+                {
+                    title: 'Share',
+                    icon: 'supervisor_account',
+                    show: 'items',
+                    action: this.shareFiles
+                },
+                {
+                    title: 'Get shareable link',
+                    icon: 'link',
+                    show: 'items',
+                    action: ''
+                },
+                {
+                    title: this.file.stared ? 'Removed from star' : 'Add a star',
+                    icon: 'grade',
+                    show: 'items',
+                    action: this.manageStar
+                },
+                {
+                    title: 'Move to',
+                    icon: 'call_missed_outgoing',
+                    show: 'items',
+                    action: this.moveTo
+                },
+                {
+                    title: 'Rename',
+                    icon: 'edit',
+                    show: 'items',
+                    action: this.openRenameModel
+                },
+                {
+                    title: 'Make a copy',
+                    icon: 'file_copy',
+                    show: 'items',
+                    action: this.copyFiles
+                },
+                {
+                    title: 'Download',
+                    icon: 'cloud_download',
+                    show: 'items',
+                    action: this.downloadFile
+                },
+                {
+                    title: 'Delete',
+                    icon: 'delete',
+                    show: 'items',
+                    action: this.deleteItems
+                },
+                {
+                    title: 'New Folder',
+                    icon: 'create_new_folder',
+                    show: 'back',
+                    action: this.openNewFolderModal
+                },
+                {
+                    title: 'Upload files',
+                    icon: 'cloud_upload',
+                    show: 'back',
+                    action: this.openDropZone
+                },
+                {
+                    title: 'Upload Folder',
+                    icon: 'folder_open',
+                    show: 'back',
+                    action: this.uploadFolder
+                },
+                {
+                    title: 'Restore files',
+                    icon: 'restore',
+                    show: 'trash',
+                    action: this.restore
+                },
+                {
+                    title: 'Delete Forever',
+                    icon: 'delete_forever',
+                    show: 'trash',
+                    action: this.deleteForever
+                }
+            ]
         }
     },
     methods: {
@@ -179,6 +208,12 @@ export default {
         },
         downloadFile () {
             this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
+        },
+        restore () {
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'restore' })
+        },
+        deleteForever () {
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'deleteforever' })
         }
     }
 }

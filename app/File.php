@@ -52,7 +52,7 @@ class File extends Model
      */
     public function children()
     {
-        return $this->hasMany(static::class, 'folder_id')->withoutGlobalScope('fsType');
+        return $this->hasMany(static::class, 'folder_id');
     }
 
     /**

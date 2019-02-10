@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import UsersStore from '@ac/users/store'
+import UsersStore from '@ac/Users/store'
 import MyDriveStore from '@ac/MyDrive/store'
 
 Vue.use(Vuex)

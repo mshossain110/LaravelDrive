@@ -2,7 +2,7 @@
     <VLayout class="d-block">
         <VLayout class="d-block">
             <VFlex xs12>
-                <MediaToolbar v-if="!isStarred" />
+                <MediaToolbar v-if="!isStarredPage && !isTrashPage" />
             </VFlex>
         </VLayout>
 
@@ -86,18 +86,25 @@ export default {
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
         },
-        isStarred () {
+        isStarredPage () {
             return this.$route.name === 'starred'
+        },
+        isTrashPage () {
+            return this.$route.name === 'trash' || this.$route.name === 'trashFolder'
         }
     },
     watch: {
         '$route' (to, from) {
             let params = {}
-            if (to.params.folderId) {
+            if (typeof to.params.folderId !== 'undefined') {
                 params.parent_id = to.params.folderId
             }
             if (to.name === 'starred') {
                 params.starred = to.name === 'starred'
+            }
+
+            if (to.name === 'trash' || to.name === 'trashFolder') {
+                params.trash = to.name === 'trash'
             }
 
             this.loadMediaItems(params)
@@ -105,11 +112,14 @@ export default {
     },
     created () {
         let params = {}
-        if (this.$route.params.folderId) {
+        if (typeof this.$route.params.folderId !== 'undefined') {
             params.parent_id = this.$route.params.folderId
         }
         if (this.$route.name === 'starred') {
             params.starred = this.$route.name === 'starred'
+        }
+        if (this.$route.name === 'trash' || this.$route.name === 'trashFolder') {
+            params.trash = this.$route.name === 'trash'
         }
         this.loadMediaItems(params)
         this.loadFolders()
@@ -168,16 +178,23 @@ export default {
             let isMultiSelect = event.ctrlKey || event.metaKey
 
             if (!isMultiSelect && item.type === 'folder' && !this.fileCm) {
-                this.$router.push({
-                    name: 'singleFolder',
-                    params: {
-                        folderId: item.hash
-                    }
-                })
+                this.pushChiled(item)
             }
 
             this.$store.commit('Media/selectFiles', { isMultiSelect: isMultiSelect, id: item.id })
             this.$store.commit('Media/selectMediaItem', item)
+        },
+        pushChiled (item) {
+            let name = 'singleFolder'
+            if (this.$route.name === 'trash' || this.$route.name === 'trashFolder') {
+                name = 'trashFolder'
+            }
+            this.$router.push({
+                name: name,
+                params: {
+                    folderId: item.hash
+                }
+            })
         },
         deselect () {
             if (this.clickedOnItem) {

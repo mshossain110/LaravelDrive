@@ -15,6 +15,16 @@ const MediaRoute = [
         path: 'media/starred',
         name: 'starred',
         component: MyDrive
+    },
+    {
+        path: 'media/trash',
+        name: 'trash',
+        component: MyDrive
+    },
+    {
+        path: 'media/trash/:folderId',
+        name: 'trashFolder',
+        component: MyDrive
     }
 ]
 
