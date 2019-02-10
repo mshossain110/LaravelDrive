@@ -1,5 +1,6 @@
 <template>
     <VMenu
+        v-if="items.length"
         v-model="showMenu"
         :position-x="x"
         :position-y="y"
@@ -82,9 +83,11 @@ export default {
                 return this.menuitems.filter(i => i.show === 'items')
             } else if (this.file.hasOwnProperty('id') && this.file.deleted_at !== null) {
                 return this.menuitems.filter(i => i.show === 'trash')
-            } else {
+            } else if (this.$route.name === 'media' || this.$route.name === 'singleFolder') {
                 return this.menuitems.filter(i => i.show === 'back')
             }
+
+            return []
         },
 
         menuitems () {
