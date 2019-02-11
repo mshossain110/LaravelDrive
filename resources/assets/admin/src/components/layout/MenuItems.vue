@@ -31,6 +31,7 @@
                 <VListTile
                     slot="activator"
                     :to="{name:item.name }"
+                    :disabled="item.disabled"
                 >
                     <VListTileContent>
                         <VListTileTitle>
@@ -43,6 +44,7 @@
                     v-for="(child, i) in item.children"
                     :key="i"
                     :to="{name:child.name }"
+                    :disabled="item.disabled"
                 >
                     <VListTileAction v-if="child.icon">
                         <VIcon>{{ child.icon }}</VIcon>
@@ -60,6 +62,7 @@
                 v-else
                 :key="item.name"
                 :to="{name:item.name }"
+                :disabled="item.disabled"
             >
                 <VListTileAction>
                     <VIcon>{{ item.icon }}</VIcon>
@@ -80,18 +83,18 @@ export default {
     data () {
         return {
             items: [
-                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard' },
+                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false },
                 { heading: 'Users' },
-                { icon: 'people', text: 'Users', name: 'users' },
-                { icon: 'fingerprint', text: 'Roles', name: 'users-role' },
+                { icon: 'people', text: 'Users', name: 'users', disabled: false },
+                { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false },
                 { heading: 'My Drive' },
-                { icon: 'perm_media', text: 'My Files', name: 'media' },
-                { icon: 'people', text: 'Shared with me', name: 'shared' },
-                { icon: 'watch_later', text: 'Recent', name: 'recent' },
-                { icon: 'star', text: 'Starred', name: 'starred' },
-                { icon: 'delete_forever', text: 'Trash', name: 'trash' },
+                { icon: 'perm_media', text: 'My Files', name: 'media', disabled: false },
+                { icon: 'people', text: 'Shared with me', name: 'shared', disabled: true },
+                { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
+                { icon: 'star', text: 'Starred', name: 'starred', disabled: false },
+                { icon: 'delete_forever', text: 'Trash', name: 'trash', disabled: false },
                 { heading: 'Admin Settings' },
-                { icon: 'settings', text: 'Settings', name: 'settings' }
+                { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
             ]
         }
     },
@@ -120,6 +123,11 @@ export default {
 
     .la-side-menu .v-subheader {
         border-top: 1px solid #ddd;
+    }
+
+    .v-list--disabled a.v-list__tile--disabled {
+        color: #aaaaaa !important;
+        caret-color: #aaaaaa !important;
     }
 
 </style>
