@@ -25,7 +25,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    var user = LA.user
+    var user = LD.user
 
     if (user) {
         store.commit('auth', true)

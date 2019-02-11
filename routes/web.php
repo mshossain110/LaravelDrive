@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect('/drive');
 });
 
 Auth::routes(['verify' => true]);
@@ -23,7 +23,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/admin', 'HomeController@admin')->name("admin");
+    Route::get('/drive', 'HomeController@drive')->name("drive");
 
     Route::get('/uploads/{id}', 'UploadController@show');
     // Socialite Register Routes

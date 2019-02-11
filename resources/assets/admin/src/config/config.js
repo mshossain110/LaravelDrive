@@ -30,7 +30,7 @@ if (token) {
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let bearer = LA.token
+let bearer = LD.token
 
 if (bearer) {
     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer

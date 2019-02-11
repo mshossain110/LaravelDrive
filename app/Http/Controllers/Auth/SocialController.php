@@ -106,14 +106,14 @@ class SocialController extends Controller
 
             auth()->login($socialUser, true);
 
-            return redirect()->to('admin');
+            return redirect()->to('drive');
         }
 
         $socialUser = $userCheck;
 
         auth()->login($socialUser, true);
 
-        return redirect()->to('admin');
+        return redirect()->to('drive');
     }
 
     /**

@@ -1,9 +1,8 @@
 
-
 export default {
     data () {
         return {
-            currentUser: LA.user,  /*globals LA:true*/
+            currentUser: LD.user /* globals LD:true */
         }
     },
     created () {
@@ -14,9 +13,8 @@ export default {
             if (this.currentUser.firstname || this.currentUser.lastname) {
                 return this.currentUser.firstname + ' ' + this.currentUser.lastname
             } else {
-                return this.currentUser.name;
+                return this.currentUser.name
             }
-            
         }
     },
 

@@ -14,7 +14,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {  
            // Using Closure based composers...
-            View::composer('admin.index', 'App\Http\ViewComposers\AdminComposer');
+            View::composer('drive.index', 'App\Http\ViewComposers\AdminComposer');
             
     }
 
