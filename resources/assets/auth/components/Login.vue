@@ -64,6 +64,13 @@
                     Register Now
                 </a>
             </div>
+            <div
+                class="demo"
+                @click.prevent="setDemo()"
+            >
+                <code>User: admin@admin.com</code>
+                <code>password: admin123</code>
+            </div>
             <div class="login-button">
                 <button
                     type="submit"
@@ -104,6 +111,10 @@ export default {
             this.email = ''
             this.password = null
             this.remember = null
+        },
+        setDemo () {
+            this.email = 'admin@admin.com'
+            this.password = 'admin123'
         }
     }
 }
@@ -198,6 +209,16 @@ export default {
         margin: -23px 0px 0px 0px;
         padding: 0;
         text-align: right;
+    }
+    .demo {
+        padding: 5px;
+        background: #525252;
+    }
+    .demo code {
+        display: block;
+        color: #fff;
+        font-size: 9px;
+        line-height: 2;
     }
 
 </style>

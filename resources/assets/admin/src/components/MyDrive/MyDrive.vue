@@ -125,9 +125,6 @@ export default {
         this.loadFolders()
     },
     mounted () {
-        Bus.$on('uploadFolder', () => {
-            this.uploadFolder()
-        })
         document.addEventListener('click', () => {
             this.deselect()
         })
@@ -163,15 +160,6 @@ export default {
                 file: item
             }
             this.OnClickItem(e, item)
-        },
-        uploadFolder () {
-            this.$refs.myVueDropzone.dropzone.init()
-            let input = this.$refs.myVueDropzone.dropzone.hiddenFileInput
-            input.setAttribute('type', 'file')
-            input.setAttribute('webkitDirectory', true)
-            input.setAttribute('mozDirectory', true)
-            input.setAttribute('directory', true)
-            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
         },
         OnClickItem (event, item) {
             this.clickedOnItem = true

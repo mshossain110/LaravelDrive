@@ -15,7 +15,7 @@ Route::get('/', function () {
     return redirect('/drive');
 });
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => false]);
 
 
 // Public Routes

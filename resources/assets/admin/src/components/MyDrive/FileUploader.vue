@@ -128,6 +128,10 @@ export default {
         Bus.$on('openDropZone', () => {
             this.openUploader()
         })
+
+        Bus.$on('uploadFolder', () => {
+            this.uploadFolder()
+        })
     },
     methods: {
         progressCount (file) {
@@ -179,6 +183,15 @@ export default {
             }
             formData.append('path', '/' + path)
             formData.append('parent_id', this.currentFolderId)
+        },
+        uploadFolder () {
+            this.$refs.myVueDropzone.dropzone.init()
+            let input = this.$refs.myVueDropzone.dropzone.hiddenFileInput
+            input.setAttribute('type', 'file')
+            input.setAttribute('webkitDirectory', true)
+            input.setAttribute('mozDirectory', true)
+            input.setAttribute('directory', true)
+            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
         }
     }
 }

@@ -38,10 +38,10 @@ class FileController extends ApiController
 
         } 
         else if($trash) {
-            $folder = $this->file->getFolder($parent_id);
+            // $folder = $this->file->getFolder($parent_id);
 
             $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
-                ->where('parent_id', $folder ? $folder->id : 0)
+                // ->where('parent_id', $folder ? $folder->id : 0)
                 ->where('created_by', Auth::id())
                 ->get();
         } 

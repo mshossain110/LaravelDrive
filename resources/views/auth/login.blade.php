@@ -23,6 +23,8 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+    
+        <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <link rel="shortcut icon" href="assets/ico/favicon.png">
     <script>
         window.LD = @json([
@@ -30,6 +32,9 @@
         ]);
     </script>
         <style>
+            * {
+                box-sizing: border-box;
+            }
             body {
                 font-family: 'Roboto', sans-serif;
                 font-size: 16px;

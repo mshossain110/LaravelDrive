@@ -47,6 +47,10 @@ class StarredController extends ApiController
 
         $tag = $this->tag->where('name', self::TAG_NAME)->first();
 
+        if (!$tag) {
+            $tag = $this->createStarTag();
+        }
+
         $tag->attachFile($ids, $this->request->user()->id);
 
         return $this->respondWithMessage("Successfully added to stared.");
@@ -73,4 +77,15 @@ class StarredController extends ApiController
 
         return $this->respondWithMessage("Successfully remove from stared.");
     }
+
+    protected function createStarTag () {
+        $tag = Tag::firstOrCreate([
+            'name' => self::TAG_NAME,
+            'description' => 'Stared file for quick access',
+            'type' => 'custom',
+        ]);
+
+        return $tag;
+    }
+
 }
