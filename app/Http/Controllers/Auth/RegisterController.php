@@ -92,7 +92,7 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        $token = $user->createToken('laravelAdmin')->accessToken;
+        $token = $user->createToken('Laravel Personal Access Client')->accessToken;
         return ['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token ];
     }
 }

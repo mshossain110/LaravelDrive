@@ -1,7 +1,7 @@
 <template>
     <form
         class="loginform"
-        @submit.prevent="login"
+        @submit.prevent="loginSelf"
     >
         <h3>Login To Our App</h3>
         <p>Fill in the form to get instant access</p>
@@ -77,13 +77,12 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 import Errors from './../Errors.js'
-
-let CsrfToken = document.head.querySelector('meta[name="csrf-token"]')
+import auth from '@common/auth'
 export default {
     name: 'Login',
+    mixins: [auth],
     data () {
         return {
             email: '',
@@ -93,9 +92,9 @@ export default {
         }
     },
     methods: {
-        login () {
+        loginSelf () {
             const { email, password, remember } = this
-            this.authRequest({ email, password, remember })
+            this.login({ email, password, remember })
                 .then((data) => {
                     this.clear()
                     location.replace(data.redirectTo)
@@ -105,29 +104,6 @@ export default {
             this.email = ''
             this.password = null
             this.remember = null
-        },
-        authRequest (params) {
-            let remember = params.remember ? params.remember : false
-            let data = {
-                'email': params.email,
-                'password': params.password,
-                'remember': remember
-            }
-            return new Promise((resolve, reject) => {
-                axios.post('/login', data, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': CsrfToken.content
-                    }
-                })
-                    .then((res) => {
-                        resolve(res.data)
-                    })
-                    .catch((err) => {
-                        this.errors.record(err.response.data.errors)
-                        reject(err.response.data)
-                    })
-            })
         }
     }
 }
@@ -160,7 +136,7 @@ export default {
         width: 100%;
         border: solid 1px #f4f4f4;
         transition: all ease-in-out 0.3s;
-        color: #999;
+        color: #333;
         font-size: 14px;
     }
     .loginform .help.is-danger {

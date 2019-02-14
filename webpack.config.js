@@ -39,7 +39,7 @@ function publicPath (dir = '') {
 
 module.exports = {
     entry: {
-        config: adminPath('config/config.js'),
+        config: assetsPath('common/config.js'),
         admin: adminPath('main.js'),
         auth: assetsPath('auth/auth.js')
     },
@@ -55,7 +55,8 @@ module.exports = {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
             '@ac': adminPath('components'),
-            '@au': adminPath('utils')
+            '@auth': assetsPath('auth'),
+            '@common': assetsPath('common')
         }
     },
 

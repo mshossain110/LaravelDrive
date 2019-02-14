@@ -30,10 +30,9 @@ class AdminComposer {
      * @return void
      */
     public function compose(View $view)
-    {
+    {    
         $data = [
             'user' => Auth::check() ? Auth::user() : null,
-            'token' => Auth::check()? Auth::user()->token(): null,
         ];
         
         $view->with($data);

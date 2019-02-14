@@ -30,7 +30,7 @@ if (token) {
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let bearer = LD.token
+let bearer = window.localStorage['auth_token']
 
 if (bearer) {
     window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer

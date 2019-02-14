@@ -40,7 +40,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('auth:api')->only('logout');
+        $this->middleware('auth')->only('logout');
     }
 
     /**
@@ -52,7 +52,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $token = $user->createToken('laravelAdmin')->accessToken;
+        $token = $user->createToken('Laravel Personal Access Client')->accessToken;
         // Cookie::queue(Cookie::make('access_token', $token, 24*60));
         return ['success' => true, 'redirectTo' => $this->redirectPath(), 'token' => $token ];
     }
@@ -66,9 +66,17 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $user = Auth::user();
-        $user->token()->revoke();
-        $user->token()->delete();
-        // $this->guard()->logout();
+        
+       
+        $user->tokens()->delete();
+        // Tell Laravel to forget this cookie
+        // $cookie = Cookie::forget($rememberMeCookie);
+
+        \Cookie::queue(\Cookie::forget('laravel_session'));
+        \Cookie::queue(\Cookie::forget('laravel_token'));
+        \Session::flush();
+
+        $this->guard()->logout();
 
         $request->session()->invalidate();
 

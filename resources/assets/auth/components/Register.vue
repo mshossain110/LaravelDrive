@@ -2,7 +2,7 @@
     <form
         role="registation"
         class="register"
-        @submit.prevent="register"
+        @submit.prevent="registerSelf"
     >
         <h3>Register</h3>
         <p>Fill in the form to get instant access</p>
@@ -122,12 +122,13 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 import Errors from './../Errors.js'
-let CsrfToken = document.head.querySelector('meta[name="csrf-token"]')
+import auth from '@common/auth'
+
 export default {
     name: 'Register',
+    mixins: [auth],
     data () {
         return {
             firstname: '',
@@ -140,7 +141,7 @@ export default {
         }
     },
     methods: {
-        register () {
+        registerSelf () {
             const params = {
                 firstname: this.firstname,
                 lastname: this.lastname,
@@ -149,7 +150,7 @@ export default {
                 password: this.password,
                 password_confirmation: this.password_confirmation
             }
-            this.authRequest(params)
+            this.register(params)
                 .then((data) => {
                     this.clear()
                     location.replace(data.redirectTo)
@@ -157,26 +158,14 @@ export default {
         },
         clear () {
             this.email = ''
+            this.firstname = ''
+            this.lastname = ''
+            this.name = ''
+            this.email = ''
             this.password = null
-            this.remember = null
-        },
-        authRequest (params) {
-            return new Promise((resolve, reject) => {
-                axios.post('/register', params, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': CsrfToken.content
-                    }
-                })
-                    .then((res) => {
-                        resolve(res.data)
-                    })
-                    .catch((err) => {
-                        this.errors.record(err.response.data.errors)
-                        reject(err.response.data)
-                    })
-            })
+            this.password_confirmation = ''
         }
+
     }
 }
 </script>

@@ -22,7 +22,6 @@
         window.LD = @json([
             'csftToken' => csrf_token(),
             'user'  => $user,
-            'token' => $token
         ]);
     </script>
 

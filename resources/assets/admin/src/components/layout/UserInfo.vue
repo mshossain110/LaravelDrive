@@ -87,7 +87,11 @@
 </template>
 
 <script>
+
+import auth from '@common/auth'
+
 export default {
+    mixins: [auth],
     data () {
         return {
             fav: true,
@@ -99,12 +103,12 @@ export default {
     computed: {
 
     },
+    created () {
+
+    },
     methods: {
-        logout () {
-            this.$store.dispatch('authLogout')
-                .then(() => {
-                    location.replace('/')
-                })
+        logoutSelf () {
+            this.logout()
         }
 
     }

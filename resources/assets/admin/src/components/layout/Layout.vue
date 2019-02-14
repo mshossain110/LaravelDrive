@@ -104,7 +104,7 @@
 <script>
 import { mapState } from 'vuex'
 import MenuItems from './MenuItems.vue'
-import Login from '@ac/auth/login.vue'
+import Login from '@auth/components/Login.vue'
 import UserInfo from './UserInfo.vue'
 
 export default {

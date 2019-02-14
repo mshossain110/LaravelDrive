@@ -25,7 +25,7 @@
 
     <link rel="shortcut icon" href="assets/ico/favicon.png">
     <script>
-        window.LA = @json([
+        window.LD = @json([
             'csftToken' => csrf_token()
         ]);
     </script>
@@ -93,6 +93,7 @@
             </div>
         </div>
 
+        <script src="{{ asset('js/config.js') }}" defer></script>
         <script src="{{ asset('js/auth.js') }}" defer></script>
         
         <!--[if lt IE 10]>
