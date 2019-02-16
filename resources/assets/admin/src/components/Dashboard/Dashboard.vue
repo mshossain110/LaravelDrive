@@ -4,7 +4,11 @@
             row
             wrap
         >
-            <VFlex xs3>
+            <VFlex
+                xs12
+                sm6
+                md3
+            >
                 <WidgetCount
                     class="ml-3"
                     icon="perm_media"
@@ -18,7 +22,11 @@
                 </WidgetCount>
             </VFlex>
 
-            <VFlex xs3>
+            <VFlex
+                xs12
+                sm6
+                md3
+            >
                 <WidgetCount
                     class="ml-3"
                     icon="folder_open"
@@ -32,7 +40,11 @@
                 </WidgetCount>
             </VFlex>
 
-            <VFlex xs3>
+            <VFlex
+                xs12
+                sm6
+                md3
+            >
                 <WidgetCount
                     class="ml-3"
                     icon="people"
@@ -46,7 +58,11 @@
                 </WidgetCount>
             </VFlex>
 
-            <VFlex xs3>
+            <VFlex
+                xs12
+                sm6
+                md3
+            >
                 <WidgetCount
                     class="ml-3"
                     icon="memory"

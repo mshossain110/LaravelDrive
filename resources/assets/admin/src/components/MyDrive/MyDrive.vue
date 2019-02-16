@@ -23,6 +23,7 @@
                     :key="img.id"
                     @contextmenu="showContextMenu2($event, img)"
                     @click="OnClickItem($event, img)"
+                    @touchstart="OnClickItem($event, img)"
                 >
                     <MediaItem :media="img" />
                 </VFlex>
@@ -125,7 +126,13 @@ export default {
         this.loadFolders()
     },
     mounted () {
-        document.addEventListener('click', () => {
+        document.addEventListener('click', (event) => {
+            let element = event.target.closest('button.media-info-button')
+
+            if (element) {
+                return
+            }
+
             this.deselect()
         })
     },
@@ -242,6 +249,7 @@ div#laraveladmin {
     position: relative;
     vertical-align: top;
     max-width: 210px;
+    min-width: 120px;
 }
 .sidebar-open #filecontainer {
     margin-right: 300px;

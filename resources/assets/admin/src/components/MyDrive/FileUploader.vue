@@ -212,8 +212,15 @@ export default {
 }
 .v-card.upload-file-list ul li {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 5px;
+}
+.v-card.upload-file-list ul li .file-name {
+    max-width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .v-card.upload-file-list ul li [class^="flaticon-"]:before,
 .v-card.upload-file-list ul li [class*=" flaticon-"]:before,
