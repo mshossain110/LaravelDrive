@@ -34,7 +34,7 @@ class StarredController extends ApiController
     }
 
     public function index (Request $request) {
-        $per_page = 5;
+        $per_page = 20;
 
         $tag = $this->tag->where('name', self::TAG_NAME)->first();
 

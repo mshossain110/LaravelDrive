@@ -30,7 +30,7 @@ class FileController extends ApiController
 
     public function index (Request $request) {
         $parent_id = $request->get('parent_id');
-        $per_page = 5;
+        $per_page = 20;
 
        
             $folder = $this->file->getFolder($parent_id);

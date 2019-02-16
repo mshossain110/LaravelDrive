@@ -1,8 +1,12 @@
 Laravel Drive allows you to create your own fully-featured, self-hosted file sharing and hosting website in minutes without any coding or server management knowledge.
 
 <p align="center">
-<a href="">Documentation</a> |
-<a href="">Demo comming soon</a> 
+<a href="http://laraveldrive.decoderlab.com">Demo comming soon</a>
+<br/>
+```
+username: admin@admin.com
+password: admin123
+```
 </p>
 
 ## Features

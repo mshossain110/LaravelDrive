@@ -158,7 +158,7 @@ class DeleteFileController extends ApiController
 
     public function trash (Request $request) {
         $parent_id = $request->get('parent_id');
-        $per_page = 5;
+        $per_page = 20;
             // $folder = $this->file->getFolder($parent_id);
 
             $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
