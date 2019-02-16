@@ -19,6 +19,12 @@ export default {
                 return this.folders[i]
             }
         },
+        isStarredPage () {
+            return this.$route.name === 'starred'
+        },
+        isTrashPage () {
+            return this.$route.name === 'trash' || this.$route.name === 'trashFolder'
+        },
         currentFolderId () {
             if (this.currentFolder) {
                 return this.currentFolder.id
