@@ -160,6 +160,9 @@ export default {
     actions: {
         getMediaItems ({ commit }, params) {
             return new Promise((resolve, reject) => {
+                if (!params.page) {
+                    commit('emptyMediaItems')
+                }
                 axios.get('/api/file', { params })
                     .then((res) => {
                         commit('setMediaItems', res.data.data)
@@ -319,6 +322,9 @@ export default {
         },
         getTrashItems ({ commit }, params) {
             return new Promise((resolve, reject) => {
+                if (!params.page) {
+                    commit('emptyTrashItems')
+                }
                 axios.get('/api/file/trash', { params })
                     .then((res) => {
                         commit('setTrashItems', res.data.data)
@@ -340,6 +346,9 @@ export default {
         },
         getStaredItems ({ commit }, params) {
             return new Promise((resolve, reject) => {
+                if (!params.page) {
+                    commit('emptyStaredItems')
+                }
                 axios.get('/api/file/star', { params })
                     .then((res) => {
                         commit('setStaredItems', res.data.data)
