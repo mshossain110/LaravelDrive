@@ -29,11 +29,12 @@ Route::group([
     
     Route::delete('file/delete', 'DeleteFileController@delete');
     Route::get('file/trash', 'DeleteFileController@trash');
+    Route::get('file/star', 'StarredController@index');
     Route::post('file/copy', 'CopyFileController@copy');
     Route::post('file', 'FileController@store')->middleware('throttle:60');
     Route::resource('file', 'FileController');
 
-    Route::get('file/star', 'StarredController@index');
+  
     Route::post('tag/star', 'StarredController@add');
     Route::post('tag/unstar', 'StarredController@remove');
 

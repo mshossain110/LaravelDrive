@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\File;
 use App\Tag;
 use Illuminate\Http\Request;
+use App\Transformers\FileTransformer;
 
 
 class StarredController extends ApiController
@@ -27,8 +28,22 @@ class StarredController extends ApiController
      */
     public function __construct(Request $request, Tag $tag)
     {
+        parent::__construct();
         $this->request = $request;
         $this->tag = $tag;
+    }
+
+    public function index (Request $request) {
+        $per_page = 5;
+
+        $tag = $this->tag->where('name', self::TAG_NAME)->first();
+
+        if (!$tag) {
+            $tag = $this->createStarTag();
+        }
+        $files = $tag->files()->wherePivot('user_id', \Auth::id())->paginate($per_page);
+
+    	return $this->respondWithPaginator($files, new FileTransformer);
     }
 
     /**

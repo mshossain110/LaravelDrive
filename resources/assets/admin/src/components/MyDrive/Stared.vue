@@ -1,5 +1,11 @@
 <template>
     <VLayout class="d-block">
+        <VLayout class="d-block">
+            <VFlex xs12>
+                <MediaToolbar />
+            </VFlex>
+        </VLayout>
+
         <VLayout
             v-if="isLoaded"
             fill-height
@@ -13,7 +19,7 @@
                 wrap
             >
                 <VFlex
-                    v-for="img in trashItems"
+                    v-for="img in staredItems"
                     :key="img.id"
                     @contextmenu="showContextMenu2($event, img)"
                     @click="OnClickItem($event, img)"
@@ -22,6 +28,10 @@
                     <MediaItem :media="img" />
                 </VFlex>
             </VLayout>
+
+            <MediaInfo v-if="fileInfoSideBar" />
+            <FileUploader v-model="fileUploader" />
+            <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
             <ContextMenu
                 v-model="cm.show"
                 :x="cm.x"
@@ -29,32 +39,52 @@
                 :file="cm.file"
             />
         </VLayout>
+
+        <NewFolderForm :open="newFolderModal" />
+        <ShareFile :open="shareFileModal" />
+        <RenameFile :open="renamefilemodal" />
+        <MoveTo />
     </VLayout>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import FileUploader from './FileUploader.vue'
 import MediaItem from './mediaItem.vue'
+import MediaToolbar from './mediaToolbar.vue'
+import MediaInfo from './MediaInfo.vue'
 import Mixins from './mixin'
+import NewFolderForm from './NewFolderForm.vue'
+import ShareFile from './ShareFile.vue'
+import RenameFile from './RenameFile.vue'
 import ContextMenu from './ContextMenu.vue'
+import MoveTo from './MoveTo.vue'
 
 export default {
     components: {
+        FileUploader,
         MediaItem,
-        ContextMenu
+        MediaToolbar,
+        MediaInfo,
+        NewFolderForm,
+        RenameFile,
+        ContextMenu,
+        MoveTo,
+        ShareFile
     },
     mixins: [Mixins],
     data () {
         return {
             cm: {},
             cm2: {},
+            fileUploader: false,
             scrollLoading: false,
             fileCm: false,
             clickedOnItem: false
         }
     },
     computed: {
-        ...mapState('Media', ['trashItems', 'trashPagination']),
+        ...mapState('Media', ['staredItems', 'staredPagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal']),
         isLoaded () {
             return this.isfilesLoaded
         }
@@ -80,7 +110,7 @@ export default {
         this.scroll()
     },
     destroyed () {
-        this.$store.commit('Media/emptyTrashItems')
+        this.$store.commit('Media/emptyStaredItems')
     },
     methods: {
         selfMddiaItems (route) {
@@ -92,11 +122,16 @@ export default {
                 params.page = route.query.page
             }
 
-            this.$store.dispatch('Media/getTrashItems', params)
+            this.$store.dispatch('Media/getStaredItems', params)
                 .then(() => {
                     this.isfilesLoaded = true
                     this.scrollLoading = false
                 })
+        },
+        activeDropzone (event) {
+            event.stopPropagation()
+            event.preventDefault()
+            this.fileUploader = true
         },
         showContextMenu (e, item) {
             e.preventDefault()
@@ -164,7 +199,7 @@ export default {
 
                 if (bottomOfWindow) {
                     let page = (this.$route.query.page || 1) + 1
-                    if (page > this.trashPagination.total_pages) {
+                    if (page > this.staredPagination.total_pages) {
                         return
                     }
 

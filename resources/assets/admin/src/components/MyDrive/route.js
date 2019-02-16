@@ -1,4 +1,5 @@
 import MyDrive from './MyDrive'
+import Stare from './Stared.vue'
 import Trash from './Trash.vue'
 
 const MediaRoute = [
@@ -15,7 +16,7 @@ const MediaRoute = [
     {
         path: 'media/starred',
         name: 'starred',
-        component: MyDrive
+        component: Stare
     },
     {
         path: 'media/trash',

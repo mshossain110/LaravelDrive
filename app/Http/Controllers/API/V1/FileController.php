@@ -30,21 +30,16 @@ class FileController extends ApiController
 
     public function index (Request $request) {
         $parent_id = $request->get('parent_id');
-        $starred = $request->get('starred');
         $per_page = 5;
 
-        if ($starred) {
-            $files = Tag::where('name', 'starred')->first()->files()->wherePivot('user_id', Auth::id())->paginate($per_page);;
-
-        } 
-        else {
+       
             $folder = $this->file->getFolder($parent_id);
             
             $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
                     ->where('parent_id', $folder ? $folder->id : 0)
                     ->where('created_by', Auth::id())
                     ->paginate($per_page);
-        }
+        
         
     	return $this->respondWithPaginator($files, new FileTransformer);
     }

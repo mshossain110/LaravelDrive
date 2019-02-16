@@ -340,7 +340,7 @@ export default {
         },
         getStaredItems ({ commit }, params) {
             return new Promise((resolve, reject) => {
-                axios.get('/api/file/stared', { params })
+                axios.get('/api/file/star', { params })
                     .then((res) => {
                         commit('setStaredItems', res.data.data)
                         commit('setStaredPagination', res.data.meta.pagination)
