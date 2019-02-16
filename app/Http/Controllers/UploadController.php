@@ -54,7 +54,7 @@ class UploadController extends Controller
             $id = $this->file->decodeHash($id);
         }
 
-        $entry = $this->file->findOrFail($id);
+        $entry = $this->file->withTrashed()->findOrFail($id);
 
         // $this->authorize('show', $entry);
 

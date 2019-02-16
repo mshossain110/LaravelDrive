@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Auth;
 use Storage;
 use App\File;
+use DB;
 use App\Transformers\FileTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
@@ -153,5 +154,19 @@ class DeleteFileController extends ApiController
     private function deleteFileStorate(File $original)
     {
         Storage::disk('uploads_local')->deleteDirectory($original->file_name);
+    }
+
+    public function trash (Request $request) {
+        $parent_id = $request->get('parent_id');
+        $per_page = 5;
+            // $folder = $this->file->getFolder($parent_id);
+
+            $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
+                // ->where('parent_id', $folder ? $folder->id : 0)
+                ->where('created_by', Auth::id())
+                ->paginate($per_page);
+        
+        
+    	return $this->respondWithPaginator($files, new FileTransformer);
     }
 }

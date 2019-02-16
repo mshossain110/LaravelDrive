@@ -23,6 +23,10 @@ export default {
         mediaItems: [],
         folders: [],
         pagination: {},
+        trashItems: [],
+        trashPagination: {},
+        staredItems: [],
+        staredPagination: {},
         fileInfoSideBar: false,
         newFolderModal: false,
         shareFileModal: false,
@@ -59,6 +63,9 @@ export default {
         },
         setPagination (state, payload) {
             state.pagination = payload
+        },
+        emptyMediaItems (state) {
+            state.mediaItems = []
         },
         setFolder (state, payload) {
             state.folders = payload
@@ -130,6 +137,24 @@ export default {
         },
         copyFile (state, payload) {
             state.mediaItems = state.mediaItems.concat(payload.data)
+        },
+        setTrashItems (state, payload) {
+            state.trashItems = state.trashItems.concat(payload)
+        },
+        emptyTrashItems (state) {
+            state.trashItems = []
+        },
+        setTrashPagination (state, payload) {
+            state.trashPagination = payload
+        },
+        setStaredItems (state, payload) {
+            state.staredItems = state.staredItems.concat(payload)
+        },
+        emptyStaredItems (state) {
+            state.staredItems = []
+        },
+        setStaredPagination (state, payload) {
+            state.staredPagination = payload
         }
     },
     actions: {
@@ -289,6 +314,48 @@ export default {
                     })
                     .catch((error) => {
                         reject(error)
+                    })
+            })
+        },
+        getTrashItems ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/file/trash', { params })
+                    .then((res) => {
+                        commit('setTrashItems', res.data.data)
+                        commit('setTrashPagination', res.data.meta.pagination)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true
+                            },
+                            { root: true })
+                        reject(error.response)
+                    })
+            })
+        },
+        getStaredItems ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/file/stared', { params })
+                    .then((res) => {
+                        commit('setStaredItems', res.data.data)
+                        commit('setStaredPagination', res.data.meta.pagination)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true
+                            },
+                            { root: true })
+                        reject(error.response)
                     })
             })
         }
