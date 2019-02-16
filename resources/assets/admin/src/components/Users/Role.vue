@@ -1,64 +1,65 @@
 <template>
     <div>
-
-        <v-list-tile
+        <VListTile
             :to="{name: 'role-permissions', params: { id: role.id }}"
             avatar
-            ripple>
-            <v-list-tile-content>
-                <v-list-tile-title>{{ role.name }}</v-list-tile-title>
-                <v-list-tile-sub-title>
+            ripple
+        >
+            <VListTileContent>
+                <VListTileTitle>{{ role.name }}</VListTileTitle>
+                <VListTileSubTitle>
                     {{ role.description }}
-                </v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action class="role-action">
-
-                <v-icon
+                </VListTileSubTitle>
+            </VListTileContent>
+            <VListTileAction class="role-action">
+                <VIcon
                     small
                     class="mr-2"
-                    @click="roleEdit = !roleEdit" >
+                    @click="roleEdit = !roleEdit"
+                >
                     edit
-                </v-icon>
-                <v-icon
+                </VIcon>
+                <VIcon
                     small
-                    @click="deleteRole(role.id)" >
+                    @click="deleteRole(role.id)"
+                >
                     delete
-                </v-icon>
-            </v-list-tile-action>
-        </v-list-tile>
-        <role-form
+                </VIcon>
+            </VListTileAction>
+        </VListTile>
+        <RoleForm
             v-if="roleEdit"
             :role="role"
-            @close="roleEdit = false" />
+            @close="roleEdit = false"
+        />
     </div>
 </template>
 
-
 <script>
-import RoleForm from './RoleForm.vue';
+import RoleForm from './RoleForm.vue'
 
 export default {
     components: {
-        RoleForm,
+        RoleForm
     },
     props: {
         role: {
             type: Object,
-            required: true,
-        },
+            required: true
+        }
     },
     data () {
         return {
-            roleEdit: false,
-        };
+            roleEdit: false
+        }
     },
     computed: {
 
     },
     methods: {
         deleteRole (id) {
-            this.$store.dispatch('Users/deleteRole', id);
-        },
-    },
-};
+            this.$store.dispatch('Users/deleteRole', id)
+        }
+    }
+}
 </script>

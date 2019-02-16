@@ -52,7 +52,7 @@ export default {
     },
     mutations: {
         setMediaItems (state, payload) {
-            state.mediaItems = payload
+            state.mediaItems = state.mediaItems.concat(payload)
         },
         setMediaItem (state, payload) {
             state.mediaItems.push(payload)
@@ -138,7 +138,7 @@ export default {
                 axios.get('/api/file', { params })
                     .then((res) => {
                         commit('setMediaItems', res.data.data)
-                        // commit('setPagination', res.data.meta.pagination)
+                        commit('setPagination', res.data.meta.pagination)
                         resolve(res.data)
                     })
                     .catch((error) => {

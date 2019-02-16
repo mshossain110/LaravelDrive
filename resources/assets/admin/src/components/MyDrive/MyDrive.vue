@@ -78,6 +78,7 @@ export default {
             cm: {},
             cm2: {},
             fileUploader: false,
+            scrollLoading: false,
             fileCm: false,
             clickedOnItem: false
         }
@@ -96,33 +97,11 @@ export default {
     },
     watch: {
         '$route' (to, from) {
-            let params = {}
-            if (typeof to.params.folderId !== 'undefined') {
-                params.parent_id = to.params.folderId
-            }
-            if (to.name === 'starred') {
-                params.starred = to.name === 'starred'
-            }
-
-            if (to.name === 'trash' || to.name === 'trashFolder') {
-                params.trash = to.name === 'trash'
-            }
-
-            this.loadMediaItems(params)
+            this.selfMddiaItems(to)
         }
     },
     created () {
-        let params = {}
-        if (typeof this.$route.params.folderId !== 'undefined') {
-            params.parent_id = this.$route.params.folderId
-        }
-        if (this.$route.name === 'starred') {
-            params.starred = this.$route.name === 'starred'
-        }
-        if (this.$route.name === 'trash' || this.$route.name === 'trashFolder') {
-            params.trash = this.$route.name === 'trash'
-        }
-        this.loadMediaItems(params)
+        this.selfMddiaItems(this.$route)
         this.loadFolders()
     },
     mounted () {
@@ -135,8 +114,30 @@ export default {
 
             this.deselect()
         })
+        this.scroll()
     },
     methods: {
+        selfMddiaItems (route) {
+            let params = {}
+            if (typeof route.params.folderId !== 'undefined') {
+                params.parent_id = route.params.folderId
+            }
+            if (route.name === 'starred') {
+                params.starred = route.name === 'starred'
+            }
+            if (route.name === 'trash' || route.name === 'trashFolder') {
+                params.trash = route.name === 'trash'
+            }
+            if (route.query.page) {
+                params.page = route.query.page
+            }
+
+            this.$store.dispatch('Media/getMediaItems', params)
+                .then(() => {
+                    this.isfilesLoaded = true
+                    this.scrollLoading = false
+                })
+        },
         activeDropzone (event) {
             event.stopPropagation()
             event.preventDefault()
@@ -198,7 +199,33 @@ export default {
             }
 
             this.$store.commit('Media/deselectFile')
+        },
+        scroll () {
+            window.onscroll = () => {
+                if (this.scrollLoading) {
+                    return
+                }
+                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight + 50 > document.documentElement.offsetHeight
+
+                if (bottomOfWindow) {
+                    let page = (this.$route.query.page || 1) + 1
+                    if (page > this.pagination.total_pages) {
+                        return
+                    }
+
+                    this.scrollLoading = true
+
+                    this.$router.replace({
+                        name: this.$route.name,
+                        params: this.$route.params,
+                        query: {
+                            page: page
+                        }
+                    })
+                }
+            }
         }
+
     }
 }
 </script>

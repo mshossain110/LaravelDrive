@@ -32,9 +32,10 @@ class FileController extends ApiController
         $parent_id = $request->get('parent_id');
         $starred = $request->get('starred');
         $trash = $request->get('trash');
+        $per_page = 5;
 
         if ($starred) {
-            $files = Tag::where('name', 'starred')->first()->files()->wherePivot('user_id', Auth::id())->get();
+            $files = Tag::where('name', 'starred')->first()->files()->wherePivot('user_id', Auth::id())->paginate($per_page);;
 
         } 
         else if($trash) {
@@ -43,7 +44,7 @@ class FileController extends ApiController
             $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
                 // ->where('parent_id', $folder ? $folder->id : 0)
                 ->where('created_by', Auth::id())
-                ->get();
+                ->paginate($per_page);
         } 
         else {
             $folder = $this->file->getFolder($parent_id);
@@ -51,10 +52,10 @@ class FileController extends ApiController
             $files = File::orderBy(DB::raw('type = "folder"'), 'desc')
                     ->where('parent_id', $folder ? $folder->id : 0)
                     ->where('created_by', Auth::id())
-                    ->get();
+                    ->paginate($per_page);
         }
         
-    	return $this->respondWithCollection($files, new FileTransformer);
+    	return $this->respondWithPaginator($files, new FileTransformer);
     }
 
     public function show ( $id ){

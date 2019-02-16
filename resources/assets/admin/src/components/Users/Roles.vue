@@ -1,69 +1,66 @@
 <template>
-    <v-layout row>
-        <v-flex
+    <VLayout row>
+        <VFlex
             xs12
-            sm4>
-            <v-card flat>
-                <v-toolbar
+            md4
+        >
+            <VCard flat>
+                <VToolbar
                     flat
-                    color="secondary">
+                    color="secondary"
+                >
+                    <VToolbarTitle>Roles</VToolbarTitle>
 
-                    <v-toolbar-title>Roles</v-toolbar-title>
+                    <VSpacer />
 
-                    <v-spacer />
+                    <VBtn icon>
+                        <VIcon>search</VIcon>
+                    </VBtn>
+                </VToolbar>
+                <RoleForm :half-form="false" />
 
-                    <v-btn icon>
-                        <v-icon>search</v-icon>
-                    </v-btn>
-
-                </v-toolbar>
-                <role-form :half-form="false" />
-
-                <v-list
+                <VList
                     v-for="role in roles"
                     :key="role.id"
                     two-line
-                    subheader>
-
-                    <role :role="role" />
-
-                </v-list>
-            </v-card>
-
-        </v-flex>
-        <v-flex
+                    subheader
+                >
+                    <Role :role="role" />
+                </VList>
+            </VCard>
+        </VFlex>
+        <!-- <VFlex
             xs12
-            sm6>
-            <router-view />
-        </v-flex>
-    </v-layout>
+        >
+            <RouterView />
+        </VFlex> -->
+    </VLayout>
 </template>
 
-
 <script>
-import { mapState } from 'vuex';
-import RoleForm from './RoleForm.vue';
-import Role from './Role.vue';
+import { mapState } from 'vuex'
+import RoleForm from './RoleForm.vue'
+import Role from './Role.vue'
 
 export default {
     components: {
         RoleForm,
-        Role,
+        Role
     },
     data () {
         return {
-            status: true,
-        };
+            status: true
+        }
     },
     computed: {
-        ...mapState('Users', ['roles']),
+        ...mapState('Users', ['roles'])
     },
     created () {
-        this.$store.dispatch('Users/getRole');
+        this.$store.dispatch('Users/getRole')
     },
     methods: {
-    },
-};
+    }
+}
 </script>
 
 <style lang="css">

@@ -28,14 +28,6 @@ export default {
         }
     },
     methods: {
-        loadMediaItems (params) {
-            params = params || {}
-            params.parent_id = typeof this.$route.params.folderId !== 'undefined' ? this.$route.params.folderId : ''
-            this.$store.dispatch('Media/getMediaItems', params)
-                .then(() => {
-                    this.isfilesLoaded = true
-                })
-        },
         toggleSidebar () {
             this.$store.commit('Media/toggleSidebar')
         },
