@@ -46,16 +46,17 @@ export default {
         openNewFolderModal () {
             this.$store.commit('Media/newFolderModal', true)
         },
-        getMediaIcon (type) {
-            switch (type) {
-            case 'folder':
+        getMediaIcon (media) {
+            if (media.type === 'folder') {
                 return {
                     type: 'folder',
                     icon: '<span class="lafi material-icons">folder</span>',
                     color: '#fbc02d',
                     avatar: true
                 }
-            case 'text':
+            }
+            switch (media.extension) {
+            case 'txt':
                 return {
                     type: 'text',
                     icon: '<span class="lafi flaticon-txt"></span>',
@@ -83,7 +84,14 @@ export default {
                     color: '#FBC02D',
                     avatar: true
                 }
-            case 'video':
+            case 'mp4':
+                return {
+                    type: 'video',
+                    icon: '<span class="lafi flaticon-mp4"></span>',
+                    color: '#f44336',
+                    avatar: true
+                }
+            case 'mov':
                 return {
                     type: 'video',
                     icon: '<span class="lafi flaticon-mp4"></span>',

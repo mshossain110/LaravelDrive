@@ -26,7 +26,7 @@
                         class="la-fii"
                     >
                         <VImg
-                            v-if="media.type == 'image'"
+                            v-if="isImage"
                             :src="fileUrl"
                             height="166"
                             :lazy-src="fileUrl"
@@ -89,13 +89,16 @@ export default {
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         mediaIcon () {
-            return this.getMediaIcon(this.media.type)
+            return this.getMediaIcon(this.media)
         },
         fileUrl () {
             return window.location.origin + '/' + this.media.url
         },
         isSelected () {
             return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1
+        },
+        isImage () {
+            return ['jpg', 'png', 'tif', 'tiff', 'gif', 'jpeg', 'jif', 'jfif', 'jp2', 'fpx', 'pcd'].indexOf(this.media.extension.toLowerCase()) !== -1
         }
     },
     methods: {
