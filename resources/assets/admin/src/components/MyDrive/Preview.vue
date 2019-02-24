@@ -37,6 +37,7 @@
                 </VToolbar>
 
                 <VCard
+                    v-if="isImage"
                     class="image-preview"
                 >
                     <VImg
@@ -45,6 +46,21 @@
                         contain
                         width="70"
                     />
+                </VCard>
+
+                <VCard
+                    v-else
+                    class="no-preview"
+                >
+                    <VCardTitle primary-title>
+                        <h4>No file preview available.</h4>
+                        <VBtn
+                            color="primary"
+                            @click="downloadFile()"
+                        >
+                            Download
+                        </VBtn>
+                    </VCardTitle>
                 </VCard>
             </VCard>
         </VDialog>
@@ -67,7 +83,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'selectedMedia']),
+        ...mapState('Media', ['mediaItems', 'selectedMedia', 'selectedFilesId']),
 
         filesCanPreview () {
             return this.mediaItems.filter(m => {
@@ -102,6 +118,9 @@ export default {
             }
 
             this.closePreview()
+        },
+        downloadFile () {
+            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
         }
     }
 }
@@ -124,5 +143,19 @@ export default {
 
 .v-card.preview-card .v-toolbar {
     z-index: 9999;
+}
+.v-card.preview-card .v-card.no-preview{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.v-card.preview-card .v-card.no-preview .v-card__title{
+    width: 300px;
+    background: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 </style>
