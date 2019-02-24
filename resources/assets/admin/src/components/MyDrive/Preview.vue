@@ -23,21 +23,53 @@
                     >
                         <VIcon>close</VIcon>
                     </VBtn>
-                    <VToolbarTitle>Settings</VToolbarTitle>
                     <VSpacer />
                     <VToolbarItems>
                         <VBtn
                             dark
                             flat
-                            @click="dialog = false"
+                            @click="downloadFile()"
                         >
-                            Save
+                            <VIcon>cloud_download</VIcon>
                         </VBtn>
+                    </VToolbarItems>
+                    <VToolbarItems style="position: relative;">
+                        <VBtn
+                            dark
+                            flat
+                            @click="showContextMenu"
+                        >
+                            <VIcon>more_vert</VIcon>
+                        </VBtn>
+                        <ContextMenu
+                            v-model="showMenu"
+                            :x="menuPos.x"
+                            :y="menuPos.y"
+                            :file="selectedMedia"
+                        />
                     </VToolbarItems>
                 </VToolbar>
 
                 <VCard
-                    v-if="isImage"
+                    v-if="ispdf"
+                    class="pdf-preview"
+                >
+                    <object
+                        type="application/pdf"
+                        :data="fileUrl"
+                        internalinstanceid="8"
+                    >
+                        <a
+                            trans=""
+                            :href="fileUrl"
+                        >
+                            Download the file.
+                        </a>
+                    </object>
+                </VCard>
+
+                <VCard
+                    v-else-if="isImage"
                     class="image-preview"
                 >
                     <VImg
@@ -70,7 +102,11 @@
 <script>
 import { mapState } from 'vuex'
 import PanZoom from './../../mixin/library/panzoom'
+import ContextMenu from './ContextMenu.vue'
 export default {
+    components: {
+        ContextMenu
+    },
     props: {
         open: {
             type: Boolean,
@@ -79,7 +115,8 @@ export default {
     },
     data () {
         return {
-
+            showMenu: false,
+            menuPos: {}
         }
     },
     computed: {
@@ -99,6 +136,9 @@ export default {
         },
         isImage () {
             return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.selectedMedia.extension) !== -1
+        },
+        ispdf () {
+            return this.selectedMedia.extension === 'pdf'
         }
 
     },
@@ -121,6 +161,11 @@ export default {
         },
         downloadFile () {
             this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
+        },
+        showContextMenu (event) {
+            this.showMenu = !this.showMenu
+            this.menuPos.x = event.clientX
+            this.menuPos.y = event.clientY
         }
     }
 }
@@ -157,5 +202,9 @@ export default {
     text-align: center;
     display: flex;
     justify-content: center;
+}
+.pdf-preview object {
+    width: 100%;
+    height: 100vh;
 }
 </style>

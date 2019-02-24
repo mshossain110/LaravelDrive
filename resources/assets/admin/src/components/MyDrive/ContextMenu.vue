@@ -55,31 +55,13 @@ export default {
             showMenu: this.value
         }
     },
-    watch: {
-
-        value (newVal) {
-            this.showMenu = false
-            this.$nextTick(() => {
-                this.showMenu = newVal
-            })
-        },
-        x () {
-            this.showMenu = false
-            this.$nextTick(() => {
-                this.showMenu = true
-            })
-        },
-        y () {
-            this.showMenu = false
-            this.$nextTick(() => {
-                this.showMenu = true
-            })
-        }
-    },
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         items () {
             if (this.file.hasOwnProperty('id') && this.file.deleted_at === null) {
+                if (this.file.type === 'folder') {
+                    return this.menuitems.filter(i => i.show === 'items').filter(i => i.title !== 'Preview')
+                }
                 return this.menuitems.filter(i => i.show === 'items')
             } else if (this.file.hasOwnProperty('id') && this.file.deleted_at !== null) {
                 return this.menuitems.filter(i => i.show === 'trash')
@@ -177,6 +159,27 @@ export default {
                     action: this.deleteForever
                 }
             ]
+        }
+    },
+    watch: {
+
+        value (newVal) {
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = newVal
+            })
+        },
+        x () {
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = true
+            })
+        },
+        y () {
+            this.showMenu = false
+            this.$nextTick(() => {
+                this.showMenu = true
+            })
         }
     },
     methods: {
