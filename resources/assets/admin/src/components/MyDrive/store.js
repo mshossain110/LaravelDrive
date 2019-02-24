@@ -31,6 +31,7 @@ export default {
         newFolderModal: false,
         shareFileModal: false,
         renamefilemodal: false,
+        previewModal: false,
         selectedMedia: {},
         selectedFilesId: [],
         contextMenu: {
@@ -103,6 +104,9 @@ export default {
         },
         renamefilemodal (state, payload) {
             state.renamefilemodal = payload
+        },
+        previewModal (state, payload) {
+            state.previewModal = payload
         },
         contextMenu (state, payload) {
             state.contextMenu = payload

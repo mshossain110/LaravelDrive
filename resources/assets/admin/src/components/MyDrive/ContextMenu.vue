@@ -96,7 +96,7 @@ export default {
                     title: 'Preview',
                     icon: 'visibility',
                     show: 'items',
-                    action: ''
+                    action: this.preview
                 },
                 {
                     title: 'Share',
@@ -217,6 +217,9 @@ export default {
         },
         deleteForever () {
             this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'deleteforever' })
+        },
+        preview () {
+            this.$store.commit('Media/previewModal', true)
         }
     }
 }

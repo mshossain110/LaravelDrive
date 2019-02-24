@@ -44,6 +44,10 @@
         <ShareFile :open="shareFileModal" />
         <RenameFile :open="renamefilemodal" />
         <MoveTo />
+        <Preview
+            v-if="previewModal"
+            :open="previewModal"
+        />
     </VLayout>
 </template>
 
@@ -59,6 +63,7 @@ import ShareFile from './ShareFile.vue'
 import RenameFile from './RenameFile.vue'
 import ContextMenu from './ContextMenu.vue'
 import MoveTo from './MoveTo.vue'
+import Preview from './Preview.vue'
 
 export default {
     components: {
@@ -70,7 +75,8 @@ export default {
         RenameFile,
         ContextMenu,
         MoveTo,
-        ShareFile
+        ShareFile,
+        Preview
     },
     mixins: [Mixins],
     data () {
@@ -84,7 +90,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal', 'previewModal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
         }
