@@ -50,12 +50,14 @@
                     </VToolbarItems>
                 </VToolbar>
 
+                
+
                 <VCard
                     v-if="ispdf"
                     class="pdf-preview"
                 >
                     <object
-                        type="application/pdf"
+                        :type="selectedMedia.mime"
                         :data="fileUrl"
                         internalinstanceid="8"
                     >
@@ -80,6 +82,27 @@
                     />
                 </VCard>
 
+                <VCard 
+                    v-else-if="isVideo"
+                    class="video-preview">
+                    <video  id="player" playsinline controls>
+                            <source :src="fileUrl" :type="selectedMedia.mime" />
+
+                            <!-- Captions are optional -->
+                            
+                        </video>
+                </VCard>
+
+                <VCard 
+                    v-else-if="isAudio"
+                    class="video-preview">
+                    <audio id="player" controls>
+                        <source :src="fileUrl" :type="selectedMedia.mime" />
+                    </audio>
+                    
+                </VCard>
+                    
+
                 <VCard
                     v-else
                     class="no-preview"
@@ -101,6 +124,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import Plyr from 'Plyr'
 import PanZoom from './../../mixin/library/panzoom'
 import ContextMenu from './ContextMenu.vue'
 export default {
@@ -138,12 +162,19 @@ export default {
             return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.selectedMedia.extension) !== -1
         },
         ispdf () {
-            return this.selectedMedia.extension === 'pdf'
+            return ['pdf', 'txt'].indexOf(this.selectedMedia.extension) !== -1
+        },
+        isVideo () {
+            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.selectedMedia.extension) !== -1
+        }, 
+        isAudio () {
+             return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1
         }
 
     },
     mounted () {
         PanZoom('.image-preview')
+        new Plyr('#player');
     },
     methods: {
         closePreview () {
@@ -154,6 +185,10 @@ export default {
                 return
             }
             if (event.target.closest('.v-responsive__content')) {
+                return
+            }
+
+            if (event.target.closest('.video-preview')) {
                 return
             }
 
@@ -206,5 +241,17 @@ export default {
 .pdf-preview object {
     width: 100%;
     height: 100vh;
+}
+.video-preview {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.v-card.preview-card .v-card.pdf-preview {
+    background: #FFF !important;
 }
 </style>
