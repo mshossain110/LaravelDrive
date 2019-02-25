@@ -17,8 +17,8 @@ trait GeneratesSharePermissions
     {
         return [
             'view' => true,
-            'edit' => Arr::get($permissions, 'edit', false),
-            'download' => Arr::get($permissions, 'download', false),
+            'edit' => $permissions == 1,
+            'download' => $permissions == 2,
         ];
     }
 }

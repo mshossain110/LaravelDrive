@@ -161,6 +161,25 @@ export default {
                     })
             })
         },
+        searchUsers ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/api/users/search', { params })
+                    .then((res) => {
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true
+                            },
+                            { root: true })
+                        reject(error.response)
+                    })
+            })
+        },
         getPermissions ({ commit }) {
             return new Promise((resolve, reject) => {
                 axios.get('/api/permissions')

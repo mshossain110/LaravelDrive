@@ -2,46 +2,101 @@
     <VDialog
         :value="open"
         class="mpu"
-        width="500"
+        max-width="700"
         persistent
     >
         <form @submit.prevent="onSubmit">
-            <VCard>
+            <VCard class="dl-share-modal">
                 <VCardTitle
                     class="headline grey lighten-2"
                 >
-                    New Folder
+                    Share File
                 </VCardTitle>
 
                 <VCardText>
-                    <Multiselect
-                        v-model="users"
-                        :options="people"
-                        multiple
-                        searchable
-                        label="name"
-                        :close-on-select="false"
-                        track-by="name"
-                        placeholder="Add User"
-                        @search-change="searchUser"
-                    >
-                        <span slot="noResult">
-                            Oops! No User found.
-                            Consider changing the search query.
-                        </span>
-                    </Multiselect>
-                    <VSelect
-                        v-model="permission"
-                        :items="permissions"
-                        label="Solo field"
-                        solo
-                    />
+                    <VLayout>
+                        <VFlex xs9>
+                            <VCombobox
+                                v-model="users"
+                                :items="people"
+                                :loading="isLoading"
+                                :search-input.sync="search"
+                                placeholder="Search User to Share"
+                                item-value="id"
+                                item-text="name"
+                                cache-items
+                                deletable-chips
+                                no-filter
+                                multiple
+                                chips
+                                clearable
+                                hide-details
+                                hide-selected
+                            >
+                                <template
+                                    slot="selection"
+                                    slot-scope="data"
+                                >
+                                    <VChip
+                                        v-if="data.item.id"
+                                        :key="data.item.id"
+                                        :selected="data.selected"
+                                        :disabled="data.disabled"
+                                        class="v-chip--select-multi"
+                                        close
+                                        @input="remove(data.item)"
+                                    >
+                                        <VAvatar
+                                            class="accent white--text"
+                                            v-text="data.item.name.slice(0, 1).toUpperCase()"
+                                        />
+                                        {{ data.item.name }}
+                                    </VChip>
+                                </template>
+                            </VCombobox>
+                        </VFlex>
+                        <VFlex xs3>
+                            <VMenu
+                                transition="slide-x-transition"
+                                max-width="300"
+                                bottom
+                            >
+                                <VBtn
+                                    slot="activator"
+                                    outline
+                                    color="indigo"
+                                >
+                                    <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
+                                </VBtn>
+
+                                <VList two-line>
+                                    <VListTile
+                                        v-for="(item, i) in permissions"
+                                        :key="i"
+                                        @click="permission = item.id"
+                                    >
+                                        <VListTileAction>
+                                            <VIcon v-if="permission == item.id">
+                                                check_circle
+                                            </VIcon>
+                                            <VSpacer v-else />
+                                        </VListTileAction>
+                                        <VListTileContent>
+                                            <VListTileTitle>{{ item.title }}</VListTileTitle>
+                                            <VListTileSubTitle>{{ item.descrption }}</VListTileSubTitle>
+                                        </VListTileContent>
+                                    </VListTile>
+                                </VList>
+                            </VMenu>
+                        </VFlex>
+                    </VLayout>
                 </VCardText>
 
                 <VCardActions>
                     <VBtn
                         color="info"
                         type="submit"
+
                         flat
                     >
                         Done
@@ -61,12 +116,11 @@
 
 <script>
 import Mixin from './mixin'
-import Multiselect from 'vue-multiselect'
 import { mapState } from 'vuex'
 
 export default {
     components: {
-        Multiselect
+
     },
     $_veeValidate: {
         validator: 'new'
@@ -79,78 +133,105 @@ export default {
         }
     },
     data () {
-        const srcs = {
-            1: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            2: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            3: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            4: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-            5: 'https://cdn.vuetifyjs.com/images/lists/5.jpg'
-        }
         return {
             users: [],
             people: [],
-            usersearchtime: false,
+            search: null,
+            searchTimeOut: false,
             isLoading: false,
             isUpdating: false,
-            name: 'Midnight Crew',
-            permission: '',
+            permission: 1,
             permissions: [
-                'Can edit', 'Can download', 'Can view'
+                {
+                    title: 'Can edit',
+                    id: 1,
+                    descrption: 'People can edit, delete and copy the item to their own drive.'
+                },
+                {
+                    title: 'Can download',
+
+                    id: 2,
+                    descrption: 'People can view and download the item.'
+                },
+                {
+                    title: 'Can view',
+                    id: 3,
+                    descrption: 'People can view the item.'
+                }
             ]
         }
     },
     computed: {
         ...mapState('Media', ['selectedFilesId'])
     },
+    watch: {
+        search (val) {
+            if (!val) {
+                return
+            }
+            this.isLoading = true
+
+            if (this.searchTimeOut) {
+                clearTimeout(this.searchTimeOut)
+            }
+
+            this.searchTimeOut = setTimeout(() => {
+                // Lazily load input items
+                this.$store.dispatch('Users/searchUsers', { s: val })
+                    .then(res => {
+                        this.people = res.data
+                    })
+                    .finally(() => (this.isLoading = false))
+            }, 400)
+        }
+    },
     methods: {
         onSubmit () {
-            let emails = []
+            let userids = []
             this.users.map(u => {
-                emails.push(u.email)
+                if (u.id) { userids.push(u.id) }
             })
             let param = {
-                emails: emails,
-                entries: this.selectedFilesId,
-                permissions: { edit: true, view: true, download: true }
+                userIds: userids,
+                fileids: this.selectedFilesId,
+                permissions: this.permission
             }
             axios.post('/api/shares/add-users', param)
                 .then(res => {
                     console.log(res.data)
+                    this.close()
                 })
         },
         close () {
             this.$store.commit('Media/shareFileModal', false)
         },
-        searchUser (query) {
-            if (!query.length) return
-
-            this.isLoading = true
-
-            if (this.usersearchtime) {
-                clearTimeout(this.usersearchtime)
-            }
-
-            this.usersearchtime = setTimeout(() => {
-                axios.get('/api/users/search?s=' + query)
-                    .then(response => {
-                        this.people = response.data.data
-                        this.isLoading = false
-                    })
-            }, 500)
-        },
-        remove (item) {
-            let i = this.friends.findIndex(x => x === item.name)
-            this.friends.splice(i, 1)
+        remove (user) {
+            let i = this.users.findIndex(x => x.id === user.id)
+            this.users.splice(i, 1)
         }
     }
 }
 </script>
 
 <style>
-.mpu .v-card__actions {
-    border-top: 1px solid #ddd;
+.dl-share-modal .v-autocomplete{
+    border: 1px solid #ddd;
 }
-.share-file {
+.dl-share-modal .v-autocomplete.v-text-field > .v-input__control > .v-input__slot:before{
+    border-width: 0px !important;
+}
+.dl-share-modal .v-autocomplete.v-text-field .v-select__selections {
+    padding-left: 10px;
+}
 
+.dl-share-modal .v-menu__activator .v-btn.v-btn--outline {
+    border-width: 1px 1px 1px;
+    border-color: #ddd;
+    border-style: solid;
+    background: transparent !important;
+    box-shadow: none;
+    margin: 4px 0;
+    height: 56px;
+    color: #4a4848 !important;
 }
 </style>

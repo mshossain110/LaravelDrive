@@ -78,36 +78,28 @@ class SharesController extends ApiController
      */
     public function addUsers(AttachUsersToEntry $action)
     {
-        $entryIds = $this->request->get('entries');
+        $fileids = $this->request->get('fileids');
 
-        $this->authorize('update', [FileEntry::class, $entryIds]);
+        // $this->authorize('update', [FileEntry::class, $entryIds]);
 
         // TODO: refactor messages into custom validator, so can reuse elsewhere
-        $emails =  $this->request->get('emails', []);
-
-        $messages = [];
-        foreach ($emails as $key => $email) {
-            $messages["emails.$key"] = $email;
-        }
+        $userIds =  $this->request->get('userIds', []);
 
         $this->validate($this->request, [
-            'emails' => 'required|min:1',
-            'emails.*' => 'required|email|exists:users,email',
-            'permissions' => 'required|array',
-            'entries' => 'required|min:1',
-            'entries.*' => 'required|integer',
-        ], [], $messages);
+            'userIds' => 'required|min:1',
+            'userIds.*' => 'required|integer|exists:users,id',
+            'permissions' => 'required|integer',
+            'fileids' => 'required|min:1',
+            'fileids.*' => 'required|integer',
+        ]);
 
         $action->execute(
-            $this->request->get('emails'),
-            $entryIds,
+            $this->request->get('userIds'),
+            $fileids,
             $this->request->get('permissions')
         );
 
-        $users = app(GetUsersWithAccessToEntry::class)
-            ->execute(head($entryIds));
-
-        return $this->success(['users' => $users]);
+        return $this->respondWithMessage("Files successfully shared with users.");
     }
 
     /**
