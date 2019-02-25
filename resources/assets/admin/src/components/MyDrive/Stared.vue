@@ -1,11 +1,5 @@
 <template>
     <VLayout class="d-block">
-        <VLayout class="d-block">
-            <VFlex xs12>
-                <MediaToolbar />
-            </VFlex>
-        </VLayout>
-
         <VLayout
             v-if="isLoaded"
             fill-height
@@ -51,7 +45,6 @@
 import { mapState } from 'vuex'
 import FileUploader from './FileUploader.vue'
 import MediaItem from './mediaItem.vue'
-import MediaToolbar from './mediaToolbar.vue'
 import MediaInfo from './MediaInfo.vue'
 import Mixins from './mixin'
 import NewFolderForm from './NewFolderForm.vue'
@@ -64,7 +57,6 @@ export default {
     components: {
         FileUploader,
         MediaItem,
-        MediaToolbar,
         MediaInfo,
         NewFolderForm,
         RenameFile,
