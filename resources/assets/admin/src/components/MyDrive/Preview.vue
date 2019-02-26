@@ -50,8 +50,6 @@
                     </VToolbarItems>
                 </VToolbar>
 
-                
-
                 <VCard
                     v-if="ispdf"
                     class="pdf-preview"
@@ -82,26 +80,39 @@
                     />
                 </VCard>
 
-                <VCard 
+                <VCard
                     v-else-if="isVideo"
-                    class="video-preview">
-                    <video  id="player" playsinline controls>
-                            <source :src="fileUrl" :type="selectedMedia.mime" />
+                    class="video-preview"
+                >
+                    <video
+                        id="player"
+                        playsinline
+                        controls
+                    >
+                        <source
+                            :src="fileUrl"
+                            :type="selectedMedia.mime"
+                        >
 
-                            <!-- Captions are optional -->
-                            
-                        </video>
+                        <!-- Captions are optional -->
+
+                    </video>
                 </VCard>
 
-                <VCard 
+                <VCard
                     v-else-if="isAudio"
-                    class="video-preview">
-                    <audio id="player" controls>
-                        <source :src="fileUrl" :type="selectedMedia.mime" />
+                    class="video-preview"
+                >
+                    <audio
+                        id="player"
+                        controls
+                    >
+                        <source
+                            :src="fileUrl"
+                            :type="selectedMedia.mime"
+                        >
                     </audio>
-                    
                 </VCard>
-                    
 
                 <VCard
                     v-else
@@ -127,10 +138,12 @@ import { mapState } from 'vuex'
 import Plyr from 'Plyr'
 import PanZoom from './../../mixin/library/panzoom'
 import ContextMenu from './ContextMenu.vue'
+import mixin from './mixin'
 export default {
     components: {
         ContextMenu
     },
+    mixins: [mixin],
     props: {
         open: {
             type: Boolean,
@@ -166,15 +179,15 @@ export default {
         },
         isVideo () {
             return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.selectedMedia.extension) !== -1
-        }, 
+        },
         isAudio () {
-             return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1
+            return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1
         }
 
     },
     mounted () {
         PanZoom('.image-preview')
-        new Plyr('#player');
+        Plyr('#player')
     },
     methods: {
         closePreview () {

@@ -11,18 +11,7 @@
                     :style="{ color: mediaIcon.color }"
                 >
                     <div
-                        v-if="mediaIcon.avatar"
-                        class="la-fia"
-                    >
-                        <VAvatar
-                            size="166"
-                            tile
-                            v-html="mediaIcon.icon"
-                        />
-                    </div>
-
-                    <div
-                        v-else
+                        v-if="isImage"
                         class="la-fii"
                     >
                         <VImg
@@ -30,6 +19,16 @@
                             :src="fileUrl"
                             height="166"
                             :lazy-src="fileUrl"
+                        />
+                    </div>
+                    <div
+                        v-else
+                        class="la-fia"
+                    >
+                        <VAvatar
+                            size="166"
+                            tile
+                            v-html="mediaIcon.icon"
                         />
                     </div>
                 </div>
@@ -87,9 +86,9 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['selectedFilesId']),
+        ...mapState('Media', ['selectedFilesId', 'selectedMedia']),
         mediaIcon () {
-            return this.getMediaIcon(this.media)
+            return this.getMediaIcon(this.media.extension)
         },
         fileUrl () {
             return window.location.origin + '/' + this.media.url
@@ -98,7 +97,16 @@ export default {
             return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1
         },
         isImage () {
-            return ['jpg', 'png', 'tif', 'tiff', 'gif', 'jpeg', 'jif', 'jfif', 'jp2', 'fpx', 'pcd'].indexOf(this.media.extension.toLowerCase()) !== -1
+            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.media.extension) !== -1
+        },
+        ispdf () {
+            return ['pdf', 'txt'].indexOf(this.media.extension) !== -1
+        },
+        isVideo () {
+            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.media.extension) !== -1
+        },
+        isAudio () {
+            return ['mp3', 'ogg'].indexOf(this.media.extension) !== -1
         }
     },
     methods: {

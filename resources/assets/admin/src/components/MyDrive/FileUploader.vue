@@ -140,9 +140,10 @@ export default {
         },
         mediaIcon (type) {
             let filetype = type.split('/')
-            return this.getMediaIcon(filetype[0])
+            return this.getMediaIcon(filetype[1])
         },
         openUploader () {
+            console.log(this.$refs.myVueDropzone)
             this.$refs.myVueDropzone.dropzone.init()
             this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
         },

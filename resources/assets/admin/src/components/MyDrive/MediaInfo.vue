@@ -175,7 +175,7 @@ export default {
         ...mapState('Media', ['fileInfoSideBar', 'selectedMedia']),
         mediaIcon () {
             if (this.hasItem) {
-                return this.getMediaIcon(this.selectedMedia.type)
+                return this.getMediaIcon(this.selectedMedia.extension)
             } else {
                 return this.getMediaIcon('folder')
             }
