@@ -102,5 +102,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\UserMeta');
     }
+
+    public function shared_files () {
+        return $this->belongsToMany('App\File', 'file_user', 'user_id', 'file_id');
+    }
     
 }

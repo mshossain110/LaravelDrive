@@ -27,6 +27,8 @@ export default {
         trashPagination: {},
         staredItems: [],
         staredPagination: {},
+        sharedItems: [],
+        sharedPagination: {},
         fileInfoSideBar: false,
         newFolderModal: false,
         shareFileModal: false,
@@ -159,6 +161,16 @@ export default {
         },
         setStaredPagination (state, payload) {
             state.staredPagination = payload
+        },
+
+        setSharedItems (state, payload) {
+            state.sharedItems = state.sharedItems.concat(payload)
+        },
+        emptySharedItems (state) {
+            state.sharedItems = []
+        },
+        setSharedPagination (state, payload) {
+            state.sharedPagination = payload
         }
     },
     actions: {
@@ -357,6 +369,30 @@ export default {
                     .then((res) => {
                         commit('setStaredItems', res.data.data)
                         commit('setStaredPagination', res.data.meta.pagination)
+                        resolve(res.data)
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true
+                            },
+                            { root: true })
+                        reject(error.response)
+                    })
+            })
+        },
+        getSharedItems ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                if (!params.page) {
+                    commit('emptySharedItems')
+                }
+                axios.get('/api/shared/files', { params })
+                    .then((res) => {
+                        commit('setSharedItems', res.data.data)
+                        commit('setSharedPagination', res.data.meta.pagination)
                         resolve(res.data)
                     })
                     .catch((error) => {

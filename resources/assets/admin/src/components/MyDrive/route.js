@@ -1,6 +1,7 @@
 import MyDrive from './MyDrive'
 import Stare from './Stared.vue'
 import Trash from './Trash.vue'
+import SharedWithMe from './SharedWithMe.vue'
 
 const MediaRoute = [
     {
@@ -27,6 +28,16 @@ const MediaRoute = [
         path: 'media/trash/:folderId',
         name: 'trashFolder',
         component: Trash
+    },
+    {
+        path: 'media/shared',
+        name: 'shared',
+        component: SharedWithMe
+    },
+    {
+        path: 'media/shared/:folderId',
+        name: 'sharedFolder',
+        component: SharedWithMe
     }
 ]
 

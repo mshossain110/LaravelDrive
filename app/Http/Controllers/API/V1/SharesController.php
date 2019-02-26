@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use DB;
 use Auth;
 use Storage;
 use App\File;
 use App\Transformers\FileTransformer;
+use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\Shares\AttachUsersToEntry;
@@ -29,12 +31,28 @@ class SharesController extends ApiController
      * @param Request $request
      * @param File $file
      */
-    public function __construct(Request $request, File $file)
+    public function __construct(Request $request, FileRepository $file)
     {
         parent::__construct();
         
         $this->request = $request;
         $this->file = $file;
+    }
+
+
+    public function sharedWithMe () {
+        $parent_id = $this->request->get('parent_id');
+        $per_page = 20;
+
+       
+        $folder = $this->file->getFolder($parent_id);
+        
+        $files = Auth::user()->shared_files()->orderBy(DB::raw('type = "folder"'), 'desc')
+            ->where('parent_id', $folder ? $folder->id : 0)
+            ->paginate($per_page);
+        
+        
+    	return $this->respondWithPaginator($files, new FileTransformer);
     }
 
         /**
