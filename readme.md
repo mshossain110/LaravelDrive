@@ -5,10 +5,13 @@
 <p align="center">
 # [Demo](http://laraveldrive.decoderlab.com)
 </p>
-```sh
+
+<code>
 username: admin@admin.com
+</code>
+<code>
 password: admin123
-```
+</code>
 
 ## Features
 -------------
