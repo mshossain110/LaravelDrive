@@ -198,7 +198,14 @@ export default {
             }
             axios.post('/api/shares/add-users', param)
                 .then(res => {
-                    console.log(res.data)
+                    this.$store.commit('setSnackbar',
+                        {
+                            message: res.data.message,
+                            status: res.status,
+                            color: 'success',
+                            show: true
+                        },
+                        { root: true })
                     this.close()
                 })
         },
