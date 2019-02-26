@@ -7,7 +7,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements MustVerifyEmail
+//implements MustVerifyEmail  // email varification is diable now
+
+class User extends Authenticatable 
 {
     use Notifiable, HasApiTokens;
 
