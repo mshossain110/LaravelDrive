@@ -187,7 +187,7 @@ export default {
     },
     mounted () {
         PanZoom('.image-preview')
-        Plyr('#player')
+        var player = new Plyr('#player')
     },
     methods: {
         closePreview () {
