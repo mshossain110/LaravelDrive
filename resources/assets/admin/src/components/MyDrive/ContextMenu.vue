@@ -90,7 +90,7 @@ export default {
                     title: 'Get shareable link',
                     icon: 'link',
                     show: 'items',
-                    action: ''
+                    action: this.shareLink
                 },
                 {
                     title: this.file.stared ? 'Removed from star' : 'Add a star',
@@ -194,6 +194,9 @@ export default {
         },
         shareFiles () {
             this.$store.commit('Media/shareFileModal', true)
+        },
+        shareLink () {
+            this.$store.commit('Media/shareLinkModal', true)
         },
         manageStar () {
             if (this.file.hasOwnProperty('id') && !this.file.stared) {

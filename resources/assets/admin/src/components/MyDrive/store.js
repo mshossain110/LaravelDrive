@@ -32,6 +32,7 @@ export default {
         fileInfoSideBar: false,
         newFolderModal: false,
         shareFileModal: false,
+        shareLinkModal: false,
         renamefilemodal: false,
         previewModal: false,
         selectedMedia: {},
@@ -103,6 +104,9 @@ export default {
         },
         shareFileModal (state, payload) {
             state.shareFileModal = payload
+        },
+        shareLinkModal (state, payload) {
+            state.shareLinkModal = payload
         },
         renamefilemodal (state, payload) {
             state.renamefilemodal = payload

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\ShareableLinkRepository;
+use App\Transformers\LinkTransformer;
 
 class ShareableLinkController extends ApiController
 {
@@ -23,6 +24,7 @@ class ShareableLinkController extends ApiController
      */
     public function __construct(Request $request, ShareableLinkRepository $link)
     {
+        parent::__construct();
         $this->request = $request;
         $this->link = $link;
     }
@@ -31,9 +33,9 @@ class ShareableLinkController extends ApiController
      * @param int|string $idOrHash
      * 
      */
-    public function show($idOrHash)
+    public function show($fileId)
     {
-        $link = $this->link->getLink($idOrHash);
+        $link = $this->link->getLink($fileId);
 
         if ( ! $link || ! $link->file || $link->file->trashed()) abort(404);
 
@@ -41,22 +43,22 @@ class ShareableLinkController extends ApiController
             $link->load('file.children', 'file.owner');
         }
 
-
-        return $this->respondWithArray(['link' => $link]);
+    	return $this->respondWithItem($link, new LinkTransformer);
     }
 
     /**
      * @param int $entryId
      */
-    public function store($file_id)
+    public function store($fileId)
     {
-        $params = $request->all();
-        $params['user_id'] = $request->user()->id;
-        $params['file_id'] = $file_id;
+        $params = $this->request->all();
+        $params['user_id'] = $this->request->user()->id;
+        $params['file_id'] = $fileId;
+        $params['hash'] = '';
 
         $link = $this->link->store($params);
 
-        return $this->respondWithArray(['link' => $link]);
+        return $this->respondWithItem($link, new LinkTransformer);
     }
 
     /**
@@ -70,7 +72,7 @@ class ShareableLinkController extends ApiController
 
         $link = $this->link->update($id, $params);
 
-        return $this->respondWithArray(['link' => $link]);
+        return $this->respondWithItem($link, new LinkTransformer);
     }
 
     /**
@@ -82,7 +84,7 @@ class ShareableLinkController extends ApiController
             return $this->respondWithMessage("Link has been deleted successfully.");
         }
 
-        
+
     }
 
     public function check($linkId)

@@ -40,14 +40,25 @@
             />
         </VLayout>
 
-        <NewFolderForm :open="newFolderModal" />
-        <ShareFile :open="shareFileModal" />
-        <RenameFile :open="renamefilemodal" />
+        <template v-if="newFolderModal">
+            <NewFolderForm :open="newFolderModal" />
+        </template>
+
+        <template v-if="shareFileModal">
+            <ShareFile :open="shareFileModal" />
+        </template>
+
+        <template v-if="shareLinkModal">
+            <ShareLink :open="shareLinkModal" />
+        </template>
+        <template v-if="renamefilemodal">
+            <RenameFile :open="renamefilemodal" />
+        </template>
+
         <MoveTo />
-        <Preview
-            v-if="previewModal"
-            :open="previewModal"
-        />
+        <template v-if="previewModal">
+            <Preview :open="previewModal" />
+        </template>
     </VLayout>
 </template>
 
@@ -60,6 +71,7 @@ import MediaInfo from './MediaInfo.vue'
 import Mixins from './mixin'
 import NewFolderForm from './NewFolderForm.vue'
 import ShareFile from './ShareFile.vue'
+import ShareLink from './ShareLink.vue'
 import RenameFile from './RenameFile.vue'
 import ContextMenu from './ContextMenu.vue'
 import MoveTo from './MoveTo.vue'
@@ -76,6 +88,7 @@ export default {
         ContextMenu,
         MoveTo,
         ShareFile,
+        ShareLink,
         Preview
     },
     mixins: [Mixins],
@@ -90,7 +103,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'renamefilemodal', 'previewModal']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'shareLinkModal', 'renamefilemodal', 'previewModal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
         }

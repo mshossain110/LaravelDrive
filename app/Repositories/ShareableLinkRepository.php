@@ -72,7 +72,5 @@ class ShareableLinkRepository
             ->where('user_id', $userId)
             ->where('file_id', $fileId)
             ->first();
-    }
-
-  
+    }  
 }

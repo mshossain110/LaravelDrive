@@ -101,6 +101,16 @@ trait BaseRepository
         return $this->save($this->model, $input);
     }
 
+    public function setAttributes ($model, $input) {
+        $fillable = $model->getFillable();
+        foreach ( $input as $key => $value ) {
+            if ( in_array( $key, $fillable ) ) {
+                $model->$key = $value;
+            }
+        }
+        return $model;
+    }
+
     /**
      * Save the input's data.
      *

@@ -48,9 +48,9 @@ Route::group([
     Route::delete('shares/remove-user/{userId}', 'SharesController@removeUser');
 
     // //SHAREABLE LINKS
-    // Route::get('file/{id}/shareable-link', 'ShareableLinksController@show');
-    // Route::post('file/{id}/shareable-link', 'ShareableLinksController@store');
-    // Route::put('shareable-links/{id}', 'ShareableLinksController@update');
-    // Route::delete('shareable-links/{id}', 'ShareableLinksController@destroy');
+    Route::get('file/{fileId}/shareable-link', 'ShareableLinkController@show');
+    Route::post('file/{fileId}/shareable-link', 'ShareableLinkController@store');
+    Route::put('shareable-links/{id}', 'ShareableLinkController@update');
+    Route::delete('shareable-links/{id}', 'ShareableLinkController@destroy');
 });
 
