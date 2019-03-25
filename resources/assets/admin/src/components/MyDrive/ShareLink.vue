@@ -12,6 +12,54 @@
                 >
                     Shareable link
                 </VCardTitle>
+                <VLayout>
+                    <VContainer>
+                        <VLayout
+                            row
+                            wrap
+                        >
+                            <VFlex
+                                xs6
+                                md6
+                            >
+                                <strong>Link sharing is on</strong>
+                            </VFlex>
+                            <VFlex
+                                xs6
+                                md6
+                            >
+                                <VBtn
+                                    flat
+                                    color="red"
+                                >
+                                    <VIcon>delete</VIcon>
+                                </VBtn>
+                                <VBtn flat>
+                                    <VIcon>edit</VIcon>
+                                </VBtn>
+                            </VFlex>
+                            <VFlex xs12>
+                                <VTextField
+                                    ref="sharelink"
+                                    outline
+                                    label="Link"
+                                    :value="getShareLink"
+                                    type="text"
+                                    @focus="$event.target.select()"
+                                >
+                                    <template v-slot:append>
+                                        <VBtn
+                                            color="blue"
+                                            @click="copyLink"
+                                        >
+                                            Copy
+                                        </VBtn>
+                                    </template>
+                                </VTextField>
+                            </VFlex>
+                        </VLayout>
+                    </VContainer>
+                </VLayout>
 
                 <VCardText v-if="showSettings">
                     <VContainer
@@ -231,6 +279,9 @@ export default {
     },
     mounted () {
         this.getShareableLink()
+        setTimeout(() => {
+            this.$refs.sharelink.focus()
+        }, 500)
     },
     methods: {
         close () {
@@ -254,6 +305,11 @@ export default {
                 .then((res) => {
                     this.linkdata = res.data.data
                 })
+        },
+        copyLink () {
+            this.$refs.sharelink.blur()
+            this.$refs.sharelink.focus()
+            document.execCommand('copy')
         }
     }
 }
