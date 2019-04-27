@@ -1,9 +1,8 @@
 <template>
     <VDialog
-        :value="open"
+        v-model="openpoupu"
         class="mpu"
         max-width="700"
-        persistent
     >
         <form @submit.prevent="onSubmit">
             <VCard class="dl-share-modal">
@@ -14,8 +13,8 @@
                 </VCardTitle>
 
                 <VCardText>
-                    <VLayout>
-                        <VFlex xs9>
+                    <VLayout align-center>
+                        <VFlex xs8>
                             <VCombobox
                                 v-model="users"
                                 :items="people"
@@ -55,7 +54,7 @@
                                 </template>
                             </VCombobox>
                         </VFlex>
-                        <VFlex xs3>
+                        <VFlex xs2>
                             <VMenu
                                 transition="slide-x-transition"
                                 max-width="300"
@@ -89,26 +88,64 @@
                                 </VList>
                             </VMenu>
                         </VFlex>
+                        <VFlex xs2>
+                            <VBtn
+                                color="success"
+                                type="submit"
+                            >
+                                Add
+                            </VBtn>
+                        </VFlex>
+                    </VLayout>
+
+                    <VLayout align-center>
+                        <VFlex
+                            12
+                            class="mt-3"
+                        >
+                            <div class="owner-of-file">
+                                <div class="subheading">
+                                    Owner of File
+                                </div>
+                                <div class="inner">
+                                    <VImg
+                                        :src="selectedMedia.owner.data.avatar"
+                                    />
+                                    <div class="owen-name">
+                                        {{ selectedMedia.owner.data.display_name }} <br>
+                                        {{ selectedMedia.owner.data.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <VDivider />
+                        </VFlex>
+                    </VLayout>
+
+                    <VLayout align-center>
+                        <VFlex
+                            v-for="u in sharedwith"
+                            :key="u.id"
+                            xs12
+                            class="mt-1"
+                        >
+                            <div class="owner-of-file">
+                                <div class="subheading">
+                                    Share File with
+                                </div>
+                                <div class="inner">
+                                    <VImg
+                                        :src="u.avatar"
+                                    />
+                                    <div class="owen-name">
+                                        {{ u.display_name }} <br>
+                                        {{ u.email }}
+                                    </div>
+                                </div>
+                            </div>
+                        </VFlex>
+                        <VDivider />
                     </VLayout>
                 </VCardText>
-
-                <VCardActions>
-                    <VBtn
-                        color="info"
-                        type="submit"
-
-                        flat
-                    >
-                        Done
-                    </VBtn>
-                    <VBtn
-                        color="error"
-                        flat
-                        @click="close"
-                    >
-                        Cancel
-                    </VBtn>
-                </VCardActions>
             </VCard>
         </form>
     </VDialog>
@@ -136,7 +173,9 @@ export default {
         return {
             users: [],
             people: [],
+            sharedwith: [],
             search: null,
+            openpoupu: this.open,
             searchTimeOut: false,
             isLoading: false,
             isUpdating: false,
@@ -162,7 +201,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['selectedFilesId'])
+        ...mapState('Media', ['selectedFilesId', 'selectedMedia', 'shareFileModal'])
     },
     watch: {
         search (val) {
@@ -183,7 +222,13 @@ export default {
                     })
                     .finally(() => (this.isLoading = false))
             }, 400)
+        },
+        openpoupu (val) {
+            if (this.open !== val) { this.$store.commit('Media/shareFileModal', val) }
         }
+    },
+    created () {
+        this.getfileUser()
     },
     methods: {
         onSubmit () {
@@ -207,6 +252,12 @@ export default {
                         },
                         { root: true })
                     this.close()
+                })
+        },
+        getfileUser () {
+            axios.get(`/api/shared/file/${this.selectedFilesId}/share-with`)
+                .then(res => {
+                    this.sharedwith = res.data.data
                 })
         },
         close () {
@@ -241,4 +292,16 @@ export default {
     height: 56px;
     color: #4a4848 !important;
 }
+.inner {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+.inner .v-image {
+    width: 40px;
+    display: block;
+    max-width: 40px;
+    margin-right: 20px;
+}
+
 </style>

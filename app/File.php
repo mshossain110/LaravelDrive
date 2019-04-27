@@ -128,6 +128,10 @@ class File extends Model
         return $this->tags()->where('name', 'starred')->exists();
     }
 
+    public function sharedWith () {
+        return $this->belongsToMany('App\User', 'file_user', 'file_id', 'user_id')->withPivot(['permissions', 'created_at', 'updated_at', 'owner']);
+    }
+
     public function owner()
     {
         return $this->belongsTo('App\User', 'created_by');

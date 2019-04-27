@@ -43,6 +43,7 @@ Route::group([
     //sharing
     // Route::post('shareable-links/{linkId}/import', 'SharesController@addCurrentUser');
     Route::get('shared/files', 'SharesController@sharedWithMe');
+    Route::get('shared/file/{file_id}/share-with', 'SharesController@sharedWith');
     Route::post('shares/add-users', 'SharesController@addUsers');
     Route::put('shares/update-users', 'SharesController@updateUsers');
     Route::delete('shares/remove-user/{userId}', 'SharesController@removeUser');

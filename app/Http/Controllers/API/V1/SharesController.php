@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\Shares\AttachUsersToEntry;
 use App\Services\Shares\GetUsersWithAccessToEntry;
+use App\Transformers\UserTransformer;
 
 class SharesController extends ApiController
 {
@@ -53,6 +54,13 @@ class SharesController extends ApiController
         
         
     	return $this->respondWithPaginator($files, new FileTransformer);
+    }
+
+
+    public function sharedWith ($file_id) {
+        $users = File::with('sharedWith')->find($file_id)->sharedWith;
+
+        return $this->respondWithCollection( $users, new UserTransformer );
     }
 
         /**
