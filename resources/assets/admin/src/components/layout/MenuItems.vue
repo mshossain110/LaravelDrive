@@ -83,10 +83,10 @@ export default {
     data () {
         return {
             items: [
-                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false },
-                { heading: 'Users' },
+                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
+                { heading: 'Users', permission: true },
                 { icon: 'people', text: 'Users', name: 'users', disabled: false },
-                { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false },
+                { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false, permission: this.hasPermission('role.view') },
                 { heading: 'My Drive' },
                 { icon: 'perm_media', text: 'My Files', name: 'media', disabled: false },
                 { icon: 'people', text: 'Shared with me', name: 'shared', disabled: false },
@@ -95,7 +95,7 @@ export default {
                 { icon: 'delete_forever', text: 'Trash', name: 'trash', disabled: false },
                 { heading: 'Admin Settings' },
                 { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
-            ]
+            ].filter(i => typeof i.permission === 'undefined' || i.permission)
         }
     },
     computed: {

@@ -13,6 +13,7 @@
             </VListTileContent>
             <VListTileAction class="role-action">
                 <VIcon
+                    v-if="hasPermission('role.update')"
                     small
                     class="mr-2"
                     @click="roleEdit = !roleEdit"
@@ -20,6 +21,7 @@
                     edit
                 </VIcon>
                 <VIcon
+                    v-if="hasPermission('role.delete')"
                     small
                     @click="deleteRole(role.id)"
                 >
@@ -28,7 +30,7 @@
             </VListTileAction>
         </VListTile>
         <RoleForm
-            v-if="roleEdit"
+            v-if="roleEdit && hasPermission('role.update')"
             :role="role"
             @close="roleEdit = false"
         />
@@ -39,6 +41,7 @@
 import RoleForm from './RoleForm.vue'
 
 export default {
+
     components: {
         RoleForm
     },

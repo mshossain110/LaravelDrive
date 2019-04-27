@@ -17,7 +17,10 @@
                         <VIcon>search</VIcon>
                     </VBtn>
                 </VToolbar>
-                <RoleForm :half-form="false" />
+                <RoleForm
+                    v-if="hasPermission('role.create')"
+                    :half-form="false"
+                />
 
                 <VList
                     v-for="role in roles"
@@ -43,6 +46,11 @@ import RoleForm from './RoleForm.vue'
 import Role from './Role.vue'
 
 export default {
+    beforeRouteEnter (to, from, next) {
+        next(vm => {
+            vm.hasPermission('role.view')
+        })
+    },
     components: {
         RoleForm,
         Role

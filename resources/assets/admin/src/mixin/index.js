@@ -19,7 +19,16 @@ export default {
     },
 
     methods: {
+        getUserPermissions () {
+            return LD.user.permissions
+        },
+        hasPermission (p) {
+            if (LD.user.permissions.indexOf('administrator') !== -1) {
+                return true
+            }
 
+            return LD.user.permissions.indexOf(p) !== -1
+        }
     }
 
 }
