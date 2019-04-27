@@ -7,6 +7,7 @@ use App\Repositories\RoleRepository;
 use App\Transformers\RoleTransformer;
 use App\Http\Requests\RoleRequest;
 use Gate;
+use App\Role;
 
 class RoleController extends ApiController
 {
@@ -20,10 +21,13 @@ class RoleController extends ApiController
     }
 
     public function index () {
+        $this->authorize('view', Role::class);
+
     	return $this->respondWithCollection($this->role->getList(), new RoleTransformer);
     }
 
     public function show ( $id ){
+        $this->authorize('view', Role::class);
     	return $this->respondWithItem($this->role->getById($id), new RoleTransformer);
     }
 
@@ -34,6 +38,7 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store( RoleRequest $request){
+        $this->authorize('create', Role::class);
         $validated = $request->validated();
 
         $data      = $request->only(['name', 'description', 'status', 'permissions']);
@@ -50,6 +55,7 @@ class RoleController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function update ( RoleRequest $request, $id ) {
+        $this->authorize('view', Role::class);
         $validated = $request->validated();
         $data      = $request->only(['name', 'description', 'status', 'permissions']);
     	$role      = $this->role->update( $id, $data);
