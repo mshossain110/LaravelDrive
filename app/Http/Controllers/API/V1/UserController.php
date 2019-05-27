@@ -7,6 +7,7 @@ use App\Repositories\UserRepository;
 use App\Transformers\UserTransformer;
 use App\Http\Requests\UserRequest;
 use Carbon\Carbon;
+use App\User;
 
 class UserController extends ApiController
 {
@@ -20,10 +21,12 @@ class UserController extends ApiController
     }
 
     public function index () {
+        $this->authorize('view', User::class);
     	return $this->respondWithPaginator($this->user->page(), new UserTransformer);
     }
 
     public function show ( $id ) {
+        $this->authorize('view', User::class);
     	return $this->respondWithItem($this->user->getById($id), new UserTransformer);
     }
 
@@ -34,6 +37,7 @@ class UserController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store ( UserRequest $request) {
+        $this->authorize('create', User::class);
         $validated = $request->validated();
 
         $data = $request->only([
@@ -63,6 +67,7 @@ class UserController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function update ( UserRequest $request, $id ) {
+        $this->authorize('update', User::class);
 
         $validated = $request->validated();
 
@@ -92,6 +97,7 @@ class UserController extends ApiController
      */
     public function status($id, Request $request)
     {
+        $this->authorize('update', User::class);
         $input = $request->all();
 
         if (auth()->user()->id == $id ) {
@@ -110,7 +116,7 @@ class UserController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function destroy ( $id ) {
-
+        $this->authorize('delete', User::class);
         if (auth()->user()->id == $id ) {
             return $this->errorUnauthorized('You can\'t delete for yourself and other Administrators!');
         }
@@ -128,6 +134,7 @@ class UserController extends ApiController
      */
     public function deleteMultiple(Request $request )
     {
+        $this->authorize('delete', User::class);
         $this->authorize('destroy', User::class);
 
         $this->validate($request, [
@@ -140,6 +147,7 @@ class UserController extends ApiController
     }
 
     public function search (Request $request) {
+        $this->authorize('view', User::class);
         $query = $request->get('s');
         
         $this->validate($request, [
