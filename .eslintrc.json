@@ -15,7 +15,8 @@
     "globals": {
         "axios": true,
         "Vue": true,
-        "Bus": true
+        "Bus": true,
+        "LD": true
     },
     "rules": {
         "indent": ["error", 4],

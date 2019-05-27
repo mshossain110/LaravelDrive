@@ -20,6 +20,7 @@
                 <VSpacer />
 
                 <VBtn
+                    v-if="hasPermission('user.create')"
                     icon
                     @click="openform = true"
                 >
@@ -45,6 +46,7 @@
         </VFlex>
 
         <VDialog
+            v-if="hasPermission('user.create')"
             v-model="openform"
             max-width="500px"
         >
@@ -58,6 +60,10 @@ import UsersTable from './UsersTable.vue'
 import UserForm from './UserForm.vue'
 
 export default {
+    beforeRouteEnter (to, from, next) {
+        var p = LD.hasPermission('user.view')
+        next(p)
+    },
     components: {
         UsersTable,
         UserForm

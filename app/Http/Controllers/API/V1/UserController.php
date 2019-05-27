@@ -135,7 +135,6 @@ class UserController extends ApiController
     public function deleteMultiple(Request $request )
     {
         $this->authorize('delete', User::class);
-        $this->authorize('destroy', User::class);
 
         $this->validate($request, [
             'ids' => 'required|array|min:1'

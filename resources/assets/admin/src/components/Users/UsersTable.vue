@@ -78,6 +78,7 @@
                 </td>
                 <td class="justify-center layout px-0">
                     <VIcon
+                        v-if="hasPermission('user.update')"
                         small
                         class="mr-2"
                         @click="editUserMethod(props.item)"
@@ -85,6 +86,7 @@
                         edit
                     </VIcon>
                     <VIcon
+                        v-if="hasPermission('user.delete')"
                         small
                         @click="deleteUser(props.item)"
                     >
@@ -101,6 +103,7 @@
             />
         </div>
         <VDialog
+            v-if="hasPermission('user.update')"
             v-model="openEditUserForm"
             max-width="500px"
         >
@@ -176,6 +179,9 @@ export default {
             }
         },
         activation (user) {
+            if (!this.hasPermission('user.updata')) {
+                return
+            }
             let status = user.status.toLowerCase() === 'inactive' ? 'active' : 'inactive'
             Vue.set(user, 'status', status)
             this.$store.dispatch('Users/updateUser', user)

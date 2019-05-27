@@ -130,6 +130,9 @@ class RoleController extends ApiController
 
         if ( is_array( $methods ) ) {
             foreach ( $methods as $method) {
+                if ($method == 'before') {
+                    continue;
+                }
               $data[] = strtolower($name) . '.' . $method;
             }
         }

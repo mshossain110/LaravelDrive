@@ -80,7 +80,7 @@ class User extends Authenticatable
             $permissions = array_merge($permissions, $role->permissions);
         }
 
-        return empty($permissions) ? null : $permissions;
+        return empty($permissions) ? [] : $permissions;
     }
 
     public function hasPermission( $permission ) {

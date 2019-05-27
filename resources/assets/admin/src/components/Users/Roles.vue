@@ -47,9 +47,8 @@ import Role from './Role.vue'
 
 export default {
     beforeRouteEnter (to, from, next) {
-        next(vm => {
-            vm.hasPermission('role.view')
-        })
+        var p = LD.hasPermission('role.view')
+        next(p)
     },
     components: {
         RoleForm,

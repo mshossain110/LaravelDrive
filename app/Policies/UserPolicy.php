@@ -11,7 +11,9 @@ class UserPolicy
 
     public function before(User $user)
     {
-        return $user->hasPermission('administrator');
+        if ($user->hasPermission('administrator')) {
+            return true;
+        }
     }
 
     /**

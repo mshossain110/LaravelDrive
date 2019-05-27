@@ -23,6 +23,9 @@ export default {
             return LD.user.permissions
         },
         hasPermission (p) {
+            if (!LD.user.permissions || !LD.user.permissions.length) {
+                return false
+            }
             if (LD.user.permissions.indexOf('administrator') !== -1) {
                 return true
             }

@@ -50,3 +50,17 @@ if (bearer) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+window.LD.getUserPermissions = function getUserPermissions () {
+    return LD.user.permissions
+}
+window.LD.hasPermission = function hasPermission (p) {
+    if (!LD.user.permissions || !LD.user.permissions.length) {
+        return false
+    }
+    if (LD.user.permissions.indexOf('administrator') !== -1) {
+        return true
+    }
+
+    return LD.user.permissions.indexOf(p) !== -1
+}
