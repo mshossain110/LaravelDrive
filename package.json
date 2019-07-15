@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production webpack --mode production --no-progress --hide-modules"
     },
     "devDependencies": {
-        "autoprefixer": "^9.6.0",
+        "autoprefixer": "^9.6.1",
         "babel-core": "^6.26.3",
         "babel-eslint": "^9.0.0",
         "babel-loader": "^7.1.5",
@@ -20,8 +20,6 @@
         "cross-env": "^5.1",
         "css-loader": "^1.0.1",
         "eslint": "^6.0.1",
-        "eslint-config-airbnb-base": "^13.1.0",
-        "eslint-config-airbnb-standard": "^3.0.1",
         "eslint-config-standard": "^12.0.0",
         "eslint-plugin-html": "^4.0.6",
         "eslint-plugin-import": "^2.18.0",
@@ -29,9 +27,9 @@
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.0",
         "eslint-plugin-vue": "^5.2.3",
-        "eslint-plugin-vue-libs": "^3.0.0",
+        "eslint-plugin-vue-libs": "^3.0.2",
         "file-loader": "^2.0.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.14",
         "mini-css-extract-plugin": "^0.5.0",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "postcss-import": "^12.0.1",
@@ -44,8 +42,8 @@
         "vue-loader": "^15.7.0",
         "vue-style-loader": "^4.1.2",
         "vue-template-compiler": "^2.6.10",
-        "webpack": "^4.35.0",
-        "webpack-cli": "^3.3.5"
+        "webpack": "^4.35.3",
+        "webpack-cli": "^3.3.6"
     },
     "dependencies": {
         "axios": "^0.18.1",
@@ -55,10 +53,10 @@
         "plyr": "^3.5.6",
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.2",
-        "vee-validate": "^2.2.11",
+        "vee-validate": "^2.2.12",
         "vue": "^2.6.10",
         "vue-multiselect": "^2.1.6",
-        "vue-router": "^3.0.6",
+        "vue-router": "^3.0.7",
         "vuetify": "^1.5.16",
         "vuex": "^3.1.1"
     }
