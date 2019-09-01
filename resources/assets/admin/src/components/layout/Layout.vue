@@ -13,7 +13,7 @@
             <MenuItems />
         </VNavigationDrawer>
 
-        <VToolbar
+        <VAppBar
             :clipped-left="$vuetify.breakpoint.lgAndUp"
             color="white"
             flat
@@ -25,7 +25,7 @@
                 style="width: 240px"
                 class="ml-0 pl-3"
             >
-                <VToolbarSideIcon @click.stop="drawer = !drawer" />
+                <VAppBarNavIcon @click.stop="drawer = !drawer" />
                 <span class="hidden-sm-and-down">
                     <img
                         src="./../../images/logo.png"
@@ -37,7 +37,7 @@
             <VTextField
                 flat
                 solo
-                box
+                filled
                 hide-details
                 prepend-inner-icon="search"
                 placeholder="Search"
@@ -54,7 +54,7 @@
                 <VIcon>notifications</VIcon>
             </VBtn>
             <UserInfo v-if="isAuthenticated" />
-        </VToolbar>
+        </VAppBar>
 
         <VContent>
             <VContainer

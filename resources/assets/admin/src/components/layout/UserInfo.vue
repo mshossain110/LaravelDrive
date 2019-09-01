@@ -6,15 +6,18 @@
         nudge-top
         offset-y
     >
-        <VAvatar
-            slot="activator"
-            size="32px"
-        >
-            <img
-                src="https://cdn.vuetifyjs.com/images/john.jpg"
-                alt="Vuetify"
+        <template v-slot:activator="{ on }">
+            <VAvatar
+                slot="activator"
+                size="32px"
+                v-on="on"
             >
-        </VAvatar>
+                <img
+                    src="https://i.pravatar.cc/60"
+                    alt="Vuetify"
+                >
+            </VAvatar>
+        </template>
 
         <VCard>
             <VLayout

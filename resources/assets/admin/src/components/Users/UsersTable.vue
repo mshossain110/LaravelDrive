@@ -24,9 +24,9 @@
             :items="users"
             :search="search"
             item-key="name"
-            select-all
+            show-select
             flat
-            hide-actions
+            hide-default-footer
             class="elevation-1"
         >
             <template

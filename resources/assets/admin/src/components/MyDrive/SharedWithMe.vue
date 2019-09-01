@@ -209,7 +209,7 @@ export default {
 }
 </script>
 
-<style lang="styl">
+<style lang="scss">
 div#laraveladmin {
     width: 100%;
     position: fixed;

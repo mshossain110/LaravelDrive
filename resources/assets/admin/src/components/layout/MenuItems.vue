@@ -28,52 +28,52 @@
                 :prepend-icon="item.icon"
                 no-action
             >
-                <VListTile
+                <VListItem
                     slot="activator"
                     :to="{name:item.name }"
                     :disabled="item.disabled"
                 >
-                    <VListTileContent>
-                        <VListTileTitle>
+                    <VListItemContent>
+                        <VListItemTitle>
                             {{ item.text }}
-                        </VListTileTitle>
-                    </VListTileContent>
-                </VListTile>
+                        </VListItemTitle>
+                    </VListItemContent>
+                </VListItem>
 
-                <VListTile
+                <VListItem
                     v-for="(child, i) in item.children"
                     :key="i"
                     :to="{name:child.name }"
                     :disabled="item.disabled"
                 >
-                    <VListTileAction v-if="child.icon">
+                    <VListItemAction v-if="child.icon">
                         <VIcon>{{ child.icon }}</VIcon>
-                    </VListTileAction>
+                    </VListItemAction>
 
-                    <VListTileContent>
-                        <VListTileTitle>
+                    <VListItemContent>
+                        <VListItemTitle>
                             {{ child.text }}
-                        </VListTileTitle>
-                    </VListTileContent>
-                </VListTile>
+                        </VListItemTitle>
+                    </VListItemContent>
+                </VListItem>
             </VListGroup>
 
-            <VListTile
+            <VListItem
                 v-else
                 :key="item.name"
                 :to="{name:item.name }"
                 :disabled="item.disabled"
             >
-                <VListTileAction>
+                <VListItemAction>
                     <VIcon>{{ item.icon }}</VIcon>
-                </VListTileAction>
+                </VListItemAction>
 
-                <VListTileContent>
-                    <VListTileTitle>
+                <VListItemContent>
+                    <VListItemTitle>
                         {{ item.text }}
-                    </VListTileTitle>
-                </VListTileContent>
-            </VListTile>
+                    </VListItemTitle>
+                </VListItemContent>
+            </VListItem>
         </template>
     </VList>
 </template>
@@ -108,10 +108,10 @@ export default {
 </script>
 
 <style>
-    .la-side-menu .v-list__tile__action{
+    .la-side-menu .v-list__Item__action{
         min-width: 36px;
     }
-    .la-side-menu a.v-list__tile  {
+    .la-side-menu a.v-list__Item  {
         text-decoration: none;
         font-size: 16px;
         font-weight: normal !important;
@@ -125,7 +125,7 @@ export default {
         border-top: 1px solid #ddd;
     }
 
-    .v-list--disabled a.v-list__tile--disabled {
+    .v-list--disabled a.v-list__Item--disabled {
         color: #aaaaaa !important;
         caret-color: #aaaaaa !important;
     }

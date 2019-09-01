@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import 'babel-polyfill'
 import VueRouter from 'vue-router'
-import Vuetify from 'vuetify'
-import colors from 'vuetify/es5/util/colors'
+import vuetify from './vuetify'
 import VeeValidate from 'vee-validate'
 
 import App from './App.vue'
-import './stylus/main.styl'
+import './stylus/main.scss'
 
 import routes from './router'
 
@@ -36,18 +35,6 @@ router.beforeEach((to, from, next) => {
     }
 })
 
-Vue.use(Vuetify, {
-    theme: {
-        primary: colors.grey.darken3,
-        secondary: colors.blue.darken3,
-        accent: colors.lightGreen.darken3,
-        error: colors.red.base,
-        warning: colors.yellow.darken1,
-        info: colors.blue.darken1,
-        success: colors.green.darken2
-    }
-})
-
 Vue.use(VueRouter)
 
 Vue.mixin(mixin)
@@ -56,7 +43,8 @@ window.Bus = new Vue()
 
 new Vue({ // eslint-disable-line no-new
     el: '#root',
-    store,
+    vuetify,
     router,
+    store,
     render: h => h(App)
 })

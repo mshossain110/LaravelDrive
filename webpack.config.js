@@ -3,6 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
 const isDev = process.env.NODE_ENV !== 'production'
 /**
@@ -15,6 +16,9 @@ plugins.push(
     new VueLoaderPlugin()
 )
 
+plugins.push(
+    new VuetifyLoaderPlugin()
+)
 if (!isDev) {
     plugins.push(
         new MiniCssExtractPlugin({
@@ -83,7 +87,7 @@ module.exports = {
             },
 
             {
-                test: /\.(styl|css)$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
                     isDev ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
                     {
@@ -91,7 +95,14 @@ module.exports = {
                         options: { importLoaders: 1, minimize: true }
                     },
                     'postcss-loader',
-                    'stylus-loader'
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            implementation: require('sass')
+                            // fiber: require('fibers'),
+                            // indentedSyntax: true // optional
+                        }
+                    }
                 ]
             },
             {

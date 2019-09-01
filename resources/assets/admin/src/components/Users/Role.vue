@@ -1,17 +1,17 @@
 <template>
     <div>
-        <VListTile
+        <VListItem
             :to="{name: 'role-permissions', params: { id: role.id }}"
             avatar
             ripple
         >
-            <VListTileContent>
-                <VListTileTitle>{{ role.name }}</VListTileTitle>
-                <VListTileSubTitle>
+            <VListItemContent>
+                <VListItemTitle>{{ role.name }}</VListItemTitle>
+                <VListItemSubTitle>
                     {{ role.description }}
-                </VListTileSubTitle>
-            </VListTileContent>
-            <VListTileAction class="role-action">
+                </VListItemSubTitle>
+            </VListItemContent>
+            <VListItemAction class="role-action">
                 <VIcon
                     v-if="hasPermission('role.update')"
                     small
@@ -27,8 +27,8 @@
                 >
                     delete
                 </VIcon>
-            </VListTileAction>
-        </VListTile>
+            </VListItemAction>
+        </VListItem>
         <RoleForm
             v-if="roleEdit && hasPermission('role.update')"
             :role="role"

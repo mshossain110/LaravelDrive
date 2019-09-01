@@ -1,26 +1,25 @@
 <template>
     <div class="vue-root">
-        <layout />
+        <Layout />
     </div>
 </template>
 
-
 <script>
-import Layout from '@ac/layout';
+import Layout from '@ac/layout'
 
 export default {
     components: {
-        Layout,
+        Layout
     },
     data () {
         return {
-        };
+        }
     },
     computed: {
 
     },
     methods: {
 
-    },
-};
+    }
+}
 </script>
