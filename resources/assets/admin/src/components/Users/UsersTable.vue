@@ -25,83 +25,86 @@
             :search="search"
             item-key="name"
             show-select
-            flat
-            hide-default-footer
             class="elevation-1"
         >
             <template
-                slot="items"
-                slot-scope="props"
+                v-slot:header.data-table-select="{ on, props }"
             >
-                <td>
-                    <VCheckbox
-                        v-model="props.selected"
-                        primary
-                        hide-details
-                    />
-                </td>
-                <td>
-                    <VAvatar
-                        v-if="props.item.avatar"
-                        :title="props.item.firstname"
-                        :size="32"
-                        color="grey lighten-4"
+                <VSimpleCheckbox
+                    color="purple"
+                    v-bind="props"
+                    v-on="on"
+                />
+            </template>
+
+            <template
+                v-slot:item.data-table-select="{ isSelected, select }"
+            >
+                <VSimpleCheckbox
+                    color="green"
+                    :value="isSelected"
+                    @input="select($event)"
+                />
+            </template>
+
+            <template
+                v-slot:item.avatar="{ item }"
+            >
+                <VAvatar
+                    v-if="item.avatar"
+                    :title="item.firstname"
+                    :size="32"
+                    color="grey lighten-4"
+                >
+                    <img
+                        :src="item.avatar"
+                        :alt="item.firstname"
                     >
-                        <img
-                            :src="props.item.avatar"
-                            :alt="props.item.firstname"
-                        >
-                    </VAvatar>
-                    <VAvatar
-                        :style="getRandomColor()"
-                        :size="32"
-                    >
-                        <span class="white--text headline">
-                            {{ props.item.name.charAt(0).toUpperCase() }}
-                        </span>
-                    </VAvatar>
-                </td>
-                <td>{{ props.item.firstname }}</td>
-                <td>{{ props.item.lastname }}</td>
-                <td>{{ props.item.email }}</td>
-                <td>{{ props.item.role }}</td>
-                <td>
-                    <div class="text-xs-center">
-                        <VChip
-                            :class="props.item.status"
-                            small
-                            @click="activation(props.item)"
-                        >
-                            {{ props.item.status }}
-                        </VChip>
-                    </div>
-                </td>
-                <td class="justify-center layout px-0">
-                    <VIcon
-                        v-if="hasPermission('user.update')"
+                </VAvatar>
+                <VAvatar
+                    v-else
+                    :style="getRandomColor()"
+                    :size="32"
+                >
+                    <span class="white--text headline">
+                        {{ item.name.charAt(0).toUpperCase() }}
+                    </span>
+                </VAvatar>
+            </template>
+
+            <template
+                v-slot:item.status="{ item }"
+            >
+                <div class="text-xs-center">
+                    <VChip
+                        :class="item.status"
                         small
-                        class="mr-2"
-                        @click="editUserMethod(props.item)"
+                        @click="activation(item)"
                     >
-                        edit
-                    </VIcon>
-                    <VIcon
-                        v-if="hasPermission('user.delete')"
-                        small
-                        @click="deleteUser(props.item)"
-                    >
-                        delete
-                    </VIcon>
-                </td>
+                        {{ item.status }}
+                    </VChip>
+                </div>
+            </template>
+
+            <template v-slot:item.action="{item}">
+                <VIcon
+                    v-if="hasPermission('user.update')"
+                    small
+                    class="mr-2"
+                    @click="editUserMethod(item)"
+                >
+                    edit
+                </VIcon>
+                <VIcon
+                    v-if="hasPermission('user.delete')"
+                    small
+                    @click="deleteUser(item)"
+                >
+                    delete
+                </VIcon>
             </template>
         </VDataTable>
 
-        <div class="text-xs-left pt-2">
-            <VPagination
-                v-model="currentpage"
-                :length="pagination.total_pages"
-            />
-        </div>
         <VDialog
             v-if="hasPermission('user.update')"
             v-model="openEditUserForm"

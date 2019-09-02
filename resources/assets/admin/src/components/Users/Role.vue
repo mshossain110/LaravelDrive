@@ -2,14 +2,13 @@
     <div>
         <VListItem
             :to="{name: 'role-permissions', params: { id: role.id }}"
-            avatar
             ripple
         >
             <VListItemContent>
                 <VListItemTitle>{{ role.name }}</VListItemTitle>
-                <VListItemSubTitle>
+                <VListItemSubtitle>
                     {{ role.description }}
-                </VListItemSubTitle>
+                </VListItemSubtitle>
             </VListItemContent>
             <VListItemAction class="role-action">
                 <VIcon

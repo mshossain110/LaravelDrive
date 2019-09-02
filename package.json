@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production webpack --mode production --no-progress --hide-modules"
     },
     "devDependencies": {
+        "@mdi/font": "^4.2.95",
         "autoprefixer": "^9.6.1",
         "babel-core": "^6.26.3",
         "babel-eslint": "^9.0.0",

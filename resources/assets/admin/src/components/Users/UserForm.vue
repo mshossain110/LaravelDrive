@@ -119,14 +119,14 @@
                 <VSpacer />
                 <VBtn
                     color="blue darken-1"
-                    flat
+                    text
                     @click.native="$emit('close', false)"
                 >
                     Close
                 </VBtn>
                 <VBtn
                     color="blue darken-1"
-                    flat
+                    text
                     type="submit"
                 >
                     Save
