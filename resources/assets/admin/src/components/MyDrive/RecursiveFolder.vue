@@ -1,13 +1,25 @@
 <template>
-    <li >
-            <v-icon>folder_open</v-icon>
-            <span>{{ folder.name }}</span>
-            <a href=""  v-if="folder.children.length" @click.prevent="openColleps"><v-icon >keyboard_arrow_down</v-icon></a>
-            <ul v-if="folder.children.length && colleps" :class="chieldClass" >
-                <recursive-folder v-for="child in folder.children" :folder="child" :key="child.id"  :depth="depth+1"></recursive-folder>
-            </ul>
+    <li>
+        <VIcon>folder_open</VIcon>
+        <span>{{ folder.name }}</span>
+        <a
+            v-if="folder.children.length"
+            href=""
+            @click.prevent="openColleps"
+        ><VIcon>keyboard_arrow_down</VIcon></a>
+        <ul
+            v-if="folder.children.length && colleps"
+            :class="chieldClass"
+        >
+            <RecursiveFolder
+                v-for="child in folder.children"
+                :key="child.id"
+                :folder="child"
+                :depth="depth+1"
+            />
+        </ul>
 
-            <!-- <v-list-group
+        <!-- <v-list-group
                 v-for="folder in folders"
                 v-model="folder.id"
                 :key="folder.id"
@@ -15,32 +27,29 @@
                 no-action
                 >
                 {{folder.id}}
-                <v-list-tile slot="activator">
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{ folder.name }}</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                
+                <v-list-item slot="activator">
+                    <v-list-item-content>
+                        <v-list-item-title>{{ folder.name }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+
                 <recussive-folder :folders="folder.children" v-if="folder.children.length"></recussive-folder>
 
-                 <v-list-tile
+                 <v-list-item
                     v-for="subfolder in folder.children"
                     :key="subfolder.id"
                     >
-                    <v-list-tile-content>
-                        <v-list-tile-title>{{ subfolder.name }}</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
+                    <v-list-item-content>
+                        <v-list-item-title>{{ subfolder.name }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list-group> -->
-        
     </li>
-
 </template>
-
 
 <script>
 export default {
-    name: "RecursiveFolder",
+    name: 'RecursiveFolder',
     props: {
         folder: {
             type: Object,
@@ -53,13 +62,13 @@ export default {
     },
     data () {
         return {
-            colleps: false,
+            colleps: false
         }
     },
     computed: {
         chieldClass () {
-            let d = this.depth+1
-            return 'children ' + 'children-' + d;
+            let d = this.depth + 1
+            return 'children ' + 'children-' + d
         }
     },
     methods: {
@@ -71,5 +80,5 @@ export default {
 </script>
 
 <style>
-    
+
 </style>

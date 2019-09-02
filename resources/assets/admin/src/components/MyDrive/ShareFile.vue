@@ -60,31 +60,33 @@
                                 max-width="300"
                                 bottom
                             >
-                                <VBtn
-                                    slot="activator"
-                                    outline
-                                    color="indigo"
-                                >
-                                    <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
-                                </VBtn>
+                                <template v-slot:activator="{ on }">
+                                    <VBtn
+                                        outlined
+                                        color="indigo"
+                                        v-on="on"
+                                    >
+                                        <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
+                                    </VBtn>
+                                </template>
 
                                 <VList two-line>
-                                    <VListTile
+                                    <VListItem
                                         v-for="(item, i) in permissions"
                                         :key="i"
                                         @click="permission = item.id"
                                     >
-                                        <VListTileAction>
+                                        <VListItemAction>
                                             <VIcon v-if="permission == item.id">
                                                 check_circle
                                             </VIcon>
                                             <VSpacer v-else />
-                                        </VListTileAction>
-                                        <VListTileContent>
-                                            <VListTileTitle>{{ item.title }}</VListTileTitle>
-                                            <VListTileSubTitle>{{ item.descrption }}</VListTileSubTitle>
-                                        </VListTileContent>
-                                    </VListTile>
+                                        </VListItemAction>
+                                        <VListItemContent>
+                                            <VListItemTitle>{{ item.title }}</VListItemTitle>
+                                            <VListItemSubtitle>{{ item.descrption }}</VListItemSubtitle>
+                                        </VListItemContent>
+                                    </VListItem>
                                 </VList>
                             </VMenu>
                         </VFlex>
@@ -282,7 +284,7 @@ export default {
     padding-left: 10px;
 }
 
-.dl-share-modal .v-menu__activator .v-btn.v-btn--outline {
+.dl-share-modal .v-menu__activator .v-btn.v-btn--outlined {
     border-width: 1px 1px 1px;
     border-color: #ddd;
     border-style: solid;

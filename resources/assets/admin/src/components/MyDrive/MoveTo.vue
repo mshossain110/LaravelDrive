@@ -14,7 +14,7 @@
                     <VBtn
                         icon
                         light
-                        flat
+                        text
                         small
                         color="red"
                         @click.native="open = false"
@@ -43,7 +43,7 @@
             <VCardActions>
                 <VBtn
                     color="error"
-                    flat
+                    text
                     @click="open = false"
                 >
                     Cancel

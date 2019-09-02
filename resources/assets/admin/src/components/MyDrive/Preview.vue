@@ -27,7 +27,7 @@
                     <VToolbarItems>
                         <VBtn
                             dark
-                            flat
+                            text
                             @click="downloadFile()"
                         >
                             <VIcon>cloud_download</VIcon>
@@ -36,7 +36,7 @@
                     <VToolbarItems style="position: relative;">
                         <VBtn
                             dark
-                            flat
+                            text
                             @click="showContextMenu"
                         >
                             <VIcon>more_vert</VIcon>

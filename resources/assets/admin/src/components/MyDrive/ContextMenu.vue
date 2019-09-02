@@ -8,17 +8,17 @@
         offset-y
     >
         <VList id="contextmenu">
-            <VListTile
+            <VListItem
                 v-for="(item, index) in items"
                 :key="index"
                 ripple
                 @click="item.action"
             >
-                <VListTileAction v-if="item.icon">
+                <VListItemAction v-if="item.icon">
                     <VIcon>{{ item.icon }}</VIcon>
-                </VListTileAction>
-                <VListTileTitle>{{ item.title }}</VListTileTitle>
-            </VListTile>
+                </VListItemAction>
+                <VListItemTitle>{{ item.title }}</VListItemTitle>
+            </VListItem>
         </VList>
     </VMenu>
 </template>
@@ -236,13 +236,13 @@ export default {
         width: 300px;
         padding: 10px;
     }
-    #contextmenu .v-list__tile.theme--light:hover {
+    #contextmenu .v-list-item.theme--light:hover {
         background: #f3f3f3;
     }
-    #contextmenu .v-list__tile__action {
+    #contextmenu .v-list-item__action {
         min-width: 36px;
     }
-    #contextmenu .v-list__tile {
+    #contextmenu .v-list-item {
         height: 32px;
         cursor: pointer;
     }

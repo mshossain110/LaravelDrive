@@ -11,12 +11,14 @@
             <VIcon>perm_media</VIcon>
             My Files
             <VMenu offset-y>
-                <VBtn
-                    slot="activator"
-                    icon
-                >
-                    <VIcon>arrow_drop_down</VIcon>
-                </VBtn>
+                <template v-slot:activator="{ on }">
+                    <VBtn
+                        icon
+                        v-on="on"
+                    >
+                        <VIcon>arrow_drop_down</VIcon>
+                    </VBtn>
+                </template>
 
                 <VList>
                     <VListTile @click="openNewFolderModal()">

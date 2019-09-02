@@ -29,12 +29,12 @@
                                 md6
                             >
                                 <VBtn
-                                    flat
+                                    text
                                     color="red"
                                 >
                                     <VIcon>delete</VIcon>
                                 </VBtn>
-                                <VBtn flat>
+                                <VBtn text>
                                     <VIcon>edit</VIcon>
                                 </VBtn>
                             </VFlex>
@@ -106,14 +106,14 @@
                                             >
                                                 <VSpacer />
                                                 <VBtn
-                                                    flat
+                                                    text
                                                     color="primary"
                                                     @click="datepicker = false"
                                                 >
                                                     Cancel
                                                 </VBtn>
                                                 <VBtn
-                                                    flat
+                                                    text
                                                     color="primary"
                                                     @click="$refs.menu.save(linkExpierDate)"
                                                 >
@@ -207,13 +207,13 @@
                         v-if="showSettings"
                         color="info"
                         type="submit"
-                        flat
+                        text
                     >
                         Create Link
                     </VBtn>
                     <VBtn
                         color="error"
-                        flat
+                        text
                         @click="close"
                     >
                         Cancel

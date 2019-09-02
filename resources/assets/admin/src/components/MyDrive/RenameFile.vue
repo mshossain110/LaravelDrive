@@ -28,13 +28,13 @@
                     <VBtn
                         color="info"
                         type="submit"
-                        flat
+                        text
                     >
                         Rename
                     </VBtn>
                     <VBtn
                         color="error"
-                        flat
+                        text
                         @click="close"
                     >
                         Cancel
