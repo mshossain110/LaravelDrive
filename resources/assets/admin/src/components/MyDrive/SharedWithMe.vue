@@ -33,10 +33,16 @@
                 :file="cm.file"
             />
         </VLayout>
+        <template v-if="newFolderModal">
+            <NewFolderForm :open="newFolderModal" />
+        </template>
+        <template v-if="shareFileModal">
+            <ShareFile :open="shareFileModal" />
+        </template>
+        <template v-if="renamefilemodal">
+            <RenameFile :open="renamefilemodal" />
+        </template>
 
-        <NewFolderForm :open="newFolderModal" />
-        <ShareFile :open="shareFileModal" />
-        <RenameFile :open="renamefilemodal" />
         <MoveTo />
     </VLayout>
 </template>

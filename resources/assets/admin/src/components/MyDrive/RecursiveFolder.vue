@@ -53,7 +53,9 @@ export default {
     props: {
         folder: {
             type: Object,
-            default: {}
+            default () {
+                return {}
+            }
         },
         depth: {
             type: Number,

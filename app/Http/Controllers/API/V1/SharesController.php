@@ -42,6 +42,7 @@ class SharesController extends ApiController
 
 
     public function sharedWithMe () {
+        dd("dkfjhsdkjl");
         $parent_id = $this->request->get('parent_id');
         $per_page = 20;
 
