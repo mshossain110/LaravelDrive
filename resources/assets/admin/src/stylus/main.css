@@ -1,0 +1,39 @@
+@import url(./vue-multiselect.min.css);
+@import url(~dropzone/dist/dropzone.css);
+@import url(~plyr/dist/plyr.css);
+.bt-1 {
+  border-top: 1px solid #ddd;
+}
+.bt-2 {
+  border-top: 2px solid #ddd;
+}
+.bt-2 {
+  border-top: 2px solid #ddd;
+}
+.bb-1 {
+  border-bottom: 1px solid #ddd;
+}
+.bb-2 {
+  border-bottom: 2px solid #ddd;
+}
+.bb-2 {
+  border-bottom: 2px solid #ddd;
+}
+.bl-1 {
+  border-left: 1px solid #ddd;
+}
+.bl-2 {
+  border-left: 2px solid #ddd;
+}
+.bl-2 {
+  border-left: 2px solid #ddd;
+}
+.br-1 {
+  border-right: 1px solid #ddd;
+}
+.br-2 {
+  border-right: 2px solid #ddd;
+}
+.br-2 {
+  border-right: 2px solid #ddd;
+}

@@ -3,27 +3,31 @@
         dense
         class="la-side-menu"
     >
-        <template v-for="item in items">
-            <VLayout
+        <template v-for="(item, i) in items">
+            <VRow
                 v-if="item.heading"
-                :key="item.heading"
-                row
-                align-center
+                :key="i"
+                no-gutters
             >
-                <VFlex xs12>
+                <VCol cols="12">
                     <VSubheader v-if="item.heading">
                         {{ item.heading }}
                     </VSubheader>
-                </VFlex>
+                </VCol>
 
                 <!-- <v-flex xs6 class="text-xs-center">
                     <a href="#!" class="body-2 black--text">EDIT</a>
                 </v-flex> -->
-            </VLayout>
-
+            </VRow>
+            <VDivider
+                v-else-if="item.divider"
+                :key="i"
+                dark
+                class="my-4"
+            />
             <VListGroup
                 v-else-if="item.children"
-                :key="item.text"
+                :key="i"
                 v-model="item.model"
                 :prepend-icon="item.icon"
                 no-action
@@ -60,7 +64,7 @@
 
             <VListItem
                 v-else
-                :key="item.name"
+                :key="i"
                 :to="{name:item.name }"
                 :disabled="item.disabled"
             >
@@ -84,15 +88,18 @@ export default {
         return {
             items: [
                 { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
+                { divider: true },
                 { heading: 'Users', permission: true },
                 { icon: 'people', text: 'Users', name: 'users', disabled: false },
                 { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false, permission: this.hasPermission('role.view') },
+                { divider: true },
                 { heading: 'My Drive' },
                 { icon: 'perm_media', text: 'My Files', name: 'media', disabled: false },
                 { icon: 'people', text: 'Shared with me', name: 'shared', disabled: false },
                 { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
                 { icon: 'star', text: 'Starred', name: 'starred', disabled: false },
                 { icon: 'delete_forever', text: 'Trash', name: 'trash', disabled: false },
+                { divider: true },
                 { heading: 'Admin Settings' },
                 { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
             ].filter(i => typeof i.permission === 'undefined' || i.permission)
@@ -106,28 +113,3 @@ export default {
     }
 }
 </script>
-
-<style>
-    .la-side-menu .v-list__Item__action{
-        min-width: 36px;
-    }
-    .la-side-menu a.v-list__Item  {
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: normal !important;
-    }
-
-    .la-side-menu a:hover {
-        text-decoration: none
-    }
-
-    .la-side-menu .v-subheader {
-        border-top: 1px solid #ddd;
-    }
-
-    .v-list--disabled a.v-list__Item--disabled {
-        color: #aaaaaa !important;
-        caret-color: #aaaaaa !important;
-    }
-
-</style>

@@ -20,71 +20,61 @@
         </template>
 
         <VCard>
-            <VLayout
-                row
-                class="pa-2"
-            >
-                <VFlex xs5>
-                    <VAvatar size="100px">
-                        <img
-                            src="https://cdn.vuetifyjs.com/images/john.jpg"
-                            alt="Vuetify"
-                        >
-                    </VAvatar>
-                </VFlex>
-                <VFlex
-                    xs7
-                    class="ml-2"
-                >
-                    <p>{{ fullname }} </p>
-                    <p>{{ currentUser.email }} </p>
-                </VFlex>
-            </VLayout>
-            <VDivider />
-            <VLayout
-                row
-                class="mt-3"
-            >
-                <VFlex xs4>
-                    <div>
-                        <VBtn
-                            depressed
-                            small
-                        >
-                            Normal
-                        </VBtn>
-                    </div>
-                </VFlex>
-                <VFlex
-                    xs4
-                    class="ml-2"
-                >
-                    <div>
-                        <VBtn
-                            depressed
-                            small
-                        >
-                            Normal
-                        </VBtn>
-                    </div>
-                </VFlex>
+            <VCardText>
+                <VRow>
+                    <VCol cols="5">
+                        <VAvatar size="100px">
+                            <img
+                                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                                alt="Vuetify"
+                            >
+                        </VAvatar>
+                    </VCol>
+                    <VCol
+                        cals="7"
+                    >
+                        <p>{{ fullname }} </p>
+                        <p>{{ currentUser.email }} </p>
+                    </VCol>
+                </VRow>
+            </VCardText>
+            <VCardActions class="bt-1">
+                <VRow no-gutters>
+                    <VCol>
+                        <div>
+                            <VBtn
+                                depressed
+                                small
+                            >
+                                Normal
+                            </VBtn>
+                        </div>
+                    </VCol>
+                    <VCol>
+                        <div>
+                            <VBtn
+                                depressed
+                                small
+                            >
+                                Normal
+                            </VBtn>
+                        </div>
+                    </VCol>
 
-                <VFlex
-                    xs4
-                    class="ml-2"
-                >
-                    <div>
-                        <VBtn
-                            depressed
-                            small
-                            color="error"
-                            @click.prevent="logout()"
-                        >
-                            Log out
-                        </VBtn>
-                    </div>
-                </VFlex>
-            </VLayout>
+                    <VCol>
+                        <div>
+                            <VBtn
+                                depressed
+                                small
+                                color="error"
+                                @click.prevent="logout()"
+                            >
+                                Log out
+                            </VBtn>
+                        </div>
+                    </VCol>
+                </VRow>
+            </VCardActions>
         </VCard>
     </VMenu>
 </template>

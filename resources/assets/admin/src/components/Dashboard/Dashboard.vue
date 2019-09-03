@@ -1,82 +1,79 @@
 <template>
-    <VLayout class="d-block">
-        <VLayout
-            row
-            wrap
-        >
-            <VFlex
-                xs12
-                sm6
-                md3
+    <div class="d-block">
+        <VRow dense>
+            <VCol
+                cols="12"
+                sm="6"
+                md="3"
             >
                 <WidgetCount
                     class="ml-3"
                     icon="perm_media"
                 >
-                    <strong class="d-block">
+                    <span class="d-block">
                         Total Files
-                    </strong>
-                    <strong class="d-block">
+                    </span>
+                    <span class="d-block">
                         3796
-                    </strong>
+                    </span>
                 </WidgetCount>
-            </VFlex>
+            </VCol>
 
-            <VFlex
-                xs12
-                sm6
-                md3
+            <VCol
+                cols="12"
+                sm="6"
+                md="3"
             >
                 <WidgetCount
                     class="ml-3"
                     icon="folder_open"
                 >
-                    <strong class="d-block">
+                    <span class="d-block">
                         Total Folders
-                    </strong>
-                    <strong class="d-block">
+                    </span>
+                    <span class="d-block">
                         56
-                    </strong>
+                    </span>
                 </WidgetCount>
-            </VFlex>
+            </VCol>
 
-            <VFlex
-                xs12
-                sm6
-                md3
+            <VCol
+                cols="12"
+                sm="6"
+                md="3"
             >
                 <WidgetCount
                     class="ml-3"
                     icon="people"
                 >
-                    <strong class="d-block">
+                    <span class="d-block">
                         Total Users
-                    </strong>
-                    <strong class="d-block">
+                    </span>
+                    <span class="d-block">
                         23
-                    </strong>
+                    </span>
                 </WidgetCount>
-            </VFlex>
+            </VCol>
 
-            <VFlex
-                xs12
-                sm6
-                md3
+            <VCol
+                cols="12"
+                sm="6"
+                md="3"
             >
                 <WidgetCount
                     class="ml-3"
                     icon="memory"
                 >
-                    <strong class="d-block">
+                    <span class="d-block">
                         Total Space Used
-                    </strong>
-                    <strong>
+                    </span>
+                    <span>
                         650.3 MB
-                    </strong>
+                    </span>
                 </WidgetCount>
-            </VFlex>
-        </VLayout>
-    </VLayout>
+            </VCol>
+        </VRow>
+    </div>
 </template>
 
 <script>

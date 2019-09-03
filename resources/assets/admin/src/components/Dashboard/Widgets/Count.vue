@@ -1,8 +1,8 @@
 <template>
     <VCard>
-        <VLayout>
-            <VFlex
-                xs5
+        <VRow no-gutters>
+            <VCol
+                cols="3"
                 class="counter-icon"
             >
                 <VIcon
@@ -10,16 +10,15 @@
                 >
                     {{ icon }}
                 </VIcon>
-            </VFlex>
-            <VFlex xs7>
+            </VCol>
+            <VCol cols="9">
                 <VCardTitle
-                    primary-title
-                    class="d-block"
+                    class="d-block body-1"
                 >
                     <slot />
                 </VCardTitle>
-            </VFlex>
-        </VLayout>
+            </VCol>
+        </VRow>
     </VCard>
 </template>
 
@@ -50,6 +49,6 @@ export default {
     align-items: center
 }
 .counter-icon .v-icon {
-    font-size: 60px;
+    font-size: 30px;
 }
 </style>
