@@ -192,48 +192,46 @@ export default {
     }
 }
 </script>
-
-<style>
+<style lang="scss">
     .media-info {
         border-top: 1px solid #ddd;
-    }
-    .media-info .mi-fh {
-        padding:20px 0px;
-    }
-    .media-info .mi-fh h3 {
-        display: inline;
-    }
-    .la-toggle-bn {
-        display: flex;
-        justify-content: space-around;
-        border-bottom: 1px solid #ddd;
-    }
-    .la-toggle-bn a {
-        padding: 10px 20px;
-        display: inline-block;
-        font-size: 16px;
-    }
-    .la-toggle-bn a.active,
-    .la-toggle-bn a:hover {
-        text-decoration: none;
-        border-bottom: 3px solid rgb(45, 111, 173);
-    }
-    .las-info-list {
-        margin-top: 20px;
-    }
-    .las-ii {
-        display: flex;
-        justify-content: flex-start;
-        align-items: self-start;
-        padding: 7px 0px;
-        text-overflow: clip;
-        word-break: break-word;
-        overflow: hidden;
-    }
+        .mi-fh {
+            padding:20px 0px;
+            h3 {
+                display: inline;
+            }
+        }
 
-    .las-ii span.la-ik {
-        flex: 0 0 120px;
-        color: #757373;
+        .la-toggle-bn {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #ddd;
+            a {
+                padding: 10px 20px;
+                display: inline-block;
+                font-size: 16px;
+                &.active,
+                &:hover {
+                    text-decoration: none;
+                    border-bottom: 3px solid rgb(45, 111, 173);
+                }
+            }
+        }
+        .las-info-list {
+            margin-top: 20px;
+            .las-ii {
+                display: flex;
+                justify-content: flex-start;
+                align-items: self-start;
+                padding: 7px 0px;
+                text-overflow: clip;
+                word-break: break-word;
+                overflow: hidden;
+                span.la-ik {
+                    flex: 0 0 120px;
+                    color: #757373;
+                }
+            }
+        }
     }
-
 </style>

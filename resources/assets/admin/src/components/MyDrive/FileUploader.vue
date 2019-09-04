@@ -1,4 +1,6 @@
+
 <template>
+    <!-- eslint-disable vue/no-v-html  -->
     <div>
         <Dropzone
             id="laraveladmin"
@@ -62,7 +64,6 @@
                                 class="fn-i-i"
                                 :style="{ color: mediaIcon(file.type).color }"
                                 size="15"
-                                tile
                                 v-html="mediaIcon(file.type).icon"
                             />
                             <span>{{ file.name }}</span>
@@ -143,7 +144,6 @@ export default {
             return this.getMediaIcon(filetype[1])
         },
         openUploader () {
-            console.log(this.$refs.myVueDropzone)
             this.$refs.myVueDropzone.dropzone.init()
             this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
         },

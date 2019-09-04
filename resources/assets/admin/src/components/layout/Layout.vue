@@ -59,7 +59,6 @@
         <VContent>
             <VContainer
                 fluid
-                fill-height
             >
                 <VRow>
                     <VCol

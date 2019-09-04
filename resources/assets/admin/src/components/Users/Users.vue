@@ -1,10 +1,8 @@
 <template>
-    <VLayout
-        row
-        wrap
+    <VRow
         class="d-block"
     >
-        <VFlex xs12>
+        <VCol cols="12">
             <VToolbar
                 flat
                 light
@@ -39,11 +37,11 @@
                     <VIcon>more_vert</VIcon>
                 </VBtn>
             </VToolbar>
-        </VFlex>
+        </VCol>
 
-        <VFlex xs12>
+        <VCol cols="12">
             <UsersTable />
-        </VFlex>
+        </VCol>
 
         <VDialog
             v-if="hasPermission('user.create')"
@@ -52,7 +50,7 @@
         >
             <UserForm @close="openform = false" />
         </VDialog>
-    </VLayout>
+    </VRow>
 </template>
 
 <script>

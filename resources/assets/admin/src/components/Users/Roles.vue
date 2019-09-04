@@ -1,6 +1,6 @@
 <template>
-    <VLayout row>
-        <VFlex
+    <VRow>
+        <VCol
             xs12
             md4
         >
@@ -31,13 +31,13 @@
                     <Role :role="role" />
                 </VList>
             </VCard>
-        </VFlex>
-        <!-- <VFlex
+        </VCol>
+        <!-- <VCol
             xs12
         >
             <RouterView />
-        </VFlex> -->
-    </VLayout>
+        </VCol> -->
+    </VRow>
 </template>
 
 <script>

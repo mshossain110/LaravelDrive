@@ -3,8 +3,8 @@
         class="role-form"
         @submit.prevent="submitRole()"
     >
-        <VFlex
-            xs12
+        <VCol
+            cols="12"
         >
             <VTextField
                 v-model="role.name"
@@ -15,17 +15,17 @@
                 flat
                 @focus="showFullForm()"
             />
-        </VFlex>
+        </VCol>
         <template
             v-if="showForm"
             transition="slide-y-transition"
         >
-            <VFlex
-                xs12
+            <VCol
+                cols="12"
             >
                 <textarea v-model="role.description">Description </textarea>
-            </VFlex>
-            <VFlex xs12>
+            </VCol>
+            <VCol cols="12">
                 <Multiselect
                     v-model="role.permissions"
                     :options="permissions"
@@ -41,8 +41,8 @@
                         Consider changing the search query.
                     </span>
                 </Multiselect>
-            </VFlex>
-            <VFlex xs12>
+            </VCol>
+            <VCol cols="12">
                 <VBtn
                     :loading="loading"
                     color="primery"
@@ -64,7 +64,7 @@
                 >
                     close
                 </VBtn>
-            </VFlex>
+            </VCol>
         </template>
     </VForm>
 </template>

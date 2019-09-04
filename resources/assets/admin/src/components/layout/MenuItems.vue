@@ -45,8 +45,8 @@
                 </VListItem>
 
                 <VListItem
-                    v-for="(child, i) in item.children"
-                    :key="i"
+                    v-for="(child, ci) in item.children"
+                    :key="ci"
                     :to="{name:child.name }"
                     :disabled="item.disabled"
                 >

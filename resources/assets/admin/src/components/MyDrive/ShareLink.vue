@@ -41,7 +41,7 @@
                             <VFlex xs12>
                                 <VTextField
                                     ref="sharelink"
-                                    outline
+                                    outlined
                                     label="Link"
                                     :value="getShareLink"
                                     type="text"

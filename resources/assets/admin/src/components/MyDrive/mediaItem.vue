@@ -1,4 +1,6 @@
+
 <template>
+    <!-- eslint-disable vue/no-v-html  -->
     <div
         class="media-item"
         :class="{ 'seleted': isSelected }"
@@ -138,75 +140,77 @@ export default {
 }
 </script>
 
-<style>
-#filecontainer .media-item  .card-inner {
-    border: 1px solid #e8eaed;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    position: relative;
-    width: 100%;
-}
-#filecontainer .media-item.seleted  .card-inner {
-    border: 1px solid #226cdb;
-}
-#filecontainer .media-item .la-fia {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.media-item .fn {
-    height: 48px;
-    width: 100%;
-    border-radius: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.media-item .fn .fn-i {
-    display: flex;
-    padding: 5px;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100%;
-}
-.media-item .fn-i-i {
-    padding: 0px 10px;
-}
+<style lang="scss">
+#filecontainer .media-item {
+    .card-inner {
+        border: 1px solid #e8eaed;
+        -webkit-border-radius: 6px;
+        border-radius: 6px;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        position: relative;
+        width: 100%;
+    }
+    .seleted  .card-inner {
+        border: 1px solid #226cdb;
+    }
+    .la-fia {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .fn {
+        height: 48px;
+        width: 100%;
+        border-radius: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .fn-i {
+            display: flex;
+            padding: 5px;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100%;
+            .fn-i-i {
+                padding: 0px 10px;
+                span {
+                    font-size: 16px;
+                    vertical-align: middle;
+                }
+                [class^="flaticon-"]:before,
+                [class^="flaticon-"]:after,
+                [class*=" flaticon-"]:before,
+                [class*=" flaticon-"]:after {
+                    font-size: 16px;
+                    margin: 0;
+                }
+            }
+            .fn-i-t {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding-right: 10px;
+            }
+        }
+    }
+    .fi .lafi{
+        font-size: 90px;
 
-.media-item .fn .fn-i-t {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding-right: 10px;
-}
-.media-item .fn-i-i span {
-    font-size: 16px;
-    vertical-align: middle;
-}
-.media-item .fn .fn-i-i [class^="flaticon-"]:before, .media-item .fn .fn-i-i  [class*=" flaticon-"]:before,
-.media-item .fn .fn-i-i [class^="flaticon-"]:after, .media-item .fn .fn-i-i  [class*=" flaticon-"]:after {
-    font-size: 16px;
-    margin: 0;
-}
-
-.media-item .fi .lafi.material-icons {
-    font-size: 90px;
-
-}
-
-.media-item .fi [class^="flaticon-"]:before, .media-item .fi [class*=" flaticon-"]:before,
-.media-item .fi [class^="flaticon-"]:after, .media-item .fi [class*=" flaticon-"]:after {
-    font-size: 90px;
-    margin: 0;
-}
-
-.media-item span.fstared {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    color: #d4a002;
+        &[class^="flaticon-"]:before,
+        &[class^="flaticon-"]:after,
+        &[class*=" flaticon-"]:before,
+        &[class*=" flaticon-"]:after {
+            font-size: 90px;
+            margin: 0;
+        }
+    }
+    span.fstared {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        color: #d4a002;
+    }
 }
 
 </style>
