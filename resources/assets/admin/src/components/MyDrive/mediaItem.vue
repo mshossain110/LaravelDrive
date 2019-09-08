@@ -3,7 +3,7 @@
     <!-- eslint-disable vue/no-v-html  -->
     <div
         class="media-item"
-        :class="{ 'seleted': isSelected }"
+        :class="{ 'selected': isSelected }"
     >
         <div class="card-inner">
             <div class="la-file-name">
@@ -151,7 +151,7 @@ export default {
         position: relative;
         width: 100%;
     }
-    .seleted  .card-inner {
+    &.selected  .card-inner {
         border: 1px solid #226cdb;
     }
     .la-fia {

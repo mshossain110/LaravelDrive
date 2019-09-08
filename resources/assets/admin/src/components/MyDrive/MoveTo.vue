@@ -2,8 +2,8 @@
     <VDialog
         v-model="open"
         class="mpu"
-        width="200"
         persistent
+        width="500"
     >
         <VCard>
             <VCardTitle
@@ -17,7 +17,7 @@
                         text
                         small
                         color="red"
-                        @click.native="open = false"
+                        @click.native="close()"
                     >
                         <VIcon>close</VIcon>
                     </VBtn>
@@ -26,25 +26,32 @@
 
             <VCardText class="recursive-folder">
                 <VTreeview
-                    v-model="moveid"
-                    :items="getNestedFolders"
+                    ref="moveFolder"
+                    :items="folderLists"
                     activatable
-                    active-class="grey lighten-4 indigo--text"
-                    selected-color="indigo"
-                    open-on-click
-                    selectable
-                    expand-icon="mdi-chevron-down"
-                    on-icon="mdi-bookmark"
-                    off-icon="mdi-bookmark-outline"
-                    indeterminate-icon="mdi-bookmark-minus"
+                    dense
+                    hoverable
+                    transition
+                    rounded
+                    color="green"
+                    @update:active="SelectMovingFoleder"
                 />
             </VCardText>
 
-            <VCardActions>
+            <VCardActions class="bt-1">
+                <VBtn
+                    small
+                    depressed
+                    color="secondary"
+                    @click="moveintoFolder"
+                >
+                    Move To
+                </VBtn>
                 <VBtn
                     color="error"
-                    text
-                    @click="open = false"
+                    small
+                    depressed
+                    @click="close()"
                 >
                     Cancel
                 </VBtn>
@@ -56,32 +63,40 @@
 <script>
 import Mixin from './mixin'
 import { mapState, mapGetters } from 'vuex'
-// import RecursiveFolder from './RecursiveFolder.vue'
 
 export default {
     $_veeValidate: {
         validator: 'new'
     },
-    components: {
-        // RecursiveFolder
-    },
     mixins: [Mixin],
+    props: {
+        open: {
+            type: Boolean,
+            default: false
+        }
+    },
     data () {
         return {
             active: [],
             name: '',
-            open: false,
-            moveid: []
+            moveid: [],
+            folderLists: []
         }
     },
     computed: {
-        ...mapState('Media', ['folders']),
+        ...mapState('Media', ['folders', 'selectedFilesId']),
         ...mapGetters('Media', ['getNestedFolders'])
     },
     mounted () {
-        Bus.$on('moveTo', () => {
-            this.open = !this.open
-        })
+        this.folderLists = this.getNestedFolders
+
+        if (typeof this.$route.params.folderId !== 'undefined') {
+            this.folderLists.unshift({
+                id: 0,
+                name: 'Root',
+                parent_id: 0
+            })
+        }
     },
     methods: {
         onSubmit () {
@@ -96,8 +111,29 @@ export default {
                     this.open = false
                 })
         },
-        nestedView () {
+        moveintoFolder () {
+            var params = {
+                files: this.selectedFilesId,
+                destination: this.moveid[0] ? this.moveid[0] : null
+            }
 
+            this.$store.dispatch('Media/moveFiles', params)
+                .then(res => {
+                    var parentId = 0
+                    if (typeof this.$route.params.folderId !== 'undefined') {
+                        parentId = this.$route.params.folderId
+                    }
+
+                    let items = res.filter(i => i.parent_id !== parentId).map(i => i.id)
+                    this.$store.commit('Media/moveFile', items)
+                    this.close()
+                })
+        },
+        SelectMovingFoleder (val) {
+            this.moveid = val
+        },
+        close () {
+            this.$store.commit('Media/moveToemodal', false)
         }
     }
 }

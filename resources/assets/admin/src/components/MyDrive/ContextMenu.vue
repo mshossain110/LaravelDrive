@@ -190,7 +190,7 @@ export default {
             Bus.$emit('uploadFolder')
         },
         moveTo () {
-            Bus.$emit('moveTo', true)
+            this.$store.commit('Media/moveToemodal', true)
         },
         shareFiles () {
             this.$store.commit('Media/shareFileModal', true)

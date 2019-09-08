@@ -34,6 +34,7 @@ export default {
         shareFileModal: false,
         shareLinkModal: false,
         renamefilemodal: false,
+        moveToemodal: false,
         previewModal: false,
         selectedMedia: {},
         selectedFilesId: [],
@@ -55,7 +56,7 @@ export default {
             return state.selectedMedia
         },
         getNestedFolders (state) {
-            return getNestedFolders(state.folders.slice(), 0)
+            return getNestedFolders(state.folders, 0)
         }
     },
     mutations: {
@@ -110,6 +111,9 @@ export default {
         },
         renamefilemodal (state, payload) {
             state.renamefilemodal = payload
+        },
+        moveToemodal (state, payload) {
+            state.moveToemodal = payload
         },
         previewModal (state, payload) {
             state.previewModal = payload
@@ -175,6 +179,10 @@ export default {
         },
         setSharedPagination (state, payload) {
             state.sharedPagination = payload
+        },
+        moveFile (state, payload) {
+            let items = state.mediaItems.filter(i => payload.indexOf(i.id) === -1)
+            state.mediaItems = items
         }
     },
     actions: {
@@ -398,6 +406,25 @@ export default {
                         commit('setSharedItems', res.data.data)
                         commit('setSharedPagination', res.data.meta.pagination)
                         resolve(res.data)
+                    })
+                    .catch((error) => {
+                        commit('setSnackbar',
+                            {
+                                message: error.response.data.message,
+                                status: error.response.status,
+                                color: 'error',
+                                show: true
+                            },
+                            { root: true })
+                        reject(error.response)
+                    })
+            })
+        },
+        moveFiles ({ commit }, params) {
+            return new Promise((resolve, reject) => {
+                axios.post('/api/file/move', params)
+                    .then(res => {
+                        resolve(res.data.data)
                     })
                     .catch((error) => {
                         commit('setSnackbar',

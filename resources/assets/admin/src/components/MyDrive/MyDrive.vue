@@ -59,8 +59,9 @@
         <template v-if="renamefilemodal">
             <RenameFile :open="renamefilemodal" />
         </template>
-
-        <MoveTo />
+        <template v-if="moveToemodal">
+            <MoveTo :open="moveToemodal" />
+        </template>
         <template v-if="previewModal">
             <Preview :open="previewModal" />
         </template>
@@ -108,7 +109,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'shareLinkModal', 'renamefilemodal', 'previewModal']),
+        ...mapState('Media', ['mediaItems', 'pagination', 'fileInfoSideBar', 'newFolderModal', 'shareFileModal', 'shareLinkModal', 'renamefilemodal', 'moveToemodal', 'previewModal']),
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded
         },
