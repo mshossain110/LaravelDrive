@@ -99,18 +99,6 @@ export default {
         }
     },
     methods: {
-        onSubmit () {
-            this.$validator.validateAll()
-            const item = {
-                name: this.name,
-                parent_id: this.currentFolderId
-            }
-
-            this.$store.dispatch('Media/addFolder', item)
-                .then(() => {
-                    this.open = false
-                })
-        },
         moveintoFolder () {
             var params = {
                 files: this.selectedFilesId,
