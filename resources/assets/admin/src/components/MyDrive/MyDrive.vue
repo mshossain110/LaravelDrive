@@ -5,45 +5,40 @@
                 <MediaToolbar />
             </VFlex>
         </VLayout>
-        <VContainer
-            fluid
+
+        <VLayout
+            v-if="isLoaded"
             fill-height
-            :style="containerStyle"
+            :class="{'my-file': true, 'sidebar-open': fileInfoSideBar}"
+            @dragenter="activeDropzone($event)"
+            @contextmenu="showContextMenu"
         >
             <VLayout
-                v-if="isLoaded"
-                fill-height
-                :class="{'my-file': true, 'sidebar-open': fileInfoSideBar}"
-                @dragenter="activeDropzone($event)"
-                @contextmenu="showContextMenu"
+                id="filecontainer"
+                row
+                wrap
             >
-                <VLayout
-                    id="filecontainer"
-                    row
-                    wrap
+                <VFlex
+                    v-for="img in mediaItems"
+                    :key="img.id"
+                    @contextmenu="showContextMenu2($event, img)"
+                    @click="OnClickItem($event, img)"
+                    @touchstart="OnClickItem($event, img)"
                 >
-                    <VFlex
-                        v-for="img in mediaItems"
-                        :key="img.id"
-                        @contextmenu="showContextMenu2($event, img)"
-                        @click="OnClickItem($event, img)"
-                        @touchstart="OnClickItem($event, img)"
-                    >
-                        <MediaItem :media="img" />
-                    </VFlex>
-                </VLayout>
-
-                <MediaInfo v-if="fileInfoSideBar" />
-                <FileUploader v-model="fileUploader" />
-                <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
-                <ContextMenu
-                    v-model="cm.show"
-                    :x="cm.x"
-                    :y="cm.y"
-                    :file="cm.file"
-                />
+                    <MediaItem :media="img" />
+                </VFlex>
             </VLayout>
-        </VContainer>
+
+            <MediaInfo v-if="fileInfoSideBar" />
+            <FileUploader v-model="fileUploader" />
+            <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
+            <ContextMenu
+                v-model="cm.show"
+                :x="cm.x"
+                :y="cm.y"
+                :file="cm.file"
+            />
+        </VLayout>
 
         <template v-if="newFolderModal">
             <NewFolderForm :open="newFolderModal" />

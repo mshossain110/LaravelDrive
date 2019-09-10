@@ -5,10 +5,16 @@
 @import  '~dropzone/dist/dropzone.css';
 @import  '~plyr/dist/plyr.css';
 
-$borders: 1px, 2px, 2px;
-$broderdirs: top, bottom, left, right;
+$borders: 1px, 2px, 3px;
+$broderdirs: all, top, bottom, left, right;
 @mixin border($direction, $width, $style, $color) {
-  border-#{$direction}: $width $style $color;
+  @if $direction == all {
+    border: $width $style $color !important;
+  } 
+  @else {
+    border-#{$direction}: $width $style $color !important;
+  }
+  
 }
 @each $d in $broderdirs {
   @each $b in $borders {

@@ -1,39 +1,48 @@
 @import url(./vue-multiselect.min.css);
 @import url(~dropzone/dist/dropzone.css);
 @import url(~plyr/dist/plyr.css);
+.ba-1 {
+  border: 1px solid #ddd !important;
+}
+.ba-2 {
+  border: 2px solid #ddd !important;
+}
+.ba-3 {
+  border: 3px solid #ddd !important;
+}
 .bt-1 {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #ddd !important;
 }
 .bt-2 {
-  border-top: 2px solid #ddd;
+  border-top: 2px solid #ddd !important;
 }
-.bt-2 {
-  border-top: 2px solid #ddd;
+.bt-3 {
+  border-top: 3px solid #ddd !important;
 }
 .bb-1 {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd !important;
 }
 .bb-2 {
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid #ddd !important;
 }
-.bb-2 {
-  border-bottom: 2px solid #ddd;
+.bb-3 {
+  border-bottom: 3px solid #ddd !important;
 }
 .bl-1 {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #ddd !important;
 }
 .bl-2 {
-  border-left: 2px solid #ddd;
+  border-left: 2px solid #ddd !important;
 }
-.bl-2 {
-  border-left: 2px solid #ddd;
+.bl-3 {
+  border-left: 3px solid #ddd !important;
 }
 .br-1 {
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #ddd !important;
 }
 .br-2 {
-  border-right: 2px solid #ddd;
+  border-right: 2px solid #ddd !important;
 }
-.br-2 {
-  border-right: 2px solid #ddd;
+.br-3 {
+  border-right: 3px solid #ddd !important;
 }

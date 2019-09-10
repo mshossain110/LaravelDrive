@@ -21,24 +21,24 @@
                 </template>
 
                 <VList>
-                    <VListTile @click="openNewFolderModal()">
-                        <VListTileTitle>
+                    <VListItem @click="openNewFolderModal()">
+                        <VListItemTitle>
                             <VIcon>create_new_folder</VIcon>
                             New Folder
-                        </VListTileTitle>
-                    </VListTile>
-                    <VListTile @click="uploadFolder">
-                        <VListTileTitle>
+                        </VListItemTitle>
+                    </VListItem>
+                    <VListItem @click="uploadFolder">
+                        <VListItemTitle>
                             <VIcon>create_new_folder</VIcon>
                             Upload  Folder
-                        </VListTileTitle>
-                    </VListTile>
-                    <VListTile @click="openDropZone">
-                        <VListTileTitle>
+                        </VListItemTitle>
+                    </VListItem>
+                    <VListItem @click="openDropZone">
+                        <VListItemTitle>
                             <VIcon>add_photo_alternate</VIcon>
                             Upload  Files
-                        </VListTileTitle>
-                    </VListTile>
+                        </VListItemTitle>
+                    </VListItem>
                 </VList>
             </VMenu>
         </VToolbarTitle>
