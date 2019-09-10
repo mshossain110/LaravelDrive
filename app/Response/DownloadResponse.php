@@ -5,7 +5,7 @@ namespace App\Response;
 use Storage;
 use Response;
 use App\File;
-use Chumper\Zipper\Zipper;
+use ZipArchive;
 
 class DownloadResponse {
     
@@ -13,10 +13,10 @@ class DownloadResponse {
 
     private $file;
 
-    public function __construct(File $file, Zipper $zipper)
+    public function __construct(File $file)
     {
         $this->file = $file;
-        $this->zipper = $zipper;
+        $this->zipper = new ZipArchive();
         
     }
    
@@ -51,23 +51,24 @@ class DownloadResponse {
     public function folderDownload ($upload) {
 
         $zip_name = str_random(10);
-        $zip_name = config('app.name') .'-'.$zip_name;
+        $zip_name = config('app.name').'-'.$zip_name;
+        if ($this->zipper->open(storage_path("app/public/$zip_name.zip"), ZipArchive::CREATE) == true){
+            $this->fileRecussive($upload);
+            $this->zipper->close();
+        }
 
-        $this->zipper->make(storage_path("public/$zip_name.zip"));
-
-        $this->fileRecussive($upload);
-        $this->zipper->close();
         
         $headers = [
-            'Content-Type'=> "application/zip"
+            'Content-Type' => "application/zip"
         ];
         
-        return response()->download(storage_path("public/$zip_name.zip"), "$zip_name.zip", $headers)->deleteFileAfterSend(true);;
+        return response()->download(storage_path("app/public/$zip_name.zip"), "$zip_name.zip", $headers)->deleteFileAfterSend(true);;
         
     }
 
 
     public function fileRecussive ($file, $folderName = '') {
+        
         if ($file->type == 'folder'){
             $folderName = "$folderName/$file->name";
 
@@ -78,9 +79,11 @@ class DownloadResponse {
         } else {
             $filename = str_slug( str_before( $file->name, '.' ), '-' );
             $filename = "$filename.$file->extension";
-
+            if ($folderName) {
+                $this->zipper->addEmptyDir($folderName);
+            }
             
-            $this->zipper->folder($folderName)->addString( $filename,  Storage::drive('uploads_local')->get($file->getStoragePath()) );
+            $this->zipper->addFromString( $filename,  Storage::drive('uploads_local')->get($file->getStoragePath()) );
         }
     }
 
@@ -89,20 +92,21 @@ class DownloadResponse {
         $zip_name = str_random(10);
         $zip_name = config('app.name') .'-'.$zip_name;
 
-        $this->zipper->make(storage_path("public/$zip_name.zip"));
-
-        if (is_array($ids)) {
-            foreach ($this->file->whereIn('id', $ids)->cursor() as $chield) {
-                $this->fileRecussive($chield);
+        if ($this->zipper->open(storage_path("app/public/$zip_name.zip"), ZipArchive::CREATE) == true){
+            
+            if (is_array($ids)) {
+                foreach ($this->file->whereIn('id', $ids)->cursor() as $chield) {
+                    $this->fileRecussive($chield);
+                }
             }
+
+            $this->zipper->close();
         }
 
-        $this->zipper->close();
-        
         $headers = [
             'Content-Type'=> "application/zip"
         ];
         
-        return response()->download(storage_path("public/$zip_name.zip"), "$zip_name.zip", $headers)->deleteFileAfterSend(true);;
+        return response()->download(storage_path("app/public/$zip_name.zip"), "$zip_name.zip", $headers)->deleteFileAfterSend(true);;
     }
 }
