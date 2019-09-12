@@ -24,8 +24,6 @@ class ShareableLink extends Model
 
     protected $casts = [
         'id' => 'integer',
-        'user_id' => 'integer',
-        'file_id' => 'integer',
         'allow_download' => 'boolean',
         'allow_edit' => 'boolean'
     ];

@@ -22,6 +22,7 @@ class LinkTransformer extends TransformerAbstract {
 			'expires_at'     => $item->expires_at,
 			'updated_at'     => $item->updated_at,
 			'deleted_at'     => $item->deleted_at,
+			'link'			=> route("shareable", ['hash' => $item->hash ])
 		];
 	}
 

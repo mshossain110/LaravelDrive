@@ -13,7 +13,6 @@
                     Shareable link
                 </VCardTitle>
                 <VCardText
-                    v-if="showSettings"
                     class="mt-4"
                 >
                     <VRow
@@ -26,12 +25,14 @@
                         </VCol>
                         <VCol style="text-align:right;">
                             <VBtn
+                                v-if="hasLinkData"
                                 x-small
                                 fab
                                 icon
                                 outlined
                                 rounded
                                 color="red"
+                                @click="deleteShareableLink()"
                             >
                                 <VIcon>delete</VIcon>
                             </VBtn>
@@ -222,16 +223,15 @@
 
                 <VCardActions>
                     <VBtn
-                        v-if="showSettings"
-                        color="info"
+                        small
+                        color="blue"
                         type="submit"
-                        text
                     >
-                        Create Link
+                        {{ hasLinkData ? 'Update Link': 'Create Link' }}
                     </VBtn>
                     <VBtn
+                        small
                         color="error"
-                        text
                         @click="close"
                     >
                         Cancel
@@ -265,7 +265,6 @@ export default {
             showSittings: false,
             date: new Date().toISOString().substr(0, 10),
             time: null,
-            isLoading: false,
             linkExpier: false,
             linkExpierDate: '',
             linkExpierTime: '',
@@ -288,19 +287,16 @@ export default {
         },
         getShareLink () {
             if (this.hasLinkData) {
-                return `${location.origin}/s/${this.linkdata.hash}/`
+                return this.linkdata.link
             }
             return ''
-        },
-        showSettings () {
-            return !this.hasLinkData || (this.hasLinkData && this.updateShare)
         }
     },
     mounted () {
         this.getShareableLink()
-        setTimeout(() => {
-            this.$refs.sharelink.focus()
-        }, 500)
+        // setTimeout(() => {
+        //     this.$refs.sharelink.focus()
+        // }, 500)
     },
     methods: {
         close () {
@@ -323,6 +319,15 @@ export default {
             axios.post(`/api/shareable-links/file/${this.selectedFilesId[0]}`, params)
                 .then((res) => {
                     this.linkdata = res.data.data
+                })
+        },
+        deleteShareableLink () {
+            if (!this.hasLinkData) {
+                return
+            }
+            axios.delete(`/api/shareable-links/${this.linkdata.id}`)
+                .then((res) => {
+                    this.close()
                 })
         },
         copyLink () {

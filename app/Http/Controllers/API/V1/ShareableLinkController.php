@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use Illuminate\Http\Request;
 use App\Repositories\ShareableLinkRepository;
 use App\Transformers\LinkTransformer;
+use App\ShareableLink;
 
 class ShareableLinkController extends ApiController
 {
@@ -27,6 +28,43 @@ class ShareableLinkController extends ApiController
         parent::__construct();
         $this->request = $request;
         $this->link = $link;
+    }
+
+    public function getFileShareableLink ($fileId)
+    {
+        $link = ShareableLink::where('file_id', $fileId)->first();
+
+        if (!$link) {
+            return $this->errorNotFound();
+        }
+
+        return $this->shareableLink($link);
+    }
+
+    public function storeFileShareableLink ($fileId)
+    {
+        $link = ShareableLink::firstOrNew(['file_id'=> $fileId]);
+
+        $params = $this->request->all();
+        $params['user_id'] = $this->request->user()->id;
+        $params['file_id'] = $fileId;
+        $params['hash'] = $link->hash ? $link->hash: str_random(30);
+        
+        $link->fill($params);
+        $link->save();
+
+        return $this->shareableLink($link);
+
+    }
+
+
+    protected function shareableLink(ShareableLink $link)
+    {
+        if ($this->request->get('withFile')) {
+            $link->load('file', 'file.children', 'file.owner');
+        }
+
+    	return $this->respondWithItem($link, new LinkTransformer);
     }
 
     /**
