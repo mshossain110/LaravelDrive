@@ -81,7 +81,6 @@
                                 {{ snackbar.message }}
                                 <VBtn
                                     dark
-                                    flat
                                     @click="hideSnackbar()"
                                 >
                                     Close

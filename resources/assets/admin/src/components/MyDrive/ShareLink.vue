@@ -307,7 +307,7 @@ export default {
             this.$store.commit('Media/shareLinkModal', false)
         },
         getShareableLink (params) {
-            axios.get(`/api/file/${this.selectedFilesId[0]}/shareable-link`, { params })
+            axios.get(`/api/shareable-links/file/${this.selectedFilesId[0]}`, { params })
                 .then((res) => {
                     this.linkdata = res.data.data
                 })
@@ -320,7 +320,7 @@ export default {
                 'password': this.LinkPassword,
                 'expires_at': this.linkExpierDate + ' ' + this.linkExpierTime
             }
-            axios.post(`/api/file/${this.selectedFilesId[0]}/shareable-link`, params)
+            axios.post(`/api/shareable-links/file/${this.selectedFilesId[0]}`, params)
                 .then((res) => {
                     this.linkdata = res.data.data
                 })

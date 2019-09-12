@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::group([
     'middleware' => ['auth:api'],
-    'namespace' => 'Api\V1',
+    'namespace' => 'API\V1',
 ], function () {
 
     Route::delete('users/delete-multiple', 'UserController@deleteMultiple');
@@ -50,9 +50,8 @@ Route::group([
     Route::delete('shares/remove-user/{userId}', 'SharesController@removeUser');
 
     // //SHAREABLE LINKS
-    Route::get('file/{fileId}/shareable-link', 'ShareableLinkController@show');
-    Route::post('file/{fileId}/shareable-link', 'ShareableLinkController@store');
+    Route::get('shareable-links/file/{fileId}', 'ShareableLinkController@show');
+    Route::post('shareable-links/file/{fileId}', 'ShareableLinkController@store');
     Route::put('shareable-links/{id}', 'ShareableLinkController@update');
     Route::delete('shareable-links/{id}', 'ShareableLinkController@destroy');
 });
-
