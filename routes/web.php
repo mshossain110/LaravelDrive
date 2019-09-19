@@ -27,7 +27,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/uploads/{id}', 'UploadController@show');
 
-    Route::get("Shareables/{hash}", "ShareableController")->name("shareable");
+    Route::get("file/s/{hash}", "ShareableController")->name("shareable");
     // Socialite Register Routes
     Route::get('/login/redirect/{provider}', 'Auth\SocialController@getSocialRedirect')->name('social.redirect');
     Route::get('/login/handle/{provider}', 'Auth\SocialController@getSocialHandle')->name('social.handle');

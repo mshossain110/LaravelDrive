@@ -13,7 +13,7 @@ class ShareableController extends Controller
      */
     public function __invoke($id)
     {
-        
+        return view('sharedfiles');
     }
 
     
