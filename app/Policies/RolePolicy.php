@@ -9,7 +9,12 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class RolePolicy
 {
     use HandlesAuthorization;
-
+    public function before(User $user)
+    {
+        if ($user->hasPermission('administrator')) {
+            return true;
+        }
+    }
     /**
      * Determine whether the user can view the role.
      *

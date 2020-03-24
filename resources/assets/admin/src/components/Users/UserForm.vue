@@ -26,7 +26,6 @@
                         >
                             <VTextField
                                 v-model="user.firstname"
-                                :error-messages="errors.collect('firstname')"
                                 label="First Name"
                             />
                         </VFlex>
@@ -37,56 +36,68 @@
                         >
                             <VTextField
                                 v-model="user.lastname"
-                                :error-messages="errors.collect('lastname')"
                                 label="Last Name"
                             />
                         </VFlex>
                         <VFlex xs12>
-                            <VTextField
-                                v-model="user.name"
-                                v-validate="'required|min:6'"
-                                :counter="6"
-                                :disabled="Boolean(user.id)"
-                                :error-messages="errors.collect('name')"
-                                data-vv-name="name"
-                                label="User Name*"
-                                required
-                            />
+                            <ValidationProvider
+                                v-slot="{ errors }"
+                                :rules="'required|min:6'"
+                            >
+                                <VTextField
+                                    v-model="user.name"
+                                    v-validate=""
+                                    :counter="6"
+                                    :disabled="Boolean(user.id)"
+                                    :error-messages="errors"
+                                    label="User Name*"
+                                    required
+                                />
+                            </ValidationProvider>
                         </VFlex>
                         <VFlex xs12>
-                            <VTextField
-                                v-model="user.email"
-                                v-validate="'required|email'"
-                                :disabled="Boolean(user.id)"
-                                :error-messages="errors.collect('email')"
-                                label="E-mail*"
-                                data-vv-name="email"
-                                required
-                            />
+                            <ValidationProvider
+                                v-slot="{ errors }"
+                                :rules="'required|email'"
+                            >
+                                <VTextField
+                                    v-model="user.email"
+                                    :disabled="Boolean(user.id)"
+                                    :error-messages="errors"
+                                    label="E-mail*"
+                                    required
+                                />
+                            </ValidationProvider>
                         </VFlex>
 
                         <VFlex xs12>
-                            <VTextField
-                                ref="password"
-                                v-model="user.password"
-                                v-validate="{ required: !user.id, min: 6 }"
-                                :error-messages="errors.collect('password')"
-                                name="password"
-                                type="password"
-                                label="Password"
-                                data-vv-name="password"
-                            />
+                            <ValidationProvider
+                                v-slot="{ errors }"
+                                :rules="{ required: !user.id, min: 6 }"
+                            >
+                                <VTextField
+                                    ref="password"
+                                    v-model="user.password"
+                                    :error-messages="errors"
+                                    name="password"
+                                    type="password"
+                                    label="Password"
+                                />
+                            </validationprovider>
                         </VFlex>
                         <VFlex xs12>
-                            <VTextField
-                                v-model="user.password_confirmation"
-                                v-validate="{ required: !user.id, confirmed: 'password' }"
-                                :error-messages="errors.collect('password_confirmation')"
-                                name="password_confirmation"
-                                type="password"
-                                label="Confirmed Password"
-                                data-vv-name="password_confirmation"
-                            />
+                            <ValidationProvider
+                                v-slot="{ errors }"
+                                :rules="{ required: !user.id, confirmed: 'password' }"
+                            >
+                                <VTextField
+                                    v-model="user.password_confirmation"
+                                    name="password_confirmation"
+                                    :error-messages="errors"
+                                    type="password"
+                                    label="Confirmed Password"
+                                />
+                            </ValidationProvider>
                         </VFlex>
 
                         <VFlex xs12>
@@ -144,9 +155,6 @@ export default {
     components: {
         Multiselect
     },
-    $_veeValidate: {
-        validator: 'new'
-    },
     props: {
         user: {
             type: Object,
@@ -177,7 +185,6 @@ export default {
     },
     methods: {
         submit () {
-            this.$validator.validateAll();
             const user = {
                 id: this.user.id,
                 firstname: this.user.firstname,

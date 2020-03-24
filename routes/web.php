@@ -23,7 +23,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/drive', 'HomeController@drive')->name("drive");
+    Route::get('/drive/{any?}', 'HomeController@drive')->where('any', '.*')->name("drive");
 
     Route::get('/uploads/{id}', 'UploadController@show');
 

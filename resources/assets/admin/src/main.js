@@ -18,11 +18,12 @@ Object.keys(rules).forEach(rule => {
 });
 
 Vue.component('ValidationProvider', ValidationProvider);
+Vue.use(VueRouter);
 
-window.Vue = Vue;
 const router = new VueRouter({
     routes, // short for `routes: routes`
     mode: 'history',
+    base: 'drive',
     scrollBehavior () {
         return { x: 0, y: 0 };
     }
@@ -39,8 +40,6 @@ router.beforeEach((to, from, next) => {
         next(false);
     }
 });
-
-Vue.use(VueRouter);
 
 Vue.mixin(mixin);
 
