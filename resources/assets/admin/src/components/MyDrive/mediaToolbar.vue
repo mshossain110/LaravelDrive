@@ -2,10 +2,10 @@
     <VToolbar
         id="mediaToolbar"
         flat
-        light
         height="40px"
         class="la-pt"
-        color="white"
+        dark
+        color="primary"
     >
         <VToolbarTitle>
             <VIcon>perm_media</VIcon>
@@ -78,28 +78,28 @@
 </template>
 
 <script>
-import Mixins from './mixin'
-import { mapState } from 'vuex'
+import Mixins from './mixin';
+import { mapState } from 'vuex';
 export default {
 
     mixins: [Mixins],
     data () {
         return {
 
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['fileInfoSideBar'])
     },
     methods: {
         openDropZone () {
-            Bus.$emit('openDropZone')
+            Bus.$emit('openDropZone');
         },
         uploadFolder () {
-            Bus.$emit('uploadFolder')
+            Bus.$emit('uploadFolder');
         }
     }
-}
+};
 </script>
 
 <style>

@@ -235,7 +235,7 @@ class FileRepository
     {
         $path = collect(explode('/', $path));
         $path = $path->filter(function($name) {
-            return $name && ! str_contains($name, '.');
+            return $name && ! \Str::contains($name, '.');
         });
 
         if ($path->isEmpty()) return $path;
@@ -279,7 +279,7 @@ class FileRepository
 
         $data = [
             'name' => $file->getClientOriginalName(),
-            'file_name' => str_random(40),
+            'file_name' => \Str::random(40),
             'mime' => $originalMime,
             'type' => $this->getTypeFromMime($originalMime),
             'file_size' => $file->getClientSize(),
@@ -340,7 +340,7 @@ class FileRepository
                 return 'pdf';
             case 'vnd.android.package-archive':
                 return 'android package';
-            case str_contains($mime, 'xml');
+            case \Str::contains($mime, 'xml');
                 return 'spreadsheet';
             default:
                 return $default === 'application' ? 'file' : $default;

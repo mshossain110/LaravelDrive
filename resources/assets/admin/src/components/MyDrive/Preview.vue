@@ -134,11 +134,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Plyr from 'Plyr'
-import PanZoom from './../../mixin/library/panzoom'
-import ContextMenu from './ContextMenu.vue'
-import mixin from './mixin'
+import { mapState } from 'vuex';
+import Plyr from 'Plyr';
+import PanZoom from './../../mixin/library/panzoom';
+import ContextMenu from './ContextMenu.vue';
+import mixin from './mixin';
 export default {
     components: {
         ContextMenu
@@ -154,69 +154,70 @@ export default {
         return {
             showMenu: false,
             menuPos: {}
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['mediaItems', 'selectedMedia', 'selectedFilesId']),
 
         filesCanPreview () {
             return this.mediaItems.filter(m => {
-                return m.type !== 'folder'
-            })
+                return m.type !== 'folder';
+            });
         },
         currentImage () {
-            let hash = this.$route.params.hash
-            return this.mediaItems.find(i => i.hash === hash)
+            const hash = this.$route.params.hash;
+            return this.mediaItems.find(i => i.hash === hash);
         },
         fileUrl () {
-            return window.location.origin + '/' + this.selectedMedia.url
+            return window.location.origin + '/' + this.selectedMedia.url;
         },
         isImage () {
-            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.selectedMedia.extension) !== -1
+            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.selectedMedia.extension) !== -1;
         },
         ispdf () {
-            return ['pdf', 'txt'].indexOf(this.selectedMedia.extension) !== -1
+            return ['pdf', 'txt'].indexOf(this.selectedMedia.extension) !== -1;
         },
         isVideo () {
-            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.selectedMedia.extension) !== -1
+            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.selectedMedia.extension) !== -1;
         },
         isAudio () {
-            return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1
+            return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1;
         }
 
     },
     mounted () {
-        PanZoom('.image-preview')
-        var player = new Plyr('#player')
+        PanZoom('.image-preview');
+        // eslint-disable-next-line no-new
+        new Plyr('#player');
     },
     methods: {
         closePreview () {
-            this.$store.commit('Media/previewModal', false)
+            this.$store.commit('Media/previewModal', false);
         },
         clickCard (event) {
             if (event.target.closest('.v-toolbar__content')) {
-                return
+                return;
             }
             if (event.target.closest('.v-responsive__content')) {
-                return
+                return;
             }
 
             if (event.target.closest('.video-preview')) {
-                return
+                return;
             }
 
-            this.closePreview()
+            this.closePreview();
         },
         downloadFile () {
-            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
+            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId });
         },
         showContextMenu (event) {
-            this.showMenu = !this.showMenu
-            this.menuPos.x = event.clientX
-            this.menuPos.y = event.clientY
+            this.showMenu = !this.showMenu;
+            this.menuPos.x = event.clientX;
+            this.menuPos.y = event.clientY;
         }
     }
-}
+};
 </script>
 <style>
 .v-card.preview-card .v-card {

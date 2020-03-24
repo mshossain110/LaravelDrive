@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\FileRepository;
-use App\Transformers\FileTransformer;
 use App\Http\Requests\FileRequest;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
@@ -16,6 +15,7 @@ use App\File;
 use App\Tag;
 use Auth;
 use DB;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class FileController extends ApiController
 {
@@ -23,8 +23,6 @@ class FileController extends ApiController
 
 
     public function __construct ( FileRepository $file ) {
-        parent::__construct();
-
         $this->file = $file;
     }
 
@@ -41,7 +39,7 @@ class FileController extends ApiController
                     ->paginate($per_page);
         
         
-    	return $this->respondWithPaginator($files, new FileTransformer);
+    	return JsonResource::collection($files);
     }
 
     public function show ( $id ){
@@ -85,7 +83,7 @@ class FileController extends ApiController
                 $fileEntry    = $this->file->createFile($save->getFile(), ['parent_id' => $parent_id, 'path' => $path] );
 
                 $this->file->movePrivateUpload($fileEntry, $save->getFile());
-                return $this->respondWithItem($fileEntry, new FileTransformer);
+                return new JsonResource($fileEntry);
 
             }
 
@@ -104,7 +102,6 @@ class FileController extends ApiController
         // $fileEntry    = $this->file->createFile($uploadedFile, ['parent_id' => $parent_id, 'path' => $path] );
 
         // $this->file->storePrivateUpload($fileEntry, $uploadedFile);
-        // return $this->respondWithItem($fileEntry, new FileTransformer);
 
     }
 
@@ -120,7 +117,7 @@ class FileController extends ApiController
         $data      = $request->only(['name', 'description']);
     	$file      = $this->file->update( $id, $data);
 
-    	return $this->respondWithItem($file, new FileTransformer);
+    	return new JsonResource($file);
     }
 
     /**
@@ -132,7 +129,7 @@ class FileController extends ApiController
     public function destroy ( $id ) {
         $this->file->destroy($id);
 
-        return $this->respondWithMessage("file deleted successfully.");
+        return response()->json(["file deleted successfully."]);
     }
 
     /**
@@ -145,7 +142,7 @@ class FileController extends ApiController
         $ids = $request->get('ids');
         $this->file->deleteMultiple($ids);
 
-        return $this->respondWithMessage("file deleted successfully.");
+        return response()->json(["file deleted successfully."]);
     }
     
 }

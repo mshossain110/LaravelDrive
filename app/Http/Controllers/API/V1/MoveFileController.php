@@ -5,9 +5,9 @@ namespace App\Http\Controllers\API\V1;
 use Auth;
 use Storage;
 use App\File;
-use App\Transformers\FileTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
 class MoveFileController extends ApiController
@@ -38,7 +38,7 @@ class MoveFileController extends ApiController
         }
 
 
-        return $this->respondWithCollection($entries, new FileTransformer);
+        return JsonResource::collection($entries);
     }
 
 

@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Mixin from './mixin'
+import { mapState } from 'vuex';
+import Mixin from './mixin';
 
 export default {
     $_veeValidate: {
@@ -63,29 +63,29 @@ export default {
     data () {
         return {
             // name: this.selectedMedia.name,
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['selectedMedia'])
     },
     methods: {
         onSubmit () {
-            this.$validator.validateAll()
+            this.$validator.validateAll();
             const item = {
                 name: this.selectedMedia.name,
                 id: this.selectedMedia.id
-            }
+            };
 
             this.$store.dispatch('Media/updateItem', item)
                 .then(() => {
-                    this.close()
-                })
+                    this.close();
+                });
         },
         close () {
-            this.$store.commit('Media/renamefilemodal', false)
+            this.$store.commit('Media/renamefilemodal', false);
         }
     }
-}
+};
 </script>
 
 <style>

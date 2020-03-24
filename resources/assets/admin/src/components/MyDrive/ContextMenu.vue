@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Mixins from './mixin'
+import { mapState } from 'vuex';
+import Mixins from './mixin';
 
 export default {
     mixins: [Mixins],
@@ -46,30 +46,32 @@ export default {
             default () {
                 return {
 
-                }
+                };
             }
         }
     },
     data () {
         return {
             showMenu: this.value
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         items () {
+            // eslint-disable-next-line no-prototype-builtins
             if (this.file.hasOwnProperty('id') && this.file.deleted_at === null) {
                 if (this.file.type === 'folder') {
-                    return this.menuitems.filter(i => i.show === 'items').filter(i => i.title !== 'Preview')
+                    return this.menuitems.filter(i => i.show === 'items').filter(i => i.title !== 'Preview');
                 }
-                return this.menuitems.filter(i => i.show === 'items')
+                return this.menuitems.filter(i => i.show === 'items');
+                // eslint-disable-next-line no-prototype-builtins
             } else if (this.file.hasOwnProperty('id') && this.file.deleted_at !== null) {
-                return this.menuitems.filter(i => i.show === 'trash')
+                return this.menuitems.filter(i => i.show === 'trash');
             } else if (this.$route.name === 'media' || this.$route.name === 'singleFolder') {
-                return this.menuitems.filter(i => i.show === 'back')
+                return this.menuitems.filter(i => i.show === 'back');
             }
 
-            return []
+            return [];
         },
 
         menuitems () {
@@ -158,77 +160,78 @@ export default {
                     show: 'trash',
                     action: this.deleteForever
                 }
-            ]
+            ];
         }
     },
     watch: {
 
         value (newVal) {
-            this.showMenu = false
+            this.showMenu = false;
             this.$nextTick(() => {
-                this.showMenu = newVal
-            })
+                this.showMenu = newVal;
+            });
         },
         x () {
-            this.showMenu = false
+            this.showMenu = false;
             this.$nextTick(() => {
-                this.showMenu = true
-            })
+                this.showMenu = true;
+            });
         },
         y () {
-            this.showMenu = false
+            this.showMenu = false;
             this.$nextTick(() => {
-                this.showMenu = true
-            })
+                this.showMenu = true;
+            });
         }
     },
     methods: {
         openDropZone () {
-            Bus.$emit('openDropZone')
+            Bus.$emit('openDropZone');
         },
         uploadFolder () {
-            Bus.$emit('uploadFolder')
+            Bus.$emit('uploadFolder');
         },
         moveTo () {
-            this.$store.commit('Media/moveToemodal', true)
+            this.$store.commit('Media/moveToemodal', true);
         },
         shareFiles () {
-            this.$store.commit('Media/shareFileModal', true)
+            this.$store.commit('Media/shareFileModal', true);
         },
         shareLink () {
-            this.$store.commit('Media/shareLinkModal', true)
+            this.$store.commit('Media/shareLinkModal', true);
         },
         manageStar () {
+            // eslint-disable-next-line no-prototype-builtins
             if (this.file.hasOwnProperty('id') && !this.file.stared) {
-                this.$store.dispatch('Media/addStar', { ids: this.selectedFilesId })
+                this.$store.dispatch('Media/addStar', { ids: this.selectedFilesId });
             } else {
-                this.$store.dispatch('Media/removeStar', { ids: this.selectedFilesId })
+                this.$store.dispatch('Media/removeStar', { ids: this.selectedFilesId });
             }
         },
         openRenameModel () {
-            this.$store.commit('Media/renamefilemodal', true)
+            this.$store.commit('Media/renamefilemodal', true);
         },
 
         deleteItems () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId })
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId });
         },
         copyFiles () {
-            this.$store.dispatch('Media/copyFile', { ids: this.selectedFilesId })
+            this.$store.dispatch('Media/copyFile', { ids: this.selectedFilesId });
         },
         downloadFile () {
-            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId })
+            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId });
         },
         restore () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'restore' })
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'restore' });
         },
         deleteForever () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'deleteforever' })
+            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'deleteforever' });
         },
         preview () {
-            this.$store.commit('Media/previewModal', true)
+            this.$store.commit('Media/previewModal', true);
         }
     }
-}
+};
 </script>
 
 <style>

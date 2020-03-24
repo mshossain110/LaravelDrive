@@ -6,9 +6,9 @@ use Auth;
 use Storage;
 use App\File;
 use DB;
-use App\Transformers\FileTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class DeleteFileController extends ApiController
 {
@@ -29,9 +29,7 @@ class DeleteFileController extends ApiController
      * @param File $file
      */
     public function __construct(Request $request, File $file)
-    {
-        parent::__construct();
-        
+    {        
         $this->request = $request;
         $this->file = $file;
     }
@@ -166,7 +164,6 @@ class DeleteFileController extends ApiController
                 ->where('created_by', Auth::id())
                 ->paginate($per_page);
         
-        
-    	return $this->respondWithPaginator($files, new FileTransformer);
+        return JsonResource::collection($files);
     }
 }

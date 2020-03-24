@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import MediaItem from './mediaItem.vue'
-import Mixins from './mixin'
-import ContextMenu from './ContextMenu.vue'
+import { mapState } from 'vuex';
+import MediaItem from './mediaItem.vue';
+import Mixins from './mixin';
+import ContextMenu from './ContextMenu.vue';
 
 export default {
     components: {
@@ -51,59 +51,59 @@ export default {
             scrollLoading: false,
             fileCm: false,
             clickedOnItem: false
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['trashItems', 'trashPagination']),
         isLoaded () {
-            return this.isfilesLoaded
+            return this.isfilesLoaded;
         }
     },
     watch: {
         '$route' (to, from) {
-            this.selfMddiaItems(to)
+            this.selfMddiaItems(to);
         }
     },
     created () {
-        this.selfMddiaItems(this.$route)
+        this.selfMddiaItems(this.$route);
     },
     mounted () {
         document.addEventListener('click', (event) => {
-            let element = event.target.closest('button.media-info-button')
+            const element = event.target.closest('button.media-info-button');
 
             if (element) {
-                return
+                return;
             }
 
-            this.deselect()
-        })
-        this.scroll()
+            this.deselect();
+        });
+        this.scroll();
     },
     destroyed () {
-        this.$store.commit('Media/emptyTrashItems')
+        this.$store.commit('Media/emptyTrashItems');
     },
     methods: {
         selfMddiaItems (route) {
-            let params = {}
+            const params = {};
             if (typeof route.params.folderId !== 'undefined') {
-                params.parent_id = route.params.folderId
+                params.parent_id = route.params.folderId;
             }
             if (route.query.page) {
-                params.page = route.query.page
+                params.page = route.query.page;
             }
 
             this.$store.dispatch('Media/getTrashItems', params)
                 .then(() => {
-                    this.isfilesLoaded = true
-                    this.scrollLoading = false
-                })
+                    this.isfilesLoaded = true;
+                    this.scrollLoading = false;
+                });
         },
         showContextMenu (e, item) {
-            e.preventDefault()
+            e.preventDefault();
 
             if (this.fileCm) {
-                this.fileCm = false
-                return
+                this.fileCm = false;
+                return;
             }
 
             this.cm = {
@@ -111,64 +111,64 @@ export default {
                 x: e.clientX,
                 y: e.clientY,
                 file: item
-            }
+            };
         },
         showContextMenu2 (e, item) {
-            e.preventDefault()
-            this.fileCm = true
+            e.preventDefault();
+            this.fileCm = true;
             this.cm = {
                 show: true,
                 x: e.clientX,
                 y: e.clientY,
                 file: item
-            }
-            this.OnClickItem(e, item)
+            };
+            this.OnClickItem(e, item);
         },
         OnClickItem (event, item) {
-            this.clickedOnItem = true
-            let isMultiSelect = event.ctrlKey || event.metaKey
+            this.clickedOnItem = true;
+            const isMultiSelect = event.ctrlKey || event.metaKey;
 
             if (!isMultiSelect && item.type === 'folder' && !this.fileCm) {
-                this.pushChiled(item)
+                this.pushChiled(item);
             }
 
-            this.$store.commit('Media/selectFiles', { isMultiSelect: isMultiSelect, id: item.id })
-            this.$store.commit('Media/selectMediaItem', item)
+            this.$store.commit('Media/selectFiles', { isMultiSelect: isMultiSelect, id: item.id });
+            this.$store.commit('Media/selectMediaItem', item);
         },
         pushChiled (item) {
-            let name = 'singleFolder'
+            let name = 'singleFolder';
             if (this.$route.name === 'trash' || this.$route.name === 'trashFolder') {
-                name = 'trashFolder'
+                name = 'trashFolder';
             }
             this.$router.push({
                 name: name,
                 params: {
                     folderId: item.hash
                 }
-            })
+            });
         },
         deselect () {
             if (this.clickedOnItem) {
-                this.clickedOnItem = false
-                return
+                this.clickedOnItem = false;
+                return;
             }
 
-            this.$store.commit('Media/deselectFile')
+            this.$store.commit('Media/deselectFile');
         },
         scroll () {
             window.onscroll = () => {
                 if (this.scrollLoading) {
-                    return
+                    return;
                 }
-                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight + 50 > document.documentElement.offsetHeight
+                const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight + 50 > document.documentElement.offsetHeight;
 
                 if (bottomOfWindow) {
-                    let page = (this.$route.query.page || 1) + 1
+                    const page = (this.$route.query.page || 1) + 1;
                     if (page > this.trashPagination.total_pages) {
-                        return
+                        return;
                     }
 
-                    this.scrollLoading = true
+                    this.scrollLoading = true;
 
                     this.$router.replace({
                         name: this.$route.name,
@@ -176,13 +176,13 @@ export default {
                         query: {
                             page: page
                         }
-                    })
+                    });
                 }
-            }
+            };
         }
 
     }
-}
+};
 </script>
 
 <style lang="scss">

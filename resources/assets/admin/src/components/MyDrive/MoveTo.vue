@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import Mixin from './mixin'
-import { mapState, mapGetters } from 'vuex'
+import Mixin from './mixin';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
     $_veeValidate: {
@@ -81,21 +81,21 @@ export default {
             name: '',
             moveid: [],
             folderLists: []
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['folders', 'selectedFilesId']),
         ...mapGetters('Media', ['getNestedFolders'])
     },
     mounted () {
-        this.folderLists = this.getNestedFolders
+        this.folderLists = this.getNestedFolders;
 
         if (typeof this.$route.params.folderId !== 'undefined') {
             this.folderLists.unshift({
                 id: 0,
                 name: 'Root',
                 parent_id: 0
-            })
+            });
         }
     },
     methods: {
@@ -103,28 +103,28 @@ export default {
             var params = {
                 files: this.selectedFilesId,
                 destination: this.moveid[0] ? this.moveid[0] : null
-            }
+            };
 
             this.$store.dispatch('Media/moveFiles', params)
                 .then(res => {
-                    var parentId = 0
+                    var parentId = 0;
                     if (typeof this.$route.params.folderId !== 'undefined') {
-                        parentId = this.$route.params.folderId
+                        parentId = this.$route.params.folderId;
                     }
 
-                    let items = res.filter(i => i.parent_id !== parentId).map(i => i.id)
-                    this.$store.commit('Media/moveFile', items)
-                    this.close()
-                })
+                    const items = res.filter(i => i.parent_id !== parentId).map(i => i.id);
+                    this.$store.commit('Media/moveFile', items);
+                    this.close();
+                });
         },
         SelectMovingFoleder (val) {
-            this.moveid = val
+            this.moveid = val;
         },
         close () {
-            this.$store.commit('Media/moveToemodal', false)
+            this.$store.commit('Media/moveToemodal', false);
         }
     }
-}
+};
 </script>
 
 <style>

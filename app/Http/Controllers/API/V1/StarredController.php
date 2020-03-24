@@ -5,8 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\File;
 use App\Tag;
 use Illuminate\Http\Request;
-use App\Transformers\FileTransformer;
-
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class StarredController extends ApiController
 {
@@ -28,7 +27,6 @@ class StarredController extends ApiController
      */
     public function __construct(Request $request, Tag $tag)
     {
-        parent::__construct();
         $this->request = $request;
         $this->tag = $tag;
     }
@@ -43,7 +41,7 @@ class StarredController extends ApiController
         }
         $files = $tag->files()->wherePivot('user_id', \Auth::id())->paginate($per_page);
 
-    	return $this->respondWithPaginator($files, new FileTransformer);
+    	return JsonResource::collection($files);
     }
 
     /**

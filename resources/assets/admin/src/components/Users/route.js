@@ -1,7 +1,7 @@
-import Users from './Users'
-import Roles from './Roles.vue'
-import Profile from './Profile'
-import Permissions from './Permissions'
+import Users from './Users';
+import Roles from './Roles.vue';
+import Profile from './Profile';
+import Permissions from './Permissions';
 
 const UsersRoute = [
     {
@@ -26,6 +26,6 @@ const UsersRoute = [
         name: 'users-profile',
         component: Profile
     }
-]
+];
 
-export default UsersRoute
+export default UsersRoute;

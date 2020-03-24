@@ -119,8 +119,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import UserForm from './UserForm.vue'
+import { mapState } from 'vuex';
+import UserForm from './UserForm.vue';
 
 export default {
     components: {
@@ -154,53 +154,53 @@ export default {
             BulkActions: [
                 'Delete'
             ]
-        }
+        };
     },
     computed: {
         ...mapState('Users', ['users', 'pagination'])
     },
     watch: {
         currentpage (newValue) {
-            this.$router.push({ name: 'users', query: { page: newValue } })
-            this.$store.dispatch('Users/getUsers', { page: newValue })
+            this.$router.push({ name: 'users', query: { page: newValue } });
+            this.$store.dispatch('Users/getUsers', { page: newValue });
         }
     },
     created () {
-        this.$store.dispatch('Users/getUsers', { page: parseInt(this.$route.query.page, 10) })
+        this.$store.dispatch('Users/getUsers', { page: parseInt(this.$route.query.page, 10) });
     },
     methods: {
         editUserMethod (user) {
-            const index = this.users.findIndex(u => u.id === user.id)
+            const index = this.users.findIndex(u => u.id === user.id);
             if (index !== -1) {
-                this.editUser = this.users[index]
-                this.openEditUserForm = true
+                this.editUser = this.users[index];
+                this.openEditUserForm = true;
             }
         },
         deleteUser (user) {
             if (confirm('Are you sure you want to delete this item?')) {
-                this.$store.dispatch('Users/deleteUser', user.id)
+                this.$store.dispatch('Users/deleteUser', user.id);
             }
         },
         activation (user) {
             if (!this.hasPermission('user.updata')) {
-                return
+                return;
             }
-            let status = user.status.toLowerCase() === 'inactive' ? 'active' : 'inactive'
-            Vue.set(user, 'status', status)
+            const status = user.status.toLowerCase() === 'inactive' ? 'active' : 'inactive';
+            Vue.set(user, 'status', status);
             this.$store.dispatch('Users/updateUser', user)
                 .then(() => {
-                    this.$forceUpdate()
-                })
+                    this.$forceUpdate();
+                });
         },
         getRandomColor () {
-            const h = Math.floor(Math.random() * 360)
-            const s = Math.floor(Math.random() * 100) + '%'
-            const l = Math.floor(Math.random() * 60) + '%'
+            const h = Math.floor(Math.random() * 360);
+            const s = Math.floor(Math.random() * 100) + '%';
+            const l = Math.floor(Math.random() * 60) + '%';
 
             return {
                 backgroundColor: `hsl(${h},${s},${l})`
-            }
+            };
         }
     }
-}
+};
 </script>

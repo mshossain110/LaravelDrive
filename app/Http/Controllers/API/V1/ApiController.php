@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use League\Fractal\Manager;
-use League\Fractal\Resource\Item;
 use App\Http\Controllers\Controller;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ApiController extends Controller
 {
@@ -22,19 +19,6 @@ class ApiController extends Controller
     const CODE_FORBIDDEN = 'GEN-GTFO';
     const CODE_INVALID_MIME_TYPE = 'GEN-UMWUT';
 
-    /**
-     * @var Manager $fractal
-     */
-    protected $fractal;
-
-    public function __construct()
-    {
-        $this->fractal = new Manager;
-
-        if (isset($_GET['include'])) {
-            $this->fractal->parseIncludes($_GET['include']);
-        }
-    }
 
     /**
      * Get the status code.
@@ -76,15 +60,9 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithItem($item, $callback, $message = 'Successfully')
+    public function respondWithItem($item)
     {
-        $resource = new Item($item, $callback);
-
-        $data = $this->fractal->createData($resource)->toArray();
-
-        $data['message'] = $message;
-
-        return $this->respondWithArray($data);
+        return New JsonResource($item);
     }
 
     /**
@@ -94,14 +72,9 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithCollection($collection, $callback, $message = 'Successfully')
+    public function respondWithCollection($collection)
     {
-        $resource = new Collection($collection, $callback);
-
-        $data = $this->fractal->createData($resource)->toArray();
-        $data['message'] = $message;
-
-        return $this->respondWithArray($data);
+        return JsonResource::collection($collection);
     }
 
     /**
@@ -111,16 +84,9 @@ class ApiController extends Controller
      * @param $callback
      * @return mixed
      */
-    public function respondWithPaginator($paginator, $callback, $message = 'Successfully')
+    public function respondWithPaginator($collection)
     {
-        $resource = new Collection($paginator->getCollection(), $callback);
-
-        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-        $data = $this->fractal->createData($resource)->toArray();
-        $data['message'] = $message;
-
-        return $this->respondWithArray($data);
+        return JsonResource::collection($collection);
     }
 
     /**

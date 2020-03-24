@@ -1,9 +1,9 @@
-import Dashboard from './Dashboard'
+import Dashboard from './Dashboard';
 
 const DashRoute = {
     path: 'dashboard',
     name: 'dashboard',
     component: Dashboard
-}
+};
 
-export default DashRoute
+export default DashRoute;

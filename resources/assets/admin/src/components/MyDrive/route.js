@@ -1,7 +1,7 @@
-import MyDrive from './MyDrive'
-import Stare from './Stared.vue'
-import Trash from './Trash.vue'
-import SharedWithMe from './SharedWithMe.vue'
+import MyDrive from './MyDrive';
+import Stare from './Stared.vue';
+import Trash from './Trash.vue';
+import SharedWithMe from './SharedWithMe.vue';
 
 const MediaRoute = [
     {
@@ -39,6 +39,6 @@ const MediaRoute = [
         name: 'sharedFolder',
         component: SharedWithMe
     }
-]
+];
 
-export default MediaRoute
+export default MediaRoute;

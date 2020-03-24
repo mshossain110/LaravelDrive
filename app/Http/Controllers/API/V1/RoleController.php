@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\RoleRepository;
-use App\Transformers\RoleTransformer;
 use App\Http\Requests\RoleRequest;
 use Gate;
 use App\Role;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class RoleController extends ApiController
 {
@@ -15,7 +15,6 @@ class RoleController extends ApiController
 
 
     public function __construct ( RoleRepository $role ) {
-        parent::__construct();
 
         $this->role = $role;
     }
@@ -23,12 +22,12 @@ class RoleController extends ApiController
     public function index () {
         $this->authorize('view', Role::class);
 
-    	return $this->respondWithCollection($this->role->getList(), new RoleTransformer);
+    	return JsonResource::collection($this->role->getList());
     }
 
     public function show ( $id ){
         $this->authorize('view', Role::class);
-    	return $this->respondWithItem($this->role->getById($id), new RoleTransformer);
+    	return new JsonResource($this->role->getById($id));
     }
 
     /**
@@ -44,7 +43,7 @@ class RoleController extends ApiController
         $data      = $request->only(['name', 'description', 'status', 'permissions']);
         $role      = $this->role->store($data);
 
-       	return $this->respondWithItem($role, new RoleTransformer);
+       	return new JsonResource($role);
     }
 
     /**
@@ -60,7 +59,7 @@ class RoleController extends ApiController
         $data      = $request->only(['name', 'description', 'status', 'permissions']);
     	$role      = $this->role->update( $id, $data);
 
-    	return $this->respondWithItem($role, new RoleTransformer);
+    	return new JsonResource($role);
     }
 
     /**

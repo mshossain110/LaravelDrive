@@ -41,14 +41,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import RoleForm from './RoleForm.vue'
-import Role from './Role.vue'
+import { mapState } from 'vuex';
+import RoleForm from './RoleForm.vue';
+import Role from './Role.vue';
 
 export default {
     beforeRouteEnter (to, from, next) {
-        var p = LD.hasPermission('role.view')
-        next(p)
+        var p = LD.hasPermission('role.view');
+        next(p);
     },
     components: {
         RoleForm,
@@ -57,17 +57,17 @@ export default {
     data () {
         return {
             status: true
-        }
+        };
     },
     computed: {
         ...mapState('Users', ['roles'])
     },
     created () {
-        this.$store.dispatch('Users/getRole')
+        this.$store.dispatch('Users/getRole');
     },
     methods: {
     }
-}
+};
 </script>
 
 <style lang="css">

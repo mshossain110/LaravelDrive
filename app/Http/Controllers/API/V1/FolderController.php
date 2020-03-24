@@ -4,9 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\FolderRepository;
-use App\Transformers\FolderTransformer;
 use App\Http\Requests\FolderRequest;
-use Gate;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class FolderController extends ApiController
 {
@@ -14,17 +13,16 @@ class FolderController extends ApiController
 
 
     public function __construct ( FolderRepository $folder ) {
-        parent::__construct();
 
         $this->folder = $folder;
     }
 
     public function index () {
-    	return $this->respondWithCollection($this->folder->getList(), new FolderTransformer);
+    	return JsonResource::collection($this->folder->getList());
     }
 
     public function show ( $id ){
-    	return $this->respondWithItem($this->folder->getById($id), new FolderTransformer);
+    	return new JsonResource($this->folder->getById($id));
     }
 
     /**
@@ -38,13 +36,13 @@ class FolderController extends ApiController
 
         $data              = $request->only(['name', 'description', 'parent_id']);
         $data['parent_id'] = isset($data['parent_id']) ? intval($data['parent_id']): 0;
-        $data['file_name'] = str_random(40);
+        $data['file_name'] = \Str::random(40);
 
         
         $folder = $this->folder->store($data);
         $folder->generatePath();
 
-       	return $this->respondWithItem($folder, new FolderTransformer);
+       	return new JsonResource($folder);
     }
 
     /**
@@ -57,9 +55,9 @@ class FolderController extends ApiController
     public function update ( FolderRequest $request, $id ) {
         $validated = $request->validated();
         $data      = $request->only(['name', 'description']);
-    	$folder      = $folderthis->folder->update( $id, $data);
+    	$folder      = $this->folder->update( $id, $data);
 
-    	return $this->respondWithItem($folder, new FolderTransformer);
+    	return new JsonResource($folder);
     }
 
     /**
@@ -71,7 +69,7 @@ class FolderController extends ApiController
     public function destroy ( $id ) {
         $this->folder->destroy($id);
 
-        return $this->respondWithMessage("Folder deleted successfully.");
+        return response()->json(['message'=> "Folder deleted successfully."]);
     }
     
 }

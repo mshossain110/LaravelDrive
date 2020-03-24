@@ -96,14 +96,14 @@ export default {
                 { heading: 'My Drive' },
                 { icon: 'perm_media', text: 'My Files', name: 'media', disabled: false },
                 { icon: 'people', text: 'Shared with me', name: 'shared', disabled: false },
-                { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
+                // { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
                 { icon: 'star', text: 'Starred', name: 'starred', disabled: false },
                 { icon: 'delete_forever', text: 'Trash', name: 'trash', disabled: false },
                 { divider: true },
-                { heading: 'Admin Settings' },
-                { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
+                { heading: 'Admin Settings' }
+                // { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
             ].filter(i => typeof i.permission === 'undefined' || i.permission)
-        }
+        };
     },
     computed: {
 
@@ -111,5 +111,5 @@ export default {
     methods: {
 
     }
-}
+};
 </script>

@@ -243,8 +243,8 @@
 </template>
 
 <script>
-import Mixin from './mixin'
-import { mapState } from 'vuex'
+import Mixin from './mixin';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -278,65 +278,66 @@ export default {
             linkdata: {},
             updateShare: false
 
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['selectedFilesId']),
         hasLinkData () {
-            return this.linkdata.hasOwnProperty('id')
+            // eslint-disable-next-line no-prototype-builtins
+            return this.linkdata.hasOwnProperty('id');
         },
         getShareLink () {
             if (this.hasLinkData) {
-                return this.linkdata.link
+                return this.linkdata.link;
             }
-            return ''
+            return '';
         }
     },
     mounted () {
-        this.getShareableLink()
+        this.getShareableLink();
         // setTimeout(() => {
         //     this.$refs.sharelink.focus()
         // }, 500)
     },
     methods: {
         close () {
-            this.$store.commit('Media/shareLinkModal', false)
+            this.$store.commit('Media/shareLinkModal', false);
         },
         getShareableLink (params) {
             axios.get(`/api/shareable-links/file/${this.selectedFilesId[0]}`, { params })
                 .then((res) => {
-                    this.linkdata = res.data.data
-                })
+                    this.linkdata = res.data.data;
+                });
         },
         storeShareableLink () {
             var params = {
-                'file_id': this.selectedFilesId[0],
-                'allow_edit': this.editable,
-                'allow_download': this.downloadable,
-                'password': this.LinkPassword,
-                'expires_at': this.linkExpierDate + ' ' + this.linkExpierTime
-            }
+                file_id: this.selectedFilesId[0],
+                allow_edit: this.editable,
+                allow_download: this.downloadable,
+                password: this.LinkPassword,
+                expires_at: this.linkExpierDate + ' ' + this.linkExpierTime
+            };
             axios.post(`/api/shareable-links/file/${this.selectedFilesId[0]}`, params)
                 .then((res) => {
-                    this.linkdata = res.data.data
-                })
+                    this.linkdata = res.data.data;
+                });
         },
         deleteShareableLink () {
             if (!this.hasLinkData) {
-                return
+                return;
             }
             axios.delete(`/api/shareable-links/${this.linkdata.id}`)
                 .then((res) => {
-                    this.close()
-                })
+                    this.close();
+                });
         },
         copyLink () {
-            this.$refs.sharelink.blur()
-            this.$refs.sharelink.focus()
-            document.execCommand('copy')
+            this.$refs.sharelink.blur();
+            this.$refs.sharelink.focus();
+            document.execCommand('copy');
         }
     }
-}
+};
 </script>
 
 <style>

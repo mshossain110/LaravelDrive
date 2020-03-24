@@ -4,10 +4,10 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
-use App\Transformers\UserTransformer;
 use App\Http\Requests\UserRequest;
 use Carbon\Carbon;
 use App\User;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends ApiController
 {
@@ -15,19 +15,18 @@ class UserController extends ApiController
 
 
     public function __construct ( UserRepository $user ) {
-        parent::__construct();
         $this->user = $user;
         $this->middleware('auth');
     }
 
     public function index () {
         $this->authorize('view', User::class);
-    	return $this->respondWithPaginator($this->user->page(), new UserTransformer);
+    	return JsonResource::collection($this->user->page());
     }
 
     public function show ( $id ) {
         $this->authorize('view', User::class);
-    	return $this->respondWithItem($this->user->getById($id), new UserTransformer);
+    	return new JsonResource($this->user->getById($id));
     }
 
     /**
@@ -56,7 +55,7 @@ class UserController extends ApiController
 
         $user = $this->user->store($data);
 
-       	return $this->respondWithItem($user, new UserTransformer);
+       	return new JsonResource($user);
     }
 
     /**
@@ -85,7 +84,7 @@ class UserController extends ApiController
 
     	$user = $this->user->update( $id, $data);
 
-    	return $this->respondWithItem($user, new UserTransformer);
+    	return new JsonResource($user);
     }
 
     /**
@@ -155,6 +154,6 @@ class UserController extends ApiController
 
         $users = $this->user->searchUser($query);
         
-        return $this->respondWithCollection($users, new UserTransformer);
+        return JsonResource::collection($users);
     }
 }

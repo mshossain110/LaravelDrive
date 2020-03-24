@@ -17,7 +17,7 @@
     <link href="{{ asset('css/font/flaticon.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <script>
         window.LD = @json([
             'csftToken' => csrf_token(),
@@ -31,9 +31,11 @@
     <div class="laraadmin rootouter">
         <div id="root"></div>
     </div>
+    <script src="{{ mix('js/manifest.js') }}"></script>
+    <script src="{{ mix('js/vendor.js') }}"></script>
 
     <!-- Scripts -->
     <script src="{{ asset('js/config.js') }}" defer></script>
-    <script src="{{ asset('js/admin.js') }}" defer></script>
+    <script src="{{ asset('js/main.js') }}" defer></script>
 </body>
 </html>

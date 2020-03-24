@@ -78,8 +78,8 @@
 </template>
 
 <script>
-import Dropzone from '@ac/dropzone'
-import Mixins from './mixin'
+import Dropzone from '@ac/dropzone';
+import Mixins from './mixin';
 
 export default {
     components: {
@@ -97,7 +97,7 @@ export default {
             expandLess: true,
             filesAddedpoppu: false,
             fileList: []
-        }
+        };
     },
     computed: {
         dropzoneOptions () {
@@ -118,84 +118,84 @@ export default {
                 parallelChunkUploads: true,
                 retryChunks: true, // retry chunks on failure
                 retryChunksLimit: 3
-            }
+            };
         },
         dropzonestyle () {
-            return this.value ? { display: 'block', opacity: 1 } : { display: 'none', opacity: 0 }
+            return this.value ? { display: 'block', opacity: 1 } : { display: 'none', opacity: 0 };
         }
 
     },
     mounted () {
         Bus.$on('openDropZone', () => {
-            this.openUploader()
-        })
+            this.openUploader();
+        });
 
         Bus.$on('uploadFolder', () => {
-            this.uploadFolder()
-        })
+            this.uploadFolder();
+        });
     },
     methods: {
         progressCount (file) {
-            let up = file.upload
-            return (up.progress / up.total) * 100
+            const up = file.upload;
+            return (up.progress / up.total) * 100;
         },
         mediaIcon (type) {
-            let filetype = type.split('/')
-            return this.getMediaIcon(filetype[1])
+            const filetype = type.split('/');
+            return this.getMediaIcon(filetype[1]);
         },
         openUploader () {
-            this.$refs.myVueDropzone.dropzone.init()
-            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
+            this.$refs.myVueDropzone.dropzone.init();
+            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click();
         },
         deactive (event) {
-            event.stopPropagation()
-            event.preventDefault()
-            this.$emit('input', false)
+            event.stopPropagation();
+            event.preventDefault();
+            this.$emit('input', false);
         },
         uploadProgress (file, progress, bytesSent) {
-            let i = this.fileList.findIndex(f => f.size === file.size)
-            this.fileList[i].ldporgress = progress
-            this.fileList[i] = Object.assign(file, this.fileList[i])
+            const i = this.fileList.findIndex(f => f.size === file.size);
+            this.fileList[i].ldporgress = progress;
+            this.fileList[i] = Object.assign(file, this.fileList[i]);
         },
         processing (file) {
-            let i = this.fileList.findIndex(f => f.size === file.size)
-            this.fileList[i] = Object.assign(file, this.fileList[i])
+            const i = this.fileList.findIndex(f => f.size === file.size);
+            this.fileList[i] = Object.assign(file, this.fileList[i]);
         },
         fileAdded (files) {
-            this.filesAddedpoppu = true
+            this.filesAddedpoppu = true;
             // loop through files
             for (var i = 0; i < files.length; i++) {
-                files[i].ldporgress = 0
-                this.fileList.push(files[i])
+                files[i].ldporgress = 0;
+                this.fileList.push(files[i]);
             }
         },
         success (file) {
-            let response = JSON.parse(file.xhr.response)
-            this.$store.commit('Media/setMediaItem', response.data)
+            const response = JSON.parse(file.xhr.response);
+            this.$store.commit('Media/setMediaItem', response.data);
         },
         chunksUploaded (file, done) {
-            done()
+            done();
         },
 
         sending (file, xhr, formData) {
-            let path = file.fullPath || file.webkitRelativePath || file.mozRelativePath
+            let path = file.fullPath || file.webkitRelativePath || file.mozRelativePath;
             if (typeof path === 'undefined') {
-                path = file.name
+                path = file.name;
             }
-            formData.append('path', '/' + path)
-            formData.append('parent_id', this.currentFolderId)
+            formData.append('path', '/' + path);
+            formData.append('parent_id', this.currentFolderId);
         },
         uploadFolder () {
-            this.$refs.myVueDropzone.dropzone.init()
-            let input = this.$refs.myVueDropzone.dropzone.hiddenFileInput
-            input.setAttribute('type', 'file')
-            input.setAttribute('webkitDirectory', true)
-            input.setAttribute('mozDirectory', true)
-            input.setAttribute('directory', true)
-            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click()
+            this.$refs.myVueDropzone.dropzone.init();
+            const input = this.$refs.myVueDropzone.dropzone.hiddenFileInput;
+            input.setAttribute('type', 'file');
+            input.setAttribute('webkitDirectory', true);
+            input.setAttribute('mozDirectory', true);
+            input.setAttribute('directory', true);
+            this.$refs.myVueDropzone.dropzone.hiddenFileInput.click();
         }
     }
-}
+};
 </script>
 
 <style>

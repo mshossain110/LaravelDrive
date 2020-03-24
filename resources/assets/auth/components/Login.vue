@@ -85,8 +85,8 @@
 
 <script>
 
-import Errors from './../Errors.js'
-import auth from '@common/auth'
+import Errors from './../Errors.js';
+import auth from '@common/auth';
 export default {
     name: 'Login',
     mixins: [auth],
@@ -96,28 +96,28 @@ export default {
             password: null,
             remember: false,
             errors: new Errors()
-        }
+        };
     },
     methods: {
         loginSelf () {
-            const { email, password, remember } = this
+            const { email, password, remember } = this;
             this.login({ email, password, remember })
                 .then((data) => {
-                    this.clear()
-                    location.replace(data.redirectTo)
-                })
+                    this.clear();
+                    location.replace(data.redirectTo);
+                });
         },
         clear () {
-            this.email = ''
-            this.password = null
-            this.remember = null
+            this.email = '';
+            this.password = null;
+            this.remember = null;
         },
         setDemo () {
-            this.email = 'admin@admin.com'
-            this.password = 'admin123'
+            this.email = 'admin@admin.com';
+            this.password = 'admin123';
         }
     }
-}
+};
 </script>
 
 <style>

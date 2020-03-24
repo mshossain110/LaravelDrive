@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Layout from '@ac/layout'
+import Layout from '@ac/layout';
 
 export default {
     components: {
@@ -13,7 +13,7 @@ export default {
     },
     data () {
         return {
-        }
+        };
     },
     computed: {
 
@@ -21,5 +21,5 @@ export default {
     methods: {
 
     }
-}
+};
 </script>

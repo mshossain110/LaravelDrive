@@ -51,7 +51,7 @@ class ShareableLink extends Model
      */
     public function setHashAttribute($value)
     {
-        $this->attributes['hash'] = $value ? $value : str_random(30);
+        $this->attributes['hash'] = $value ? $value : \Str::random(30);
     }
 
     /**

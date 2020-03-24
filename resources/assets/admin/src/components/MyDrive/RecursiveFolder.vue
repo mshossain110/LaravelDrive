@@ -54,7 +54,7 @@ export default {
         folder: {
             type: Object,
             default () {
-                return {}
+                return {};
             }
         },
         depth: {
@@ -65,20 +65,20 @@ export default {
     data () {
         return {
             colleps: false
-        }
+        };
     },
     computed: {
         chieldClass () {
-            let d = this.depth + 1
-            return 'children ' + 'children-' + d
+            const d = this.depth + 1;
+            return 'children ' + 'children-' + d;
         }
     },
     methods: {
         openColleps () {
-            this.colleps = !this.colleps
+            this.colleps = !this.colleps;
         }
     }
-}
+};
 </script>
 
 <style>

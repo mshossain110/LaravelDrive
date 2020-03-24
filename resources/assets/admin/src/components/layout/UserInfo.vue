@@ -81,7 +81,7 @@
 
 <script>
 
-import auth from '@common/auth'
+import auth from '@common/auth';
 
 export default {
     mixins: [auth],
@@ -91,7 +91,7 @@ export default {
             menu: false,
             message: false,
             hints: true
-        }
+        };
     },
     computed: {
 
@@ -101,11 +101,11 @@ export default {
     },
     methods: {
         logoutSelf () {
-            this.logout()
+            this.logout();
         }
 
     }
-}
+};
 </script>
 
 <style>

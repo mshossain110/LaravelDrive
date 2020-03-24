@@ -123,8 +123,8 @@
 
 <script>
 
-import Errors from './../Errors.js'
-import auth from '@common/auth'
+import Errors from './../Errors.js';
+import auth from '@common/auth';
 
 export default {
     name: 'Register',
@@ -138,7 +138,7 @@ export default {
             password: '',
             password_confirmation: '',
             errors: new Errors()
-        }
+        };
     },
     methods: {
         registerSelf () {
@@ -149,25 +149,25 @@ export default {
                 email: this.email,
                 password: this.password,
                 password_confirmation: this.password_confirmation
-            }
+            };
             this.register(params)
                 .then((data) => {
-                    this.clear()
-                    location.replace(data.redirectTo)
-                })
+                    this.clear();
+                    location.replace(data.redirectTo);
+                });
         },
         clear () {
-            this.email = ''
-            this.firstname = ''
-            this.lastname = ''
-            this.name = ''
-            this.email = ''
-            this.password = null
-            this.password_confirmation = ''
+            this.email = '';
+            this.firstname = '';
+            this.lastname = '';
+            this.name = '';
+            this.email = '';
+            this.password = null;
+            this.password_confirmation = '';
         }
 
     }
-}
+};
 </script>
 <style>
     .register h3 {

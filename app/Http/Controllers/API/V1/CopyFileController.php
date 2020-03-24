@@ -5,9 +5,9 @@ namespace App\Http\Controllers\API\V1;
 use Auth;
 use Storage;
 use App\File;
-use App\Transformers\FileTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CopyFileController extends ApiController
 {
@@ -29,7 +29,6 @@ class CopyFileController extends ApiController
      */
     public function __construct(Request $request, File $file)
     {
-        parent::__construct();
         
         $this->request = $request;
         $this->file = $file;
@@ -57,7 +56,7 @@ class CopyFileController extends ApiController
 
         $copies = $this->copyEntries($fileIds);
 
-        return $this->respondWithCollection($copies, new FileTransformer);
+        return JsonResource::collection($copies);
     }
 
     /**
@@ -127,7 +126,7 @@ class CopyFileController extends ApiController
     private function copyModel(File $original, $parentId = 0)
     {
         $copy = $original->replicate();
-        $copy->file_name = str_random(40);
+        $copy->file_name = \Str::random(40);
         $copy->parent_id = $parentId;
         $copy->save();
 

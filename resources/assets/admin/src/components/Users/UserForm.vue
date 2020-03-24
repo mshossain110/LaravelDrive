@@ -137,8 +137,8 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
-import { mapState } from 'vuex'
+import Multiselect from 'vue-multiselect';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -161,7 +161,7 @@ export default {
                     permissions: [],
                     role: 0,
                     avatar: ''
-                }
+                };
             }
         }
     },
@@ -173,11 +173,11 @@ export default {
         ...mapState('Users', ['permissions'])
     },
     created () {
-        this.$store.dispatch('Users/getPermissions')
+        this.$store.dispatch('Users/getPermissions');
     },
     methods: {
         submit () {
-            this.$validator.validateAll()
+            this.$validator.validateAll();
             const user = {
                 id: this.user.id,
                 firstname: this.user.firstname,
@@ -189,18 +189,18 @@ export default {
                 permissions: this.user.permissions,
                 role: this.user.role,
                 avatar: this.user.avatar
-            }
+            };
             if (!this.user.id) {
                 this.$store.dispatch('Users/addUser', user)
                     .then(() => {
-                        this.clear()
-                        this.$emit('close', false)
-                    })
+                        this.clear();
+                        this.$emit('close', false);
+                    });
             } else {
                 this.$store.dispatch('Users/updateUser', user)
                     .then(() => {
-                        this.$emit('close', false)
-                    })
+                        this.$emit('close', false);
+                    });
             }
         },
         clear () {
@@ -212,8 +212,8 @@ export default {
                 permissions: [],
                 role: 0,
                 avatar: ''
-            }
+            };
         }
     }
-}
+};
 </script>

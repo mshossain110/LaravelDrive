@@ -16,15 +16,16 @@
         "axios": true,
         "Vue": true,
         "Bus": true,
-        "LD": true
+        "LD": true,
+        "_": true
     },
     "rules": {
-        "indent": ["error", 4],
-        "vue/html-indent": ["error", 4],
+        "indent": ["warn", 4],
+        "vue/html-indent": ["warn", 4],
         "no-console": "warn",
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
-        "no-undef": "warn",
+        "semi": ["error", "always"],
         "no-unreachable": "warn",
         "no-unused-vars": "warn",
         "constructor-super": "warn",

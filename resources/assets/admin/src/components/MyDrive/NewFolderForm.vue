@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import Mixin from './mixin'
+import Mixin from './mixin';
 
 export default {
     $_veeValidate: {
@@ -62,30 +62,30 @@ export default {
     data () {
         return {
             name: ''
-        }
+        };
     },
     computed: {
 
     },
     methods: {
         onSubmit () {
-            this.$validator.validateAll()
+            this.$validator.validateAll();
             const item = {
                 name: this.name,
                 parent_id: this.currentFolderId
-            }
+            };
 
             this.$store.dispatch('Media/addFolder', item)
                 .then(() => {
-                    this.close()
-                })
+                    this.close();
+                });
         },
         close () {
-            this.$store.commit('Media/newFolderModal', false)
-            this.name = ''
+            this.$store.commit('Media/newFolderModal', false);
+            this.name = '';
         }
     }
-}
+};
 </script>
 
 <style>

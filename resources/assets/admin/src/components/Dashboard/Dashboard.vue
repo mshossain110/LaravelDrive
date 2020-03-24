@@ -78,7 +78,7 @@
 
 <script>
 
-import WidgetCount from './Widgets/Count.vue'
+import WidgetCount from './Widgets/Count.vue';
 
 export default {
     components: {
@@ -87,7 +87,7 @@ export default {
     data () {
         return {
 
-        }
+        };
     },
     computed: {
 
@@ -98,7 +98,7 @@ export default {
     methods: {
 
     }
-}
+};
 </script>
 
 <style>

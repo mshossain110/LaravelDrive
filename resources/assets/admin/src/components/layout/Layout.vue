@@ -1,12 +1,12 @@
 <template>
     <VApp
-        id="inspire"
-        light
+        id="ld"
     >
         <VNavigationDrawer
             v-model="drawer"
             :clipped="$vuetify.breakpoint.lgAndUp"
             width="240"
+            color="nav"
             fixed
             app
         >
@@ -15,11 +15,11 @@
 
         <VAppBar
             :clipped-left="$vuetify.breakpoint.lgAndUp"
-            color="white"
             flat
-            light
+            dark
             app
             fixed
+            color="header"
         >
             <VToolbarTitle
                 style="width: 240px"
@@ -57,9 +57,7 @@
         </VAppBar>
 
         <VContent>
-            <VContainer
-                fluid
-            >
+            <VContainer fluid>
                 <VRow>
                     <VCol
                         class="shrink"
@@ -105,10 +103,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import MenuItems from './MenuItems.vue'
-import Login from '@auth/components/Login.vue'
-import UserInfo from './UserInfo.vue'
+import { mapState } from 'vuex';
+import MenuItems from './MenuItems.vue';
+import Login from '@auth/components/Login.vue';
+import UserInfo from './UserInfo.vue';
 
 export default {
     components: {
@@ -130,11 +128,11 @@ export default {
     },
     methods: {
         hideSnackbar () {
-            this.$store.commit('setSnackbarHide')
+            this.$store.commit('setSnackbarHide');
         }
 
     }
-}
+};
 </script>
 
 <style>

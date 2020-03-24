@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
-import { mapState } from 'vuex'
+import Multiselect from 'vue-multiselect';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -90,7 +90,7 @@ export default {
                     description: '',
                     permissions: [],
                     status: true
-                }
+                };
             }
         },
         halfForm: {
@@ -103,56 +103,56 @@ export default {
         return {
             loading: false,
             showForm: this.halfForm
-        }
+        };
     },
     computed: {
         ...mapState('Users', ['permissions'])
     },
     created () {
-        this.$store.dispatch('Users/getPermissions')
+        this.$store.dispatch('Users/getPermissions');
     },
     methods: {
         submitRole () {
-            this.loading = true
+            this.loading = true;
             const role = {
                 id: this.role.id,
                 name: this.role.name,
                 description: this.role.description,
                 permissions: this.role.permissions,
                 status: this.role.status
-            }
+            };
             if (!this.role.id) {
                 this.$store.dispatch('Users/addRole', role)
                     .then(() => {
-                        this.loading = false
+                        this.loading = false;
 
-                        this.$emit('close', 'true')
-                        this.showForm = false
+                        this.$emit('close', 'true');
+                        this.showForm = false;
                     })
                     .catch(() => {
-                        this.loading = false
-                    })
+                        this.loading = false;
+                    });
             } else {
                 this.$store.dispatch('Users/updateRole', role)
                     .then(() => {
-                        this.loading = false
-                        this.$emit('close', 'true')
-                        this.showForm = false
+                        this.loading = false;
+                        this.$emit('close', 'true');
+                        this.showForm = false;
                     })
                     .catch(() => {
-                        this.loading = false
-                    })
+                        this.loading = false;
+                    });
             }
         },
         showFullForm () {
-            this.showForm = true
+            this.showForm = true;
         },
         hideFullForm () {
-            this.$emit('close', 'true')
-            this.showForm = false
+            this.$emit('close', 'true');
+            this.showForm = false;
         }
     }
-}
+};
 </script>
 
 <style lang="css">

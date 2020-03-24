@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use Illuminate\Http\Request;
 use App\Repositories\ShareableLinkRepository;
-use App\Transformers\LinkTransformer;
 use App\ShareableLink;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShareableLinkController extends ApiController
 {
@@ -25,7 +25,6 @@ class ShareableLinkController extends ApiController
      */
     public function __construct(Request $request, ShareableLinkRepository $link)
     {
-        parent::__construct();
         $this->request = $request;
         $this->link = $link;
     }
@@ -48,7 +47,7 @@ class ShareableLinkController extends ApiController
         $params = $this->request->all();
         $params['user_id'] = $this->request->user()->id;
         $params['file_id'] = $fileId;
-        $params['hash'] = $link->hash ? $link->hash: str_random(30);
+        $params['hash'] = $link->hash ? $link->hash: \Str::random(30);
         
         $link->fill($params);
         $link->save();
@@ -64,7 +63,7 @@ class ShareableLinkController extends ApiController
             $link->load('file', 'file.children', 'file.owner');
         }
 
-    	return $this->respondWithItem($link, new LinkTransformer);
+    	return new JsonResource($link);
     }
 
     /**
@@ -81,7 +80,7 @@ class ShareableLinkController extends ApiController
             $link->load('file.children', 'file.owner');
         }
 
-    	return $this->respondWithItem($link, new LinkTransformer);
+    	return new JsonResource($link);
     }
 
     /**
@@ -96,21 +95,21 @@ class ShareableLinkController extends ApiController
 
         $link = $this->link->store($params);
 
-        return $this->respondWithItem($link, new LinkTransformer);
+        return new JsonResource($link);
     }
 
     /**
      * @param int $id
      * 
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $params = $request->all();
         $params['user_id'] = $request->user()->id;
 
         $link = $this->link->update($id, $params);
 
-        return $this->respondWithItem($link, new LinkTransformer);
+        return new JsonResource($link);
     }
 
     /**

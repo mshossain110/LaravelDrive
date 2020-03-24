@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import UsersStore from '@ac/Users/store'
-import MyDriveStore from '@ac/MyDrive/store'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import UsersStore from '@ac/Users/store';
+import MyDriveStore from '@ac/MyDrive/store';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     root: true,
@@ -19,49 +19,49 @@ export default new Vuex.Store({
     },
     mutations: {
         setSnackbar (state, payload) {
-            state.snackbar = payload
+            state.snackbar = payload;
         },
         setSnackbarHide (state) {
-            state.snackbar.show = !state.snackbar.show
+            state.snackbar.show = !state.snackbar.show;
         },
         auth (state, payload) {
-            state.isAuthenticated = payload
+            state.isAuthenticated = payload;
         }
     },
     actions: {
         authRequest: ({ commit }, payload) => {
-            let remember = payload.remember ? payload.remember : false
-            let data = {
-                'email': payload.email,
-                'password': payload.password,
-                'remember': remember
-            }
+            const remember = payload.remember ? payload.remember : false;
+            const data = {
+                email: payload.email,
+                password: payload.password,
+                remember: remember
+            };
             return new Promise((resolve, reject) => {
                 axios.post('/login', data)
                     .then(() => {
-                        commit('auth', true)
-                        resolve()
+                        commit('auth', true);
+                        resolve();
                     })
                     .catch((err) => {
-                        reject(err)
-                    })
-            })
+                        reject(err);
+                    });
+            });
         },
         authLogout: ({ commit }) => {
             return new Promise((resolve, reject) => {
                 axios.post('/logout')
                     .then(() => {
-                        commit('auth', false)
-                        resolve()
+                        commit('auth', false);
+                        resolve();
                     })
                     .catch((err) => {
-                        reject(err)
-                    })
-            })
+                        reject(err);
+                    });
+            });
         }
     },
     modules: {
         Users: UsersStore,
         Media: MyDriveStore
     }
-})
+});

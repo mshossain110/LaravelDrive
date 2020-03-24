@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API\V1;
 use Auth;
 use Storage;
 use App\File;
-use App\Transformers\FileTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Response\DownloadResponse;
@@ -31,7 +30,6 @@ class DownloadController extends ApiController
 
     public function __construct(Request $request, File $file, DownloadResponse $downloadResponse)
     {
-        parent::__construct();
         
         $this->request = $request;
         $this->file = $file;

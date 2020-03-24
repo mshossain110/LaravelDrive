@@ -55,9 +55,9 @@ export default {
     data () {
         return {
 
-        }
+        };
     }
-}
+};
 </script>
 <style>
     .social-login  {

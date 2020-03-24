@@ -3,7 +3,7 @@ class Errors {
      * Create a new Errors instance.
      */
     constructor () {
-        this.errors = {}
+        this.errors = {};
     }
 
     /**
@@ -12,14 +12,15 @@ class Errors {
      * @param {string} field
      */
     has (field) {
-        return this.errors.hasOwnProperty(field)
+        // eslint-disable-next-line no-prototype-builtins
+        return this.errors.hasOwnProperty(field);
     }
 
     /**
      * Determine if we have any errors.
      */
     any () {
-        return Object.keys(this.errors).length > 0
+        return Object.keys(this.errors).length > 0;
     }
 
     /**
@@ -29,7 +30,7 @@ class Errors {
      */
     get (field) {
         if (this.errors[field]) {
-            return this.errors[field][0]
+            return this.errors[field][0];
         }
     }
 
@@ -41,7 +42,7 @@ class Errors {
 
     collect (field) {
         if (this.errors[field]) {
-            return this.errors[field][0]
+            return this.errors[field][0];
         }
     }
 
@@ -52,7 +53,7 @@ class Errors {
      */
     first (field) {
         if (this.errors[field]) {
-            return this.errors[field][0]
+            return this.errors[field][0];
         }
     }
 
@@ -62,7 +63,7 @@ class Errors {
      * @param {object} errors
      */
     record (errors) {
-        this.errors = errors
+        this.errors = errors;
     }
 
     /**
@@ -72,13 +73,13 @@ class Errors {
      */
     clear (field) {
         if (field) {
-            delete this.errors[field]
+            delete this.errors[field];
 
-            return
+            return;
         }
 
-        this.errors = {}
+        this.errors = {};
     }
 }
 
-export default Errors
+export default Errors;

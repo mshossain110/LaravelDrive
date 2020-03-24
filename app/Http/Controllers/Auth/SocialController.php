@@ -58,7 +58,7 @@ class SocialController extends Controller
         $email = $socialUserObject->email;
 
         if (!$socialUserObject->email) {
-            $email = 'missing'.str_random(10).'@'.str_random(10).'.example.org';
+            $email = 'missing'.\Str::random(10).'@'.\Str::random(10).'.example.org';
         }
 
         if (empty($userCheck)) {
@@ -91,7 +91,7 @@ class SocialController extends Controller
                     'firstname'         => $fullname[0],
                     'lastname'          => $fullname[1],
                     'email'             => $email,
-                    'password'          => bcrypt(str_random(40)),
+                    'password'          => bcrypt(\Str::random(40)),
                     'avatar'            => $socialUserObject->getAvatar(),
                     'status'            => User::$status[1],
                     'email_verified_at' => Carbon::now(),
@@ -156,7 +156,7 @@ class SocialController extends Controller
      */
     public function generateUserName($username)
     {
-        return $username.'_'.str_random(10);
+        return $username.'_'.\Str::random(10);
     }
 
     

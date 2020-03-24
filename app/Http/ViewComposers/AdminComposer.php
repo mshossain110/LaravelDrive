@@ -17,10 +17,9 @@ class AdminComposer {
      * @param  UserRepository  $users
      * @return void
      */
-    public function __construct(Auth $user)
+    public function __construct()
     {
         // Dependencies automatically resolved by service container...
-        $this->user = $user;
     }
 
     /**
@@ -30,7 +29,7 @@ class AdminComposer {
      * @return void
      */
     public function compose(View $view)
-    {    
+    {
         $data = [
             'user' => Auth::check() ? Auth::user() : null,
         ];

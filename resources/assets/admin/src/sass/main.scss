@@ -1,9 +1,11 @@
 
 
-// @import '~vuetify/src/styles/main.sass';
-@import  './vue-multiselect.min.css';
+@import '~vuetify/src/styles/main.sass';
+@import  '~vue-multiselect/dist/vue-multiselect.min.css';
 @import  '~dropzone/dist/dropzone.css';
-@import  '~plyr/dist/plyr.css';
+@import  '~/plyr/dist/plyr.css';
+
+@import "dropzone";
 
 $borders: 1px, 2px, 3px;
 $broderdirs: all, top, bottom, left, right;

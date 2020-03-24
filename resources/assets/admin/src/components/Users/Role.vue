@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import RoleForm from './RoleForm.vue'
+import RoleForm from './RoleForm.vue';
 
 export default {
 
@@ -53,15 +53,15 @@ export default {
     data () {
         return {
             roleEdit: false
-        }
+        };
     },
     computed: {
 
     },
     methods: {
         deleteRole (id) {
-            this.$store.dispatch('Users/deleteRole', id)
+            this.$store.dispatch('Users/deleteRole', id);
         }
     }
-}
+};
 </script>

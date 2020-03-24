@@ -1,14 +1,14 @@
 
-window._ = require('lodash')
+window._ = require('lodash');
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios')
+window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -16,12 +16,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let token = document.head.querySelector('meta[name="csrf-token"]')
+const token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
+    // eslint-disable-next-line no-console
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -30,10 +31,10 @@ if (token) {
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let bearer = window.localStorage['auth_token']
+const bearer = window.localStorage.auth_token;
 
 if (bearer) {
-    window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer
+    window.axios.defaults.headers.common.Authorization = 'Bearer ' + bearer;
 }
 
 /**
@@ -52,15 +53,15 @@ if (bearer) {
 // });
 
 window.LD.getUserPermissions = function getUserPermissions () {
-    return LD.user.permissions
-}
+    return LD.user.permissions;
+};
 window.LD.hasPermission = function hasPermission (p) {
     if (!LD.user.permissions || !LD.user.permissions.length) {
-        return false
+        return false;
     }
     if (LD.user.permissions.indexOf('administrator') !== -1) {
-        return true
+        return true;
     }
 
-    return LD.user.permissions.indexOf(p) !== -1
-}
+    return LD.user.permissions.indexOf(p) !== -1;
+};

@@ -1,45 +1,50 @@
-import Vue from 'vue'
-import 'babel-polyfill'
-import VueRouter from 'vue-router'
-import vuetify from './vuetify'
-import VeeValidate from 'vee-validate'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import vuetify from './vuetify';
 
-import App from './App.vue'
-import './stylus/main.scss'
+import App from './App.vue';
 
-import routes from './router'
+import routes from './router';
 
-import mixin from './mixin'
+import mixin from './mixin';
 
-import store from './store'
+import store from './store';
 
-Vue.use(VeeValidate)
+import { ValidationProvider, extend } from 'vee-validate';
+import * as rules from 'vee-validate/dist/rules';
 
-window.Vue = Vue
+Object.keys(rules).forEach(rule => {
+    extend(rule, rules[rule]);
+});
+
+Vue.component('ValidationProvider', ValidationProvider);
+
+window.Vue = Vue;
 const router = new VueRouter({
     routes, // short for `routes: routes`
+    mode: 'history',
     scrollBehavior () {
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
     }
-})
+});
 
 router.beforeEach((to, from, next) => {
-    var user = LD.user
+    var user = LD.user;
 
     if (user) {
-        store.commit('auth', true)
-        next()
+        store.commit('auth', true);
+        next();
     } else {
-        store.commit('auth', false)
-        next(false)
+        store.commit('auth', false);
+        next(false);
     }
-})
+});
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-Vue.mixin(mixin)
+Vue.mixin(mixin);
 
-window.Bus = new Vue()
+window.Bus = new Vue();
 
 new Vue({ // eslint-disable-line no-new
     el: '#root',
@@ -47,4 +52,4 @@ new Vue({ // eslint-disable-line no-new
     router,
     store,
     render: h => h(App)
-})
+});

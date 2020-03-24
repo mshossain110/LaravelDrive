@@ -6,13 +6,12 @@ use DB;
 use Auth;
 use Storage;
 use App\File;
-use App\Transformers\FileTransformer;
 use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\Shares\AttachUsersToEntry;
 use App\Services\Shares\GetUsersWithAccessToEntry;
-use App\Transformers\UserTransformer;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class SharesController extends ApiController
 {
@@ -34,7 +33,6 @@ class SharesController extends ApiController
      */
     public function __construct(Request $request, FileRepository $file)
     {
-        parent::__construct();
         
         $this->request = $request;
         $this->file = $file;
@@ -53,14 +51,14 @@ class SharesController extends ApiController
             ->paginate($per_page);
         
         
-    	return $this->respondWithPaginator($files, new FileTransformer);
+    	return JsonResource::collection($files);
     }
 
 
     public function sharedWith ($file_id) {
         $users = File::with('sharedWith')->find($file_id)->sharedWith;
 
-        return $this->respondWithCollection( $users, new UserTransformer );
+        return JsonResource::collection( $users );
     }
 
         /**

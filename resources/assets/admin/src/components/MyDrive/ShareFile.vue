@@ -154,8 +154,8 @@
 </template>
 
 <script>
-import Mixin from './mixin'
-import { mapState } from 'vuex'
+import Mixin from './mixin';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -200,7 +200,7 @@ export default {
                     descrption: 'People can view the item.'
                 }
             ]
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['selectedFilesId', 'selectedMedia', 'shareFileModal'])
@@ -208,41 +208,41 @@ export default {
     watch: {
         search (val) {
             if (!val) {
-                return
+                return;
             }
-            this.isLoading = true
+            this.isLoading = true;
 
             if (this.searchTimeOut) {
-                clearTimeout(this.searchTimeOut)
+                clearTimeout(this.searchTimeOut);
             }
 
             this.searchTimeOut = setTimeout(() => {
                 // Lazily load input items
                 this.$store.dispatch('Users/searchUsers', { s: val })
                     .then(res => {
-                        this.people = res.data
+                        this.people = res.data;
                     })
-                    .finally(() => (this.isLoading = false))
-            }, 400)
+                    .finally(() => (this.isLoading = false));
+            }, 400);
         },
         openpoupu (val) {
-            if (this.open !== val) { this.$store.commit('Media/shareFileModal', val) }
+            if (this.open !== val) { this.$store.commit('Media/shareFileModal', val); }
         }
     },
     created () {
-        this.getfileUser()
+        this.getfileUser();
     },
     methods: {
         onSubmit () {
-            let userids = []
+            const userids = [];
             this.users.map(u => {
-                if (u.id) { userids.push(u.id) }
-            })
-            let param = {
+                if (u.id) { userids.push(u.id); }
+            });
+            const param = {
                 userIds: userids,
                 fileids: this.selectedFilesId,
                 permissions: this.permission
-            }
+            };
             axios.post('/api/shares/add-users', param)
                 .then(res => {
                     this.$store.commit('setSnackbar',
@@ -252,25 +252,25 @@ export default {
                             color: 'success',
                             show: true
                         },
-                        { root: true })
-                    this.close()
-                })
+                        { root: true });
+                    this.close();
+                });
         },
         getfileUser () {
             axios.get(`/api/shared/file/${this.selectedFilesId}/share-with`)
                 .then(res => {
-                    this.sharedwith = res.data.data
-                })
+                    this.sharedwith = res.data.data;
+                });
         },
         close () {
-            this.$store.commit('Media/shareFileModal', false)
+            this.$store.commit('Media/shareFileModal', false);
         },
         remove (user) {
-            let i = this.users.findIndex(x => x.id === user.id)
-            this.users.splice(i, 1)
+            const i = this.users.findIndex(x => x.id === user.id);
+            this.users.splice(i, 1);
         }
     }
-}
+};
 </script>
 
 <style>

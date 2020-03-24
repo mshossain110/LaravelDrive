@@ -14,7 +14,7 @@
                 :style="{ color: mediaIcon.color }"
                 size="15"
                 tile
-                v-html="mediaIcon.icon"
+                v-text="mediaIcon.icon"
             />
             <h3>{{ selectedMedia.name }}</h3>
         </div>
@@ -28,7 +28,7 @@
                 :style="{ color: mediaIcon.color }"
                 size="15"
                 tile
-                v-html="mediaIcon.icon"
+                v-text="mediaIcon.icon"
             />
             <h3>My Files </h3>
         </div>
@@ -160,37 +160,39 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+/* eslint-disable vue/no-v-html */
+import { mapState } from 'vuex';
 
-import Mixins from './mixin'
+import Mixins from './mixin';
 
 export default {
     mixins: [Mixins],
     data () {
         return {
             tabActive: 1
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['fileInfoSideBar', 'selectedMedia']),
         mediaIcon () {
             if (this.hasItem) {
-                return this.getMediaIcon(this.selectedMedia.extension)
+                return this.getMediaIcon(this.selectedMedia.extension);
             } else {
-                return this.getMediaIcon('folder')
+                return this.getMediaIcon('folder');
             }
         },
         fileUrl () {
-            return window.location.origin + '/' + this.selectedMedia.url
+            return window.location.origin + '/' + this.selectedMedia.url;
         },
         hasItem () {
-            return this.selectedMedia.hasOwnProperty('id')
+            // eslint-disable-next-line no-prototype-builtins
+            return this.selectedMedia.hasOwnProperty('id');
         }
     },
     methods: {
 
     }
-}
+};
 </script>
 <style lang="scss">
     .media-info {

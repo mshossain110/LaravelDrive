@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import UsersTable from './UsersTable.vue'
-import UserForm from './UserForm.vue'
+import UsersTable from './UsersTable.vue';
+import UserForm from './UserForm.vue';
 
 export default {
     beforeRouteEnter (to, from, next) {
-        var p = LD.hasPermission('user.view')
-        next(p)
+        var p = LD.hasPermission('user.view');
+        next(p);
     },
     components: {
         UsersTable,
@@ -69,13 +69,13 @@ export default {
     data () {
         return {
             openform: false
-        }
+        };
     },
     computed: {
     },
     methods: {
     }
-}
+};
 </script>
 
 <style>

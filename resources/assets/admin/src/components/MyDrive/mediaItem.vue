@@ -69,8 +69,8 @@
 
 <script>
 
-import Mixins from './mixin'
-import { mapState } from 'vuex'
+import Mixins from './mixin';
+import { mapState } from 'vuex';
 
 export default {
     mixins: [Mixins],
@@ -85,39 +85,39 @@ export default {
         return {
             error: '',
             submitting: false
-        }
+        };
     },
     computed: {
         ...mapState('Media', ['selectedFilesId', 'selectedMedia']),
         mediaIcon () {
-            return this.getMediaIcon(this.media.extension)
+            return this.getMediaIcon(this.media.extension);
         },
         fileUrl () {
-            return window.location.origin + '/' + this.media.url
+            return window.location.origin + '/' + this.media.url;
         },
         isSelected () {
-            return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1
+            return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1;
         },
         isImage () {
-            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.media.extension) !== -1
+            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.media.extension) !== -1;
         },
         ispdf () {
-            return ['pdf', 'txt'].indexOf(this.media.extension) !== -1
+            return ['pdf', 'txt'].indexOf(this.media.extension) !== -1;
         },
         isVideo () {
-            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.media.extension) !== -1
+            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.media.extension) !== -1;
         },
         isAudio () {
-            return ['mp3', 'ogg'].indexOf(this.media.extension) !== -1
+            return ['mp3', 'ogg'].indexOf(this.media.extension) !== -1;
         }
     },
     methods: {
         renameMedia () {
             if (this.submitting) {
-                return
+                return;
             }
 
-            this.submitting = true
+            this.submitting = true;
 
             if (this.media.name === '') {
                 this.$store.commit('setSnackbar',
@@ -127,17 +127,17 @@ export default {
                         color: 'error',
                         show: true
                     },
-                    { root: true })
-                this.$refs.medaiName.focus()
-                this.submitting = false
-                return
+                    { root: true });
+                this.$refs.medaiName.focus();
+                this.submitting = false;
+                return;
             }
 
-            this.$emit('rename', this.media)
+            this.$emit('rename', this.media);
         }
 
     }
-}
+};
 </script>
 
 <style lang="scss">
