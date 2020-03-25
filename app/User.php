@@ -72,7 +72,10 @@ class User extends Authenticatable
     }
 
     public function getPermissionsAttribute( $value ) {
-        $permissions = unserialize( $value );
+        $permissions = [];
+        if ($value) {
+            $permissions = unserialize( $value );
+        }
         
         $roles = self::roles()->get();
 

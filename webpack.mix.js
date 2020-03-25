@@ -27,6 +27,9 @@ function publicPath (dir = '') {
 
 mix.webpackConfig(webpack => {
     return {
+        output: {
+            chunkFilename: 'js/chunks/[name].[chankhash].js'
+        },
         resolve: {
             extensions: ['.js', '.vue', '.json', '.scss'],
             alias: {
