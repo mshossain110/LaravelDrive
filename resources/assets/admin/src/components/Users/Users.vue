@@ -5,10 +5,9 @@
         <VCol cols="12">
             <VToolbar
                 flat
-                light
-                height="40px"
+                dark
                 class="ub-h"
-                color="white"
+                color="secondary"
             >
                 <VToolbarTitle class="headline">
                     <VIcon>people</VIcon>

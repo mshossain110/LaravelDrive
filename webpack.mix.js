@@ -27,14 +27,11 @@ function publicPath (dir = '') {
 
 mix.webpackConfig(webpack => {
     return {
-        output: {
-            chunkFilename: 'js/chunks/[name].[chankhash].js'
-        },
         resolve: {
             extensions: ['.js', '.vue', '.json', '.scss'],
             alias: {
                 vue$: 'vue/dist/vue.esm.js',
-                node_modules: './node_modules',
+                node_modules: path.resolve(__dirname, './node_modules'),
                 '@ac': adminPath('components'),
                 '@auth': assetsPath('auth'),
                 '@common': assetsPath('common')
@@ -46,9 +43,10 @@ mix.webpackConfig(webpack => {
     };
 });
 
-mix.js(assetsPath('common/config.js'), 'public/js')
+mix.extract()
+    .js(assetsPath('common/config.js'), 'public/js')
     .js(adminPath('main.js'), 'public/js')
     .js(assetsPath('auth/auth.js'), 'public/js')
-    .sass(adminPath('sass/main.scss'), 'public/css')
-    .extract()
     .eslint();
+
+mix.sass('resources/assets/admin/src/sass/main.scss', 'public/css');

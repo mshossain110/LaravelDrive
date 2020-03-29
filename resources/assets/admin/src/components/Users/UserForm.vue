@@ -46,7 +46,6 @@
                             >
                                 <VTextField
                                     v-model="user.name"
-                                    v-validate=""
                                     :counter="6"
                                     :disabled="Boolean(user.id)"
                                     :error-messages="errors"
@@ -74,6 +73,7 @@
                             <ValidationProvider
                                 v-slot="{ errors }"
                                 :rules="{ required: !user.id, min: 6 }"
+                                vid="password"
                             >
                                 <VTextField
                                     ref="password"

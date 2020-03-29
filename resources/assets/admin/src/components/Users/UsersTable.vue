@@ -186,7 +186,7 @@ export default {
                 return;
             }
             const status = user.status.toLowerCase() === 'inactive' ? 'active' : 'inactive';
-            Vue.set(user, 'status', status);
+            this.$set(user, 'status', status);
             this.$store.dispatch('Users/updateUser', user)
                 .then(() => {
                     this.$forceUpdate();
