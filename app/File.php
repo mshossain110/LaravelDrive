@@ -2,12 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Observers\FileObserver;
-use App\Traits\HandlesPaths;
-use App\Traits\HashesId;
 use App\User;
+use App\Traits\HashesId;
+use Illuminate\Support\Arr;
+use App\Traits\HandlesPaths;
+use App\Observers\FileObserver;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class File extends Model
 {
@@ -22,17 +24,40 @@ class File extends Model
         'mime',
         'type',
         'public_path',
-        'public',
-        'file_size',
         'parent_id',
-        'password',
+        'driver',
+        'driver_data',
+        'uploaded_by',
+        'meta',
     ];
 
     protected $casts = [
         'id' => 'integer',
         'file_size' => 'integer',
         'user_id' => 'integer',
-        'parent_id' => 'integer'
+        'parent_id' => 'integer',
+        'meta' => 'array',
+        'permissions' => 'array',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'meta',
+        'file_name'
+    ];
+
+    /**
+     * the accessor that should append with response.
+     *
+     * @var array
+     */
+    protected $appends = [
+        // 'sizes',
+        'hash'
     ];
 
 
@@ -76,7 +101,7 @@ class File extends Model
             return null;
         }
 
-        if (array_get($this->attributes, 'public')) {
+        if (Arr::get($this->attributes, 'public')) {
             return "storage/$this->public_path/$this->file_name";
         } else {
             return 'uploads/'.$this->attributes['id'];
@@ -85,7 +110,7 @@ class File extends Model
 
     public function getStoragePath()
     {
-        return "$this->file_name/$this->file_name";
+        return "$this->file_name/$this->name";
     }
      /**
      * Get path of specified entry.
@@ -132,9 +157,69 @@ class File extends Model
         return $this->belongsToMany('App\User', 'file_user', 'file_id', 'user_id')->withPivot(['permissions', 'created_at', 'updated_at', 'owner']);
     }
 
-    public function owner()
+    public function uploader()
     {
-        return $this->belongsTo('App\User', 'created_by');
+        return $this->belongsTo('App\User', 'uploaded_by');
+    }
+
+     /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function setPermission($permission, $value)
+    {
+        $permissions = $this->meta['permissions'];
+        $permissions[$permission] = $value;
+
+        $this->save();
+    }
+
+    public function getPermission($permission = null)
+    {
+        $permissions = $this->meta['permissions']?:[];
+
+        if ($permission !== null) {
+            if (array_key_exists($permission, $permissions)) {
+                return $permissions[$permission];
+            } else {
+                return false;
+            }
+        }
+        return $permissions;
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->getPermission($permission) === true;
+    }
+
+    public function setImageSize($size)
+    {
+        $sizes = $this->meta['sizes'];
+        $sizes[$size] = false;
+
+        $this->save();
+    }
+
+    public function getImageSizes()
+    {
+        return $this->meta['sizes'];
+    }
+
+    public function updatePublicPaths($driver = null)
+    {
+        if ($this->driver !== $driver) {
+            $this->driver = $driver;
+        }
+
+        if ($this->hasPermission('public')) {
+            $this->public_path = Storage::disk($this->driver)->url($this->getStoragePath());
+        } else {
+            $this->public_path = Storage::disk('local')->url($this->getStoragePath());
+        }
+        $this->save();
     }
 
 }

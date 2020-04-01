@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Response;
 
@@ -6,18 +6,20 @@ use Storage;
 use App\File;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImageResponse {
-
+class ImageResponse
+{
     /**
      * Create response for previewing specified image.
      * Optionally resize image to specified size.
      *
-     * @param File $entry
+     * @param File $upload
+     *
      * @return Response
      */
-    public function create(File $entry)
+    public function create(File $upload)
     {
-        $content = Storage::drive('uploads_local')->get($entry->getStoragePath());
-        return response($content, 200, ['Content-Type' => $entry->mime]);
+        $content = Storage::drive($upload->driver)->get($upload->getStoragePath());
+
+        return response($content, 200, ['Content-Type' => $upload->mime]);
     }
 }

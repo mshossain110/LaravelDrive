@@ -2,49 +2,26 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use DB;
-use Auth;
 use Storage;
 use App\File;
-use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Shares\AttachUsersToEntry;
-use App\Services\Shares\GetUsersWithAccessToEntry;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\Shares\GetUsersWithAccessToEntry;
 
 class SharesController extends ApiController
 {
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
-     * CopyEntriesController constructor.
-     *
-     * @param Request $request
-     * @param File $file
-     */
-    public function __construct(Request $request, FileRepository $file)
-    {
-        
-        $this->request = $request;
-        $this->file = $file;
-    }
 
 
-    public function sharedWithMe () {
-        $parent_id = $this->request->get('parent_id');
+
+    public function sharedWithMe (Request $request) {
+        $parent_id = $request->get('parent_id');
         $per_page = 20;
 
        
-        $folder = $this->file->getFolder($parent_id);
+        $folder = File::find($parent_id);
         
         $files = Auth::user()->shared_files()->orderBy(DB::raw('type = "folder"'), 'desc')
             ->where('parent_id', $folder ? $folder->id : 0)
@@ -55,7 +32,7 @@ class SharesController extends ApiController
     }
 
 
-    public function sharedWith ($file_id) {
+    public function sharedWith (Request $request, $file_id) {
         $users = File::with('sharedWith')->find($file_id)->sharedWith;
 
         return JsonResource::collection( $users );
@@ -100,16 +77,16 @@ class SharesController extends ApiController
      * @param AttachUsersToEntry $action
      * @return \Illuminate\Http\Response
      */
-    public function addUsers(AttachUsersToEntry $action)
+    public function addUsers(Request $request, AttachUsersToEntry $action)
     {
-        $fileids = $this->request->get('fileids');
+        $fileids = $request->get('fileids');
 
         // $this->authorize('update', [FileEntry::class, $entryIds]);
 
         // TODO: refactor messages into custom validator, so can reuse elsewhere
-        $userIds =  $this->request->get('userIds', []);
+        $userIds =  $request->get('userIds', []);
 
-        $this->validate($this->request, [
+        $request->validate( [
             'userIds' => 'required|min:1',
             'userIds.*' => 'required|integer|exists:users,id',
             'permissions' => 'required|integer',
@@ -118,9 +95,9 @@ class SharesController extends ApiController
         ]);
 
         $action->execute(
-            $this->request->get('userIds'),
+            $request->get('userIds'),
             $fileids,
-            $this->request->get('permissions')
+            $request->get('permissions')
         );
 
         return $this->respondWithMessage("Files successfully shared with users.");
@@ -132,11 +109,10 @@ class SharesController extends ApiController
      * @param UpdateEntryUsers $action
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUsers(UpdateEntryUsers $action)
+    public function updateUsers(Request $request, UpdateEntryUsers $action)
     {
         $entryIds = $this->request->get('entries');
 
-        $this->authorize('update', [FileEntry::class, $entryIds]);
 
         $this->validate($this->request, [
             'entries' => 'required|array|min:1',
@@ -165,13 +141,14 @@ class SharesController extends ApiController
      * @param DetachUsersFromEntries $action
      * @return \Illuminate\Http\JsonResponse
      */
-    public function removeUser($userId, DetachUsersFromEntries $action)
+    public function removeUser(Request $request, DetachUsersFromEntries $action)
     {
-        $entryIds = $this->request->get('entries');
+        $entryIds = $request->get('entries');
+        $userId = $request->get('user_id');
 
         // there's no need to authorize if user is
         // trying to remove himself from the entry
-        if ((int) $userId !== $this->request->user()->id) {
+        if ((int) $userId !== $request->user()->id) {
             $this->authorize('update', [FileEntry::class, $entryIds]);
         }
 

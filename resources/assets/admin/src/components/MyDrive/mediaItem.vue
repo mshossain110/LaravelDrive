@@ -18,9 +18,9 @@
                     >
                         <VImg
                             v-if="isImage"
-                            :src="fileUrl"
+                            :src="media.public_path"
                             height="166"
-                            :lazy-src="fileUrl"
+                            :lazy-src="media.public_path"
                         />
                     </div>
                     <div
@@ -93,7 +93,7 @@ export default {
             return this.getMediaIcon(this.media.extension);
         },
         fileUrl () {
-            return window.location.origin + '/' + this.media.url;
+            return this.media.public_path;
         },
         isSelected () {
             return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1;

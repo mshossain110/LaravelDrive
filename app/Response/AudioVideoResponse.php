@@ -14,7 +14,7 @@ class AudioVideoResponse {
      * @return mixed
      */
     public function create(File $entry) {
-        $disk = Storage::disk('uploads_local');
+        $disk = Storage::disk($entry->disk);
         $size	= $disk->size($entry->getStoragePath());
         $time	= date('r', $disk->lastModified($entry->getStoragePath()));
         $fm		= $disk->getDriver()->readStream($entry->getStoragePath());

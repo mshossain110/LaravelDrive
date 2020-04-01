@@ -25,7 +25,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/drive/{any?}', 'HomeController@drive')->where('any', '.*')->name("drive");
 
-    Route::get('/uploads/{id}', 'UploadController@show');
+    Route::get('/uploads/{id}/{any?}', 'UploadController')->where('any', '.*');
 
     Route::get("file/s/{hash}", "ShareableController")->name("shareable");
     // Socialite Register Routes

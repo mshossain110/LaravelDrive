@@ -16,7 +16,7 @@ class FileObserver
     public function creating(File $file)
     {
         $id = Auth::id();
-        $file->created_by = $id;
+        $file->uploaded_by = $id;
     }
 
     /**

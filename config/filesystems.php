@@ -45,7 +45,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/uploads'),
+            'url' => env('APP_URL').'/uploads',
         ],
 
         'public' => [
@@ -54,15 +55,6 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
-         /**
-         * UPLOADS
-         */
-
-        'uploads_local' => [
-            'driver' => 'local',
-            'root' => storage_path('app/uploads'),
-        ],
-
         'uploads_ftp' => [
             'driver' => 'ftp',
             'root' => env('UPLOADS_FTP_ROOT', '/'),

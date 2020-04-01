@@ -2,10 +2,9 @@
     <VToolbar
         id="mediaToolbar"
         flat
-        height="40px"
         class="la-pt"
         dark
-        color="primary"
+        color="secondary"
     >
         <VToolbarTitle>
             <VIcon>perm_media</VIcon>

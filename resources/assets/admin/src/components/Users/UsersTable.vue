@@ -96,7 +96,7 @@
                     edit
                 </VIcon>
                 <VIcon
-                    v-if="hasPermission('user.delete')"
+                    v-if="hasPermission('user.delete') && currentUser.id !== item.id"
                     small
                     @click="deleteUser(item)"
                 >

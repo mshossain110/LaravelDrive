@@ -14,26 +14,28 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
+
             $table->bigIncrements('id');
 
 			$table->string('name')->index();
-            $table->string('description', 150)->nullable();
-            $table->string('path', 255)->nullable()->index();
+            $table->string('description')->nullable();
+            $table->string('path')->nullable()->index();
             $table->string('type', 20)->nullable()->index();
-
             $table->string('public_path', 255)->nullable();
-            $table->boolean('public')->default(0)->index();
-
             $table->string('extension', 10)->nullable();
             $table->string('mime', 50)->nullable();
             $table->bigInteger('file_size')->nullable()->unsigned();
             $table->string('file_name', 255);
 
             $table->integer('parent_id')->nullable();
-            $table->string('password')->nullable();
+            $table->string('driver')->nullable();
+            $table->string('driver_data')->nullable();
+            $table->boolean('isdraft')->default(true);
 
-            $table->integer('created_by');
+            $table->integer('uploaded_by')->nullable();
             $table->integer('deleted_by')->nullable();
+            $table->json('meta')->nullable();
+            $table->json('permissions')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

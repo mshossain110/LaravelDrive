@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Response;
 
@@ -6,8 +6,8 @@ use Storage;
 use Response;
 use App\File;
 
-class FileContentResponseCreator {
-
+class FileContentResponseCreator
+{
     /**
      * ImageResponse service instance.
      *
@@ -25,7 +25,7 @@ class FileContentResponseCreator {
     /**
      * FileContentResponse constructor.
      *
-     * @param ImageResponse $imageResponse
+     * @param ImageResponse      $imageResponse
      * @param AudioVideoResponse $audioVideoResponse
      */
     public function __construct(ImageResponse $imageResponse, AudioVideoResponse $audioVideoResponse)
@@ -37,13 +37,15 @@ class FileContentResponseCreator {
     /**
      * Return download or preview response for given file.
      *
-     * @param File  $upload
+     * @param File $upload
      *
      * @return mixed
      */
     public function create(File $upload)
     {
-        if ( ! Storage::drive('uploads_local')->exists($upload->getStoragePath())) abort(404);
+        if (!Storage::drive($upload->driver)->exists($upload->getStoragePath())) {
+            abort(404);
+        }
 
         list($mime, $type) = $this->getTypeFromModel($upload);
 
@@ -60,17 +62,19 @@ class FileContentResponseCreator {
      * Create a basic response for specified upload content.
      *
      * @param File $upload
+     *
      * @return Response
      */
     private function createBasicResponse(File $upload)
     {
-        return response(Storage::drive('uploads_local')->get($upload->getStoragePath()), 200, ['Content-Type' => $upload->mime]);
+        return response(Storage::drive($upload->driver)->get($upload->getStoragePath()), 200, ['Content-Type' => $upload->mime]);
     }
 
     /**
      * Extract file type from model.
      *
      * @param File $fileModel
+     *
      * @return array
      */
     private function getTypeFromModel(File $fileModel)
@@ -89,7 +93,8 @@ class FileContentResponseCreator {
      *
      * @return bool
      */
-    private function shouldStream($mime, $type) {
+    private function shouldStream($mime, $type)
+    {
         return $type === 'video' || $type === 'audio' || $mime === 'application/ogg';
     }
 }
