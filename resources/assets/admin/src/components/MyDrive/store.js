@@ -194,7 +194,7 @@ export default {
                 axios.get('/api/file', { params })
                     .then((res) => {
                         commit('setMediaItems', res.data.data);
-                        commit('setPagination', res.data.meta.pagination);
+                        commit('setPagination', res.data.meta);
                         resolve(res.data);
                     })
                     .catch((error) => {

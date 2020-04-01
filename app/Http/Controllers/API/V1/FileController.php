@@ -29,6 +29,10 @@ class FileController extends ApiController
         $search = $request->get('search');
         $parent_id = $request->get('parent_id');
 
+        if ($parent_id) {
+            $parent_id = File::decodeHash($parent_id);
+        }
+
         $files = File::with('uploader')
             ->where('parent_id', $parent_id?:0)
             ->where('uploaded_by', $user->id)

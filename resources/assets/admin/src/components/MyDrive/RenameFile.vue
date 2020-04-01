@@ -5,7 +5,10 @@
         width="500"
         persistent
     >
-        <form @submit.prevent="onSubmit">
+        <form
+            class="file-deselet"
+            @submit.prevent="onSubmit"
+        >
             <VCard>
                 <VCardTitle
                     class="headline grey lighten-2"

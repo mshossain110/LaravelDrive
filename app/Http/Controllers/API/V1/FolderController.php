@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use Illuminate\Http\Request;
-use App\Repositories\FolderRepository;
+use App\Folder;
 use App\Http\Requests\FolderRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FolderController extends ApiController
 {
-    protected $folder;
-
-
-    public function __construct ( FolderRepository $folder ) {
-
-        $this->folder = $folder;
-    }
 
     public function index () {
-    	return JsonResource::collection($this->folder->getList());
+        $folders = Folder::all();
+    	return JsonResource::collection($folders);
     }
 
-    public function show ( $id ){
-    	return new JsonResource($this->folder->getById($id));
+    public function show ( Folder $folder ){
+    	return new JsonResource($folder);
     }
 
     /**
@@ -39,7 +32,7 @@ class FolderController extends ApiController
         $data['file_name'] = \Str::random(40);
 
         
-        $folder = $this->folder->store($data);
+        $folder = Folder::create($data);
         $folder->generatePath();
 
        	return new JsonResource($folder);
@@ -52,10 +45,11 @@ class FolderController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update ( FolderRequest $request, $id ) {
+    public function update ( FolderRequest $request, Folder $folder ) {
         $validated = $request->validated();
         $data      = $request->only(['name', 'description']);
-    	$folder      = $this->folder->update( $id, $data);
+        $folder->fill($data);
+        $folder->save();
 
     	return new JsonResource($folder);
     }
@@ -66,9 +60,9 @@ class FolderController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy ( $id ) {
-        $this->folder->destroy($id);
-
+    public function destroy (  Folder $folder ) {
+        
+        $folder->delete();
         return response()->json(['message'=> "Folder deleted successfully."]);
     }
     

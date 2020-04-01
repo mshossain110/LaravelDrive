@@ -16,7 +16,7 @@ class FolderObserver
    public function creating(Folder $folder)
    {
        $id = Auth::id();
-       $folder->created_by = $id;
+       $folder->uploaded_by = $id;
    }
 
    /**
@@ -39,7 +39,7 @@ class FolderObserver
    public function deleting(Folder $folder)
    {
        $id = Auth::id();
-       $folder->deleted_by = $id;
+       $folder->uploaded_by = $id;
    }
 
    /**

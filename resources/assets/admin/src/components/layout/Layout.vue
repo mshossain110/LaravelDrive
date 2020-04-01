@@ -57,47 +57,42 @@
         </VAppBar>
 
         <VContent>
-            <VContainer fluid>
-                <VRow>
-                    <VCol
-                        class="shrink"
-                        cols="12"
+            <VResponsive>
+                <VContainer>
+                    <Transition>
+                        <KeepAlive>
+                            <RouterView />
+                        </KeepAlive>
+                    </Transition>
+                </VContainer>
+                <template v-if="snackbar.show">
+                    <VSnackbar
+                        v-model="snackbar.show"
+                        :color="snackbar.color"
+                        :right="true"
+                        :bottom="true"
+                        :timeout="6000"
                     >
-                        <Transition>
-                            <KeepAlive>
-                                <RouterView />
-                            </KeepAlive>
-                        </Transition>
-                        <template v-if="snackbar.show">
-                            <VSnackbar
-                                v-model="snackbar.show"
-                                :color="snackbar.color"
-                                :right="true"
-                                :bottom="true"
-                                :timeout="6000"
-                            >
-                                {{ snackbar.message }}
-                                <VBtn
-                                    dark
-                                    @click="hideSnackbar()"
-                                >
-                                    Close
-                                </VBtn>
-                            </VSnackbar>
-                        </template>
+                        {{ snackbar.message }}
+                        <VBtn
+                            dark
+                            @click="hideSnackbar()"
+                        >
+                            Close
+                        </VBtn>
+                    </VSnackbar>
+                </template>
 
-                        <template v-if="!isAuthenticated">
-                            <VDialog
-                                :value="!isAuthenticated"
-                                persistent
-                                width="500"
-                            >
-                                <Login />
-                            </VDialog>
-                        </template>
-                    </VCol>
-                </VRow>
-            </VContainer>
+                <template v-if="!isAuthenticated">
+                    <VDialog
+                        :value="!isAuthenticated"
+                        persistent
+                        width="500"
+                    >
+                        <Login />
+                    </VDialog>
+                </template>
+            </VResponsive>
         </VContent>
     </VApp>
 </template>

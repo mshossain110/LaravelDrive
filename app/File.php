@@ -57,7 +57,8 @@ class File extends Model
      */
     protected $appends = [
         // 'sizes',
-        'hash'
+        'hash',
+        'stared'
     ];
 
 
@@ -88,25 +89,6 @@ class File extends Model
         return $this->belongsTo(static::class, 'folder_id');
     }
 
-        /**
-     * Get url for previewing upload.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getUrlAttribute($value)
-    {
-        if ($value) return $value;
-        if ( ! isset($this->attributes['type']) || $this->attributes['type'] === 'folder') {
-            return null;
-        }
-
-        if (Arr::get($this->attributes, 'public')) {
-            return "storage/$this->public_path/$this->file_name";
-        } else {
-            return 'uploads/'.$this->attributes['id'];
-        }
-    }
 
     public function getStoragePath()
     {

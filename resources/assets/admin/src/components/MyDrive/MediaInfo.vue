@@ -1,6 +1,6 @@
 <template>
     <VNavigationDrawer
-        class="media-info"
+        class="media-info file-deselet"
         :value="fileInfoSideBar"
         absolute
         right
@@ -14,7 +14,7 @@
                 :style="{ color: mediaIcon.color }"
                 size="15"
                 tile
-                v-text="mediaIcon.icon"
+                v-html="mediaIcon.icon"
             />
             <h3>{{ selectedMedia.name }}</h3>
         </div>
@@ -28,7 +28,7 @@
                 :style="{ color: mediaIcon.color }"
                 size="15"
                 tile
-                v-text="mediaIcon.icon"
+                v-html="mediaIcon.icon"
             />
             <h3>My Files </h3>
         </div>
@@ -55,8 +55,8 @@
             class="details pa-3"
         >
             <VImg
-                :src="fileUrl"
-                :lazy-src="fileUrl"
+                :src="selectedMedia.public_path"
+                :lazy-src="selectedMedia.public_path"
             />
 
             <div class="las-info-list">
@@ -180,9 +180,6 @@ export default {
             } else {
                 return this.getMediaIcon('folder');
             }
-        },
-        fileUrl () {
-            return window.location.origin + '/' + this.selectedMedia.url;
         },
         hasItem () {
             // eslint-disable-next-line no-prototype-builtins

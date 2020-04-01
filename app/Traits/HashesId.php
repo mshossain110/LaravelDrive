@@ -17,7 +17,7 @@ trait HashesId
         return $query->where('id', $id);
     }
 
-    public function decodeHash($hash)
+    public static function decodeHash($hash)
     {
         if ( (int) $hash !== 0 ) {
             return $hash;

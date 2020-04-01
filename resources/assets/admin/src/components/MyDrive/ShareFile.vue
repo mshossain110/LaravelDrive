@@ -4,7 +4,10 @@
         class="mpu"
         max-width="700"
     >
-        <form @submit.prevent="onSubmit">
+        <form
+            class="file-deselet"
+            @submit.prevent="onSubmit"
+        >
             <VCard class="dl-share-modal">
                 <VCardTitle
                     class="headline grey lighten-2"
@@ -111,11 +114,11 @@
                                 </div>
                                 <div class="inner">
                                     <VImg
-                                        :src="selectedMedia.owner.data.avatar"
+                                        :src="selectedMedia.uploader.avatar.avatar"
                                     />
                                     <div class="owen-name">
-                                        {{ selectedMedia.owner.data.display_name }} <br>
-                                        {{ selectedMedia.owner.data.email }}
+                                        {{ selectedMedia.uploader.display_name }} <br>
+                                        {{ selectedMedia.uploader.email }}
                                     </div>
                                 </div>
                             </div>

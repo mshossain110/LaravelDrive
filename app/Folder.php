@@ -23,11 +23,13 @@ class Folder extends Model
         'mime',
         'type',
         'public_path',
-        'public',
-        'file_size',
         'parent_id',
-        'password',
+        'driver',
+        'driver_data',
+        'uploaded_by',
+        'meta',
     ];
+
 
     protected $casts = [
         'id' => 'integer',
@@ -37,7 +39,9 @@ class Folder extends Model
 
     protected $attributes = ['type' => 'folder'];
 
-
+    protected $appends = [
+        'hash'
+    ];
 
     public function newQuery( $except_deleted = true ) {
         return parent::newQuery( $except_deleted )->where( 'type', '=', 'folder' );

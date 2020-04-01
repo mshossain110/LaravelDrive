@@ -14,27 +14,29 @@
                 </VCardTitle>
 
                 <VCardText>
-                    <VTextField
-                        v-model="name"
-                        v-validate="'required'"
-                        :error-messages="errors.collect('name')"
-                        label="Name"
-                        data-vv-name="name"
-                        required
-                    />
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Name"
+                        :rules="'required|min:6'"
+                    >
+                        <VTextField
+                            v-model="name"
+                            :error-messages="errors"
+                            label="Name"
+                            required
+                        />
+                    </ValidationProvider>
                 </VCardText>
-
+                <VDivider />
                 <VCardActions>
                     <VBtn
-                        color="info"
+                        color="primary"
                         type="submit"
-                        text
                     >
                         Craete
                     </VBtn>
                     <VBtn
                         color="error"
-                        text
                         @click="close"
                     >
                         Cancel
@@ -49,9 +51,6 @@
 import Mixin from './mixin';
 
 export default {
-    $_veeValidate: {
-        validator: 'new'
-    },
     mixins: [Mixin],
     props: {
         open: {
@@ -69,7 +68,6 @@ export default {
     },
     methods: {
         onSubmit () {
-            this.$validator.validateAll();
             const item = {
                 name: this.name,
                 parent_id: this.currentFolderId

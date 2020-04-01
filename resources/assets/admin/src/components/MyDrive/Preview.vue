@@ -9,7 +9,7 @@
             transition="dialog-bottom-transition"
         >
             <VCard
-                class="preview-card"
+                class="preview-card file-deselet"
                 @click="clickCard"
             >
                 <VToolbar
@@ -73,7 +73,7 @@
                     class="image-preview"
                 >
                     <VImg
-                        :src="fileUrl"
+                        :src="selectedMedia.public_path"
                         aspect-ratio="2.75"
                         contain
                         width="70"

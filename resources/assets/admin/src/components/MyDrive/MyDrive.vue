@@ -125,10 +125,10 @@ export default {
     },
     mounted () {
         document.addEventListener('click', (event) => {
-            const element = event.target.closest('button.media-info-button');
+            const element = event.target.closest('.file-deselet');
 
             if (element) {
-                return;
+                return element;
             }
 
             this.deselect();
@@ -225,7 +225,7 @@ export default {
 
                 if (bottomOfWindow) {
                     const page = (this.$route.query.page || 1) + 1;
-                    if (page > this.pagination.total_pages) {
+                    if (page > this.pagination.total) {
                         return;
                     }
 

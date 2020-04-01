@@ -115,5 +115,34 @@ class User extends Authenticatable
     public function getDisplayNameAttribute() {
         return $this->firstname .' '. $this->lastname;
     }
+
+    public function getAvatarAttribute($value)
+    {
+        if (!is_array($value)) {
+            $value = json_decode($value);
+        }
+
+        if (empty($value) && empty($value->avatar)) {
+            $value = new \STDClass();
+            $value->avatar = $this->get_gravatar($this->email, 200);
+        }
+
+        return $value;
+    }
+
+    protected function get_gravatar($email, $s = 40, $d = 'mp', $r = 'g', $img = false, $atts = array())
+    {
+        $url = 'https://www.gravatar.com/avatar/';
+        $url .= md5(strtolower(trim($email)));
+        $url .= "?s=$s&d=$d&r=$r";
+        if ($img) {
+            $url = '<img src="' . $url . '"';
+            foreach ($atts as $key => $val) {
+                $url .= ' ' . $key . '="' . $val . '"';
+            }
+            $url .= ' />';
+        }
+        return $url;
+    }
     
 }

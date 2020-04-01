@@ -5,7 +5,10 @@
         max-width="500"
         persistent
     >
-        <form @submit.prevent="storeShareableLink">
+        <form
+            class="file-deselet"
+            @submit.prevent="storeShareableLink"
+        >
             <VCard class="dl-share-modal">
                 <VCardTitle
                     class="headline grey lighten-2"

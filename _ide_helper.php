@@ -18772,6 +18772,7 @@ namespace  {
     class Html extends \Collective\Html\HtmlFacade {}
 
     class Image extends \Intervention\Image\Facades\Image {}
+    class Str extends Illuminate\Support\Str {}
  
 }
 
