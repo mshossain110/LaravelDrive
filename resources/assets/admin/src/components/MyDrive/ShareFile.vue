@@ -21,6 +21,7 @@
                             <VCombobox
                                 v-model="users"
                                 :items="people"
+                                class="file-deselet"
                                 :loading="isLoading"
                                 :search-input.sync="search"
                                 placeholder="Search User to Share"
@@ -33,7 +34,7 @@
                                 chips
                                 clearable
                                 hide-details
-                                hide-selected
+                                :menu-props="{contentClass: 'file-deselet'}"
                             >
                                 <template
                                     slot="selection"
@@ -42,56 +43,64 @@
                                     <VChip
                                         v-if="data.item.id"
                                         :key="data.item.id"
-                                        :selected="data.selected"
+                                        :input-value="data.selected"
                                         :disabled="data.disabled"
-                                        class="v-chip--select-multi"
-                                        close
-                                        @input="remove(data.item)"
+                                        class="v-chip--select-multi file-deselet"
                                     >
                                         <VAvatar
                                             class="accent white--text"
                                             v-text="data.item.name.slice(0, 1).toUpperCase()"
                                         />
                                         {{ data.item.name }}
+                                        <VIcon
+                                            small
+                                            @click="remove(data.item)"
+                                        >
+                                            close
+                                        </VIcon>
                                     </VChip>
                                 </template>
-                            </VCombobox>
-                        </VFlex>
-                        <VFlex xs2>
-                            <VMenu
-                                transition="slide-x-transition"
-                                max-width="300"
-                                bottom
-                            >
-                                <template v-slot:activator="{ on }">
-                                    <VBtn
-                                        outlined
-                                        color="indigo"
-                                        v-on="on"
-                                    >
-                                        <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
-                                    </VBtn>
-                                </template>
 
-                                <VList two-line>
-                                    <VListItem
-                                        v-for="(item, i) in permissions"
-                                        :key="i"
-                                        @click="permission = item.id"
+                                <template slot="append-outer">
+                                    <VMenu
+                                        transition="slide-x-transition"
+                                        max-width="300"
+                                        bottom
                                     >
-                                        <VListItemAction>
-                                            <VIcon v-if="permission == item.id">
-                                                check_circle
-                                            </VIcon>
-                                            <VSpacer v-else />
-                                        </VListItemAction>
-                                        <VListItemContent>
-                                            <VListItemTitle>{{ item.title }}</VListItemTitle>
-                                            <VListItemSubtitle>{{ item.descrption }}</VListItemSubtitle>
-                                        </VListItemContent>
-                                    </VListItem>
-                                </VList>
-                            </VMenu>
+                                        <template v-slot:activator="{ on }">
+                                            <VBtn
+                                                outlined
+                                                color="indigo"
+                                                v-on="on"
+                                            >
+                                                <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
+                                            </VBtn>
+                                        </template>
+
+                                        <VList
+                                            two-line
+                                            class="file-deselet"
+                                        >
+                                            <VListItem
+                                                v-for="(item, i) in permissions"
+                                                :key="i"
+                                                @click="permission = item.id"
+                                            >
+                                                <VListItemAction>
+                                                    <VIcon v-if="permission == item.id">
+                                                        check_circle
+                                                    </VIcon>
+                                                    <VSpacer v-else />
+                                                </VListItemAction>
+                                                <VListItemContent>
+                                                    <VListItemTitle>{{ item.title }}</VListItemTitle>
+                                                    <VListItemSubtitle>{{ item.descrption }}</VListItemSubtitle>
+                                                </VListItemContent>
+                                            </VListItem>
+                                        </VList>
+                                    </VMenu>
+                                </template>
+                            </VCombobox>
                         </VFlex>
                         <VFlex xs2>
                             <VBtn
@@ -108,7 +117,10 @@
                             12
                             class="mt-3"
                         >
-                            <div class="owner-of-file">
+                            <div
+                                v-if="selectedMedia.id"
+                                class="owner-of-file"
+                            >
                                 <div class="subheading">
                                     Owner of File
                                 </div>
@@ -161,12 +173,7 @@ import Mixin from './mixin';
 import { mapState } from 'vuex';
 
 export default {
-    components: {
 
-    },
-    $_veeValidate: {
-        validator: 'new'
-    },
     mixins: [Mixin],
     props: {
         open: {

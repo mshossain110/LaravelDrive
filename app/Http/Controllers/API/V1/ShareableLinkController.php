@@ -2,52 +2,39 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use Illuminate\Http\Request;
-use App\Repositories\ShareableLinkRepository;
+use Exception;
 use App\ShareableLink;
+use Illuminate\Container\EntryNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShareableLinkController extends ApiController
 {
-    /**
-     * @var Request
-     */
-    private $request;
 
-    /**
-     * @var ShareableLink
-     */
-    private $link;
 
-    /**
-     * @param Request $request
-     * @param ShareableLink $link
-     */
-    public function __construct(Request $request, ShareableLinkRepository $link)
+    public function getFileShareableLink (Request $request, $fileId)
     {
-        $this->request = $request;
-        $this->link = $link;
-    }
-
-    public function getFileShareableLink ($fileId)
-    {
-        $link = ShareableLink::where('file_id', $fileId)->first();
+        $link = ShareableLink::firstWhere('file_id',$fileId);
 
         if (!$link) {
-            return $this->errorNotFound();
+            throw new EntryNotFoundException("Link Not found!!", 404);
         }
 
         return $this->shareableLink($link);
     }
 
-    public function storeFileShareableLink ($fileId)
+    public function storeFileShareableLink (Request $request, $fileId)
     {
         $link = ShareableLink::firstOrNew(['file_id'=> $fileId]);
 
         $params = $this->request->all();
-        $params['user_id'] = $this->request->user()->id;
+        $params['user_id'] = $request->user()->id;
         $params['file_id'] = $fileId;
         $params['hash'] = $link->hash ? $link->hash: \Str::random(30);
+        if ($request->has('password')) {
+            $params['password'] = Hash::make($request->get('password'));
+        }
         
         $link->fill($params);
         $link->save();
@@ -57,10 +44,10 @@ class ShareableLinkController extends ApiController
     }
 
 
-    protected function shareableLink(ShareableLink $link)
+    protected function shareableLink(ShareableLink $link, $withfile = false)
     {
-        if ($this->request->get('withFile')) {
-            $link->load('file', 'file.children', 'file.owner');
+        if ($withfile) {
+            $link->load('file', 'file.children', 'file.uploader');
         }
 
     	return new JsonResource($link);
@@ -70,44 +57,32 @@ class ShareableLinkController extends ApiController
      * @param int|string $idOrHash
      * 
      */
-    public function show($fileId)
+    public function show(Request $request, $fileId)
     {
-        $link = $this->link->getLink($fileId);
+        $link = ShareableLink::firstOrFail('file_id', $fileId);
 
         if ( ! $link || ! $link->file || $link->file->trashed()) abort(404);
 
         if ($this->request->get('withFile')) {
-            $link->load('file.children', 'file.owner');
+            $link->load('file.children', 'file.uploader');
         }
 
     	return new JsonResource($link);
     }
 
-    /**
-     * @param int $entryId
-     */
-    public function store($fileId)
-    {
-        $params = $this->request->all();
-        $params['user_id'] = $this->request->user()->id;
-        $params['file_id'] = $fileId;
-        $params['hash'] = '';
-
-        $link = $this->link->store($params);
-
-        return new JsonResource($link);
-    }
+    
 
     /**
      * @param int $id
      * 
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ShareableLink $link)
     {
         $params = $request->all();
         $params['user_id'] = $request->user()->id;
 
-        $link = $this->link->update($id, $params);
+        $link->fill($params);
+        $link->save();
 
         return new JsonResource($link);
     }
@@ -115,22 +90,21 @@ class ShareableLinkController extends ApiController
     /**
      * @param int $id
      */
-    public function destroy($id)
+    public function destroy(Request $request, ShareableLink $link)
     {
-        if ( $this->link->destroy( $id ) ) {
-            return $this->respondWithMessage("Link has been deleted successfully.");
-        }
-
-
+        $link->delete();
+        
+        return response()->json(['success' => true, 'message' => "link deleted successfully."]);
     }
 
-    public function check($linkId)
+    public function check(Request $request, ShareableLink $link)
     {
-        $link = $this->link->getById($linkId);
-        $password = $this->request->get('password');
+        $password = $request->get('password');
 
-        return $this->respondWithArray([
-            'matches' => Hash::check($password, $link->password)
-        ]);
+        if (!Hash::check($password, $link->password)) {
+            throw new Exception("You have not permission!!", 401);
+        }
+
+        return $this->shareableLink($link);
     }
 }

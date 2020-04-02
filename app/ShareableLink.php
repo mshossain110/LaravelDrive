@@ -29,7 +29,11 @@ class ShareableLink extends Model
     ];
 
     protected $hidden = [
-        'password', 'expires_at',
+        'password', 'expires_at', 'hash', 'user_id', 'file_id'
+    ];
+
+    protected $appends = [
+        'link'
     ];
 
 
@@ -38,13 +42,10 @@ class ShareableLink extends Model
         return $this->belongsTo(File::class);
     }
 
-    /**
-     * @param string $value
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = $value ? bcrypt($value) : null;
+    public function getLinkAttribute() {
+        return route('shareable', [ 'hash' => $this->hash]);
     }
+
 
     /**
      * @param string $value

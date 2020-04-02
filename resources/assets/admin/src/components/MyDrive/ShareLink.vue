@@ -58,7 +58,7 @@
                                 ref="sharelink"
                                 outlined
                                 label="Link"
-                                :value="getShareLink"
+                                :value="linkdata.link"
                                 type="text"
                                 @focus="$event.target.select()"
                             >
@@ -253,9 +253,6 @@ export default {
     components: {
 
     },
-    $_veeValidate: {
-        validator: 'new'
-    },
     mixins: [Mixin],
     props: {
         open: {
@@ -265,6 +262,7 @@ export default {
     },
     data () {
         return {
+            loading: false,
             showSittings: false,
             date: new Date().toISOString().substr(0, 10),
             time: null,
@@ -288,19 +286,10 @@ export default {
         hasLinkData () {
             // eslint-disable-next-line no-prototype-builtins
             return this.linkdata.hasOwnProperty('id');
-        },
-        getShareLink () {
-            if (this.hasLinkData) {
-                return this.linkdata.link;
-            }
-            return '';
         }
     },
     mounted () {
         this.getShareableLink();
-        // setTimeout(() => {
-        //     this.$refs.sharelink.focus()
-        // }, 500)
     },
     methods: {
         close () {
@@ -310,9 +299,14 @@ export default {
             axios.get(`/api/shareable-links/file/${this.selectedFilesId[0]}`, { params })
                 .then((res) => {
                     this.linkdata = res.data.data;
+                    this.$refs.sharelink.focus();
                 });
         },
         storeShareableLink () {
+            if (this.loading) {
+                return;
+            }
+            this.loading = true;
             var params = {
                 file_id: this.selectedFilesId[0],
                 allow_edit: this.editable,
@@ -323,6 +317,7 @@ export default {
             axios.post(`/api/shareable-links/file/${this.selectedFilesId[0]}`, params)
                 .then((res) => {
                     this.linkdata = res.data.data;
+                    this.loading = false;
                 });
         },
         deleteShareableLink () {
@@ -338,6 +333,11 @@ export default {
             this.$refs.sharelink.blur();
             this.$refs.sharelink.focus();
             document.execCommand('copy');
+            this.$store.commit('setSnackbar', {
+                message: 'Link Copied successfully',
+                color: 'success',
+                show: true
+            });
         }
     }
 };
