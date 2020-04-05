@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
+        "laravel/passport": "^8.4",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0"
