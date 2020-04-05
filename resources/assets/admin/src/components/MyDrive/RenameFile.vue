@@ -17,27 +17,30 @@
                 </VCardTitle>
 
                 <VCardText>
-                    <VTextField
-                        v-model="selectedMedia.name"
-                        v-validate="'required'"
-                        :error-messages="errors.collect('name')"
-                        label="Name"
-                        data-vv-name="name"
-                        required
-                    />
+                    <ValidationProvider
+                        v-slot="{ errors }"
+                        name="Name"
+                        :rules="'required|min:6'"
+                    >
+                        <VTextField
+                            v-model="selectedMedia.name"
+                            :error-messages="errors"
+                            label="Name"
+                            data-vv-name="name"
+                            required
+                        />
+                    </ValidationProvider>
                 </VCardText>
-
+                <VDivider />
                 <VCardActions>
                     <VBtn
-                        color="info"
+                        color="primary"
                         type="submit"
-                        text
                     >
                         Rename
                     </VBtn>
                     <VBtn
                         color="error"
-                        text
                         @click="close"
                     >
                         Cancel
@@ -53,9 +56,6 @@ import { mapState } from 'vuex';
 import Mixin from './mixin';
 
 export default {
-    $_veeValidate: {
-        validator: 'new'
-    },
     mixins: [Mixin],
     props: {
         open: {
@@ -73,7 +73,6 @@ export default {
     },
     methods: {
         onSubmit () {
-            this.$validator.validateAll();
             const item = {
                 name: this.selectedMedia.name,
                 id: this.selectedMedia.id

@@ -5,7 +5,7 @@
         persistent
         width="500"
     >
-        <VCard>
+        <VCard class="file-deselet">
             <VCardTitle
                 class="headline grey lighten-2"
             >

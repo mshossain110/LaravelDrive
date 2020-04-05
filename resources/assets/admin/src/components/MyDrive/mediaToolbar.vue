@@ -68,7 +68,7 @@
         </VBtn>
         <VBtn
             icon
-            :class="{'active': fileInfoSideBar, 'media-info-button': true}"
+            :class="{'active': fileInfoSideBar, 'file-deselet': true}"
             @click="toggleSidebar()"
         >
             <VIcon>info</VIcon>
