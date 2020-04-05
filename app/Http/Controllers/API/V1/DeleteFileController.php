@@ -56,7 +56,7 @@ class DeleteFileController extends ApiController
 
         $this->deleteEntries($fileIds);
         
-        return $this->respondWithMessage("files deleted successfully.");
+        return response()->json(['success'=> true, 'message' => "files deleted successfully."]);
     }
 
     /**
@@ -151,7 +151,7 @@ class DeleteFileController extends ApiController
      */
     private function deleteFileStorate(File $original)
     {
-        Storage::disk('uploads_local')->deleteDirectory($original->file_name);
+        Storage::disk($original->disk)->deleteDirectory($original->file_name);
     }
 
     public function trash (Request $request) {
@@ -161,7 +161,7 @@ class DeleteFileController extends ApiController
 
             $files = File::onlyTrashed()->orderBy(DB::raw('type = "folder"'), 'desc')
                 // ->where('parent_id', $folder ? $folder->id : 0)
-                ->where('created_by', Auth::id())
+                ->where('uploaded_by', Auth::id())
                 ->paginate($per_page);
         
         return JsonResource::collection($files);

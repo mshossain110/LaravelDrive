@@ -279,6 +279,7 @@ div#laraveladmin {
     position: relative;
     display: block;
     overflow: hidden;
+    height: calc(100vh - 10rem);
 }
 #filecontainer {
     margin: 0;
