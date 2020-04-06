@@ -4,8 +4,12 @@
         class="la-side-menu"
     >
         <template v-for="(item, i) in items">
+            <FavoriteFolders
+                v-if="item.favorit"
+                :key="i"
+            />
             <VRow
-                v-if="item.heading"
+                v-else-if="item.heading"
                 :key="i"
                 no-gutters
             >
@@ -83,7 +87,11 @@
 </template>
 
 <script>
+import FavoriteFolders from './FavoriteFolders';
 export default {
+    components: {
+        FavoriteFolders
+    },
     data () {
         return {
             items: [
@@ -93,6 +101,7 @@ export default {
                 { icon: 'people', text: 'Users', name: 'users', disabled: false },
                 { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false, permission: this.hasPermission('role.view') },
                 { divider: true },
+                { favorit: true },
                 { heading: 'My Drive' },
                 { icon: 'perm_media', text: 'My Files', name: 'media', disabled: false },
                 { icon: 'people', text: 'Shared with me', name: 'shared', disabled: false },

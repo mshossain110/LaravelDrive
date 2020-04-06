@@ -174,6 +174,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     
         Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider::class,
 

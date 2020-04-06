@@ -41,6 +41,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $with = [
+        'roles'
+    ];
+
     static $status = [
         '0' => 'inactive',
         '1' => 'active',
@@ -77,7 +81,7 @@ class User extends Authenticatable
             $permissions = unserialize( $value );
         }
         
-        $roles = self::roles()->get();
+        $roles = $this->roles;
 
         foreach ( $roles as $role ) {
             $permissions = array_merge($permissions, $role->permissions);

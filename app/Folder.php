@@ -40,11 +40,13 @@ class Folder extends Model
     protected $attributes = ['type' => 'folder'];
 
     protected $appends = [
-        'hash'
+        'hash',
+        'stared'
     ];
 
-    public function newQuery( $except_deleted = true ) {
-        return parent::newQuery( $except_deleted )->where( 'type', '=', 'folder' );
+    public function newQuery( $except_deleted = true )
+    {
+        return parent::newQuery( $except_deleted )->where( 'type', '=', 'folder' )->stared();
     }
     /**
      * Bootstrap any application services.
@@ -70,5 +72,26 @@ class Folder extends Model
     public function parent()
     {
         return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag', 'taggables', 'taggable_id', 'tag_id');
+    }
+
+    public function getStaredAttribute()
+    {
+        return !empty($this->attributes['stared']);
+    }
+
+    public function scopeStared($query)
+    {
+        return $query->addSelect(['stared' => function ($query) {
+            $query->select('name')
+            ->from('tags')
+            ->join('taggables', 'tags.id', '=', 'taggables.tag_id')
+            ->whereColumn('taggables.taggable_id', 'files.id')
+            ->limit(1);
+        }]);
     }
 }

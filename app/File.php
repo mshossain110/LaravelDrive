@@ -73,6 +73,11 @@ class File extends Model
         File::observe(FileObserver::class);
     }
 
+    public function newQuery( $except_deleted = true )
+    {
+        return parent::newQuery( $except_deleted )->stared();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -132,7 +137,19 @@ class File extends Model
 
     public function getStaredAttribute()
     {
-        return $this->tags()->where('name', 'starred')->exists();
+        return !empty($this->attributes['stared']);
+    }
+
+    public function scopeStared($query)
+    {
+
+        return $query->addSelect(['stared' => function ($query) {
+            $query->select('name')
+            ->from('tags')
+            ->join('taggables', 'tags.id', '=', 'taggables.tag_id')
+            ->whereColumn('taggables.taggable_id', 'files.id')
+            ->limit(1);
+        }]);
     }
 
     public function sharedWith () {

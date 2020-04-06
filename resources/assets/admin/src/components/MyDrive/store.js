@@ -57,6 +57,9 @@ export default {
         },
         getNestedFolders (state) {
             return getNestedFolders(state.folders, 0);
+        },
+        favoriteFolders (state) {
+            return state.folders.filter(f => f.stared);
         }
     },
     mutations: {
