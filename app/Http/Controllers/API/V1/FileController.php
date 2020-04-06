@@ -169,6 +169,14 @@ class FileController extends ApiController
     public function getFileData(UploadedFile $file, $extra)
     {
         // TODO: move mime/extension/type guessing into separate class
+        $entries = collect();
+        if (Arr::get($extra, 'path')) {
+            $entries = $entries->merge($this->createPath($extra['path'], $extra['parent_id'], $extra['user_id']));
+            $parent = $entries->last();
+            if ($parent) $extra['parent_id'] = $parent->id;
+        }
+
+
         $originalMime = $file->getMimeType();
 
         if ($originalMime === 'application/octet-stream') {
@@ -192,6 +200,46 @@ class FileController extends ApiController
 
         return $data;
     }
+
+    /**
+     * @param string $path
+     * @param integer|null $parentId
+     * @param integer $userId
+     * @return \Illuminate\Support\Collection
+     */
+    private function createPath($path, $parentId, $userId)
+    {
+        $path = collect(explode('/', $path));
+        $path = $path->filter(function($name) {
+            return $name && ! Str::contains($name, '.');
+        });
+
+        if ($path->isEmpty()) return $path;
+
+        return $path->reduce(function($parents, $name) use($parentId, $userId) {
+            if ( ! $parents) $parents = collect();
+            $parent = $parents->last();
+            $values = [
+                'type' => 'folder',
+                'name' => $name,
+                'file_name' => $name,
+                'parent_id' => $parent ? $parent->id : $parentId,
+                'uploaded_by' => $userId
+            ];
+
+            // check if user already has a folder with that name and parent
+            $folder = File::where($values)
+                ->first();
+
+            if ( ! $folder) {
+                $folder = File::create($values);
+                // $folder->generatePath();
+            }
+
+            return $parents->push($folder);
+        });
+    }
+
     /**
      * Extract file extension from specified file data.
      *

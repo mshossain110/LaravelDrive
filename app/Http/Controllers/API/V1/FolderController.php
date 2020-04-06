@@ -29,7 +29,7 @@ class FolderController extends ApiController
 
         $data              = $request->only(['name', 'description', 'parent_id']);
         $data['parent_id'] = isset($data['parent_id']) ? intval($data['parent_id']): 0;
-        $data['file_name'] = \Str::random(40);
+        $data['file_name'] = $data['name'];
 
         
         $folder = Folder::create($data);
@@ -48,6 +48,7 @@ class FolderController extends ApiController
     public function update ( FolderRequest $request, Folder $folder ) {
         $validated = $request->validated();
         $data      = $request->only(['name', 'description']);
+        $data['file_name'] = $data['name'];
         $folder->fill($data);
         $folder->save();
 
