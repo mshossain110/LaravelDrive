@@ -55,4 +55,13 @@ Route::group([
     Route::post('shareable-links/file/{fileId}', 'ShareableLinkController@storeFileShareableLink');
     Route::put('shareable-links/{id}', 'ShareableLinkController@update');
     Route::delete('shareable-links/{id}', 'ShareableLinkController@destroy');
+
+
+    // translations
+    Route::get('translation/languages', '\App\Http\Controllers\Translation\LanguageController@index');
+    Route::post('translation/languages', '\App\Http\Controllers\Translation\LanguageController@store');
+    Route::get('translation/{language}/translations', '\App\Http\Controllers\Translation\LanguageTranslationController@index');
+    Route::post('translation/{language}/translations', '\App\Http\Controllers\Translation\LanguageTranslationController@store');
+    Route::put('translation/{language}/translations', '\App\Http\Controllers\Translation\LanguageTranslationController@update');
+
 });

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import UsersStore from '@ac/Users/store';
 import MyDriveStore from '@ac/MyDrive/store';
+import TranslationStore from '@ac/Translation/store';
 
 Vue.use(Vuex);
 
@@ -62,6 +63,7 @@ export default new Vuex.Store({
     },
     modules: {
         Users: UsersStore,
-        Media: MyDriveStore
+        Media: MyDriveStore,
+        Translation: TranslationStore
     }
 });

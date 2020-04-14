@@ -109,7 +109,8 @@ export default {
                 { icon: 'star', text: 'Starred', name: 'starred', disabled: false },
                 { icon: 'delete_forever', text: 'Trash', name: 'trash', disabled: false },
                 { divider: true },
-                { heading: 'Admin Settings' }
+                { heading: 'Admin Settings' },
+                { icon: 'translate', text: 'Translation', name: 'translation', disabled: false }
                 // { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
             ].filter(i => typeof i.permission === 'undefined' || i.permission)
         };

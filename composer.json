@@ -10,11 +10,13 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
+        "joedixon/laravel-translation": "^1.1",
         "laravel/framework": "^7.0",
         "laravel/passport": "^8.4",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+        "waavi/translation": "^2.4"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
