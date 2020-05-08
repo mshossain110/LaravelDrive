@@ -8,7 +8,6 @@
             width="240"
             color="nav"
             fixed
-            app
         >
             <MenuItems />
         </VNavigationDrawer>
@@ -17,8 +16,6 @@
             :clipped-left="$vuetify.breakpoint.lgAndUp"
             flat
             dark
-            app
-            fixed
             color="header"
         >
             <VToolbarTitle

@@ -135,7 +135,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Plyr from 'Plyr';
+import Plyr from 'plyr';
 import PanZoom from './../../mixin/library/panzoom';
 import ContextMenu from './ContextMenu.vue';
 import mixin from './mixin';
