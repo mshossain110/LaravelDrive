@@ -14,21 +14,29 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('firstname')->nullable();
-            $table->string('lastname')->nullable();
-            $table->string('name')->unique();
+            $table->id();
+            $table->string('firstname', 100);
+            $table->string('lastname', 100);
+            $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
-            $table->string('permissions')->nullable();
-            $table->string('avatar')->nullable();
-            $table->integer('status')->default(0);
             $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('last_loged_in')->useCurrent();
-            $table->ipAddress('ip')->nullable();;
+            $table->timestamp('password_set_at')->nullable();
+            $table->string('password');
             $table->rememberToken();
-            $table->timestamps();
+            $table->string('phone', 14)->nullable();
+            $table->string('avatar', 2048)->nullable();
+            $table->string('locale', 5)->default('en');
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('timezone')->nullable();
+            $table->enum('gender', ['male', 'female', 'none'])->default('male');
+            $table->enum('online', ['online', 'offline', 'away'])->default('offline');
+            $table->enum('status', ['pending', 'active', 'suspend', 'cencel'])->default('pending');
+            $table->timestamp('last_login_at')->nullable();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

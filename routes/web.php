@@ -15,8 +15,7 @@ Route::get('/', function () {
     return redirect('/drive');
 });
 
-Auth::routes(['verify' => false]);
-
+require __DIR__.'/auth.php';
 
 // Public Routes
 Route::group(['middleware' => ['web']], function () {
@@ -32,3 +31,4 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/login/redirect/{provider}', 'Auth\SocialController@getSocialRedirect')->name('social.redirect');
     Route::get('/login/handle/{provider}', 'Auth\SocialController@getSocialHandle')->name('social.handle');
 });
+
