@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Waavi\Translation\TranslationServiceProvider::class,
+        // Waavi\Translation\TranslationServiceProvider::class,
         /*
          * Application Service Providers...
          */

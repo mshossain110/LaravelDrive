@@ -1,6 +1,5 @@
 const mix = require('laravel-mix');
 const path = require('path');
-require('laravel-mix-eslint-config');
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 
 /*
@@ -47,6 +46,6 @@ mix.extract()
     .js(assetsPath('common/config.js'), 'public/js')
     .js(adminPath('main.js'), 'public/js')
     .js(assetsPath('auth/auth.js'), 'public/js')
-    .eslint();
+    .vue()
 
 mix.sass('resources/assets/admin/src/sass/main.scss', 'public/css');
