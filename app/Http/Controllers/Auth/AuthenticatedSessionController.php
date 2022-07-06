@@ -32,8 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Cookie::queue(Cookie::make('access_token', $token, 24*60));
-        return ['success' => true, 'redirectTo' => RouteServiceProvider::HOME ];
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

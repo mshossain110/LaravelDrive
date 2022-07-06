@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RoleTableSeeder::class);
+        User::factory(10)->create();
 
-        User::factory(20)->create();
+        $user = User::find(1);
+
+        $user->email = 'admin@admin.com';
+        $user->firstname = 'admin';
+        $user->lastname = 'admin';
+        $user->name = 'admin';
+        $user->email_verified_at = now();
+        $user->status = 'active';
+
+        $user->save();
     }
 }

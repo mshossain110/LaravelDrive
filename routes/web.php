@@ -1,5 +1,7 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,23 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/drive');
+    return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
-
-// Public Routes
-Route::group(['middleware' => ['web']], function () {
-
-    Route::get('/home', 'HomeController@index')->name('home');
-
-    Route::get('/drive/{any?}', 'HomeController@drive')->where('any', '.*')->name("drive");
-
-    Route::get('/uploads/{id}/{any?}', 'UploadController')->where('any', '.*');
-
-    Route::get("file/s/{hash}", "ShareableController")->name("shareable");
-    // Socialite Register Routes
-    Route::get('/login/redirect/{provider}', 'Auth\SocialController@getSocialRedirect')->name('social.redirect');
-    Route::get('/login/handle/{provider}', 'Auth\SocialController@getSocialHandle')->name('social.handle');
-});
-
