@@ -15,17 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
-
-        $user = User::find(1);
-
-        $user->email = 'admin@admin.com';
-        $user->firstname = 'admin';
-        $user->lastname = 'admin';
-        $user->name = 'admin';
-        $user->email_verified_at = now();
-        $user->status = 'active';
-
-        $user->save();
+        $this->call(UserSeeder::class);
     }
 }
