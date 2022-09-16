@@ -1,64 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## LaravelDrive is a file storage system that allows store private file and share with users build wiht laravel and vue inspired by google drive. 
+
+## LaravelDrive is minimum requirement like google drive.
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+# [Demo](http://laraveldrive.decoderlab.com)
 </p>
 
-## About Laravel
+<code>
+username: admin@admin.com
+</code>
+<code>
+password: admin123
+</code>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
+-------------
+* **Laravel** – It is build with Laravel 5.7.
+* **Vue** – It is build with vuejs, vue-router and vuex.
+* **vuetify** – vutify ui component for batter user experience.
+* **File Sharing** – Users can share files and folders with multiple users, allowing collaboration.
+* **Uploads** – Drop zone uploader for best User experience.
+<!--- **Shareable Links** – Create publicly shareable links for files and folders with optional expiration date, password and permissions. -->
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **Responsive** – it is fully responsive and will work on desktop, mobile, tablet and other devices.
+ * **File Previews** – Preview multiple file types including audio, video, text, pdf, zip and images right in the browser without the need to download the file. 
+<!--- * Amazon S3, DigitalOcean, Dropbox Storage – Easily store user upload files on many different cloud services and providers. -->
+* **Authentication system** – Fully featured authentication system with social login(facebook, twitter and google), normal login, registration, password recovery, account settings and more.
+* **Roles & Permissions** – Assign roles and permissions to users to give or restrict access to specific functionality on the site.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<!---  Grid and List views – Both grid and list views are available and freely switchable by the user so they can select the one they prefer more. -->
 
-## Learning Laravel
+* **Professional Design** – Pixel-perfect google’s material design.
+<!--- Settings – Admin panel has many settings that allow you to fine-tune the site to your needs. -->
+* **Drag and Drop** – Natural drag and drop features for uploading, selecting and moving files & folders.
+* **Context Menu** – Fully integrated context menu (right click on file or folder) is available with all the actions you’d expect like delete, copy, share, move, rename, get link and more. This menu can be accessed from navigation bar as well on touch based devices.
+* Trash – Deleted items will first be moved to trash so they can be restored later. 
+* Favorites – Favorite files or folders so you can find them easily from favorites page later.
+<!--- * Search – Powerful search will find files and folders that are at any level of depth. -->
+* **File Details** – Sidebar on the right will display selected file or folder details as well as preview (if available).
+* 
+## Requirements
+------------
+ - PHP >= 7.0.0
+ - Laravel = 5.7.0
+ - Fileinfo PHP Extension
+ 
+## How to install
+-------------
+1. Clone the repo  ```git clone https://github.com/mshossain110/LaravelDrive.git```
+2. Move Directory ```cd LarvelDrive```
+3. Install composer ```composer install```
+4. Copy .env file ```cp .env.example .env```
+5. Generate key ```php artisan key:generate```
+6. Create database and edit ```.env``` file to add database, MAIL_DRIVER
+7. Install Passport ```php artisan passport:install```
+8. Migrate database ```php artisan migrate```
+9. Install npm ```npm i```
+10. Watch file ```npm run watch```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Screen Shorts
+---
+![My Drive, ](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/mydrive-page.png)
 
-## Laravel Sponsors
+![User page design](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/users-page.png)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![Shared with me](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/sharewithme-page.png)
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+![Trash page](https://github.com/mshossain110/LaravelDrive/blob/develop/doc/screenshort/trash-pge.png)
 
 ## License
-
+------------
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

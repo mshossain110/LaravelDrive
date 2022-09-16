@@ -1,7 +1,21 @@
 import './bootstrap';
+import Vuetify from './Vuetify'
+import { createApp } from 'vue'
+import App from './App.vue';
+import { createRouter, createWebHashHistory } from "vue-router";
+import routes from '@/drive/router/index.js'
 
-import Alpine from 'alpinejs';
 
-window.Alpine = Alpine;
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
+})
 
-Alpine.start();
+const app = createApp(App)
+
+app.config.devtools = true;
+
+app.use(Vuetify);
+app.use(router)
+
+app.mount('#app')
