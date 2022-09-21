@@ -32,3 +32,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+
+window.LD.getUserPermissions = function getUserPermissions () {
+    return LD.user.permissions || null;
+};
+window.LD.hasPermission = function hasPermission (p) {
+    if (!LD.user.permissions || !LD.user.permissions.length) {
+        return false;
+    }
+    if (LD.user.permissions.indexOf('administrator') !== -1) {
+        return true;
+    }
+
+    return LD.user.permissions.indexOf(p) !== -1;
+};

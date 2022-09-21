@@ -18,4 +18,4 @@ app.config.devtools = true;
 app.use(Vuetify);
 app.use(router)
 
-app.mount('#app')
+app.mount('#root')
