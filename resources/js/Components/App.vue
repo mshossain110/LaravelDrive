@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Layout from '@/drive/Layout/Layout.vue';
+import Layout from '@/Components/Layout/Layout.vue';
 
 export default {
     components: {

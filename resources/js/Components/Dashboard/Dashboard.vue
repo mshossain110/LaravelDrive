@@ -8,7 +8,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="perm_media"
+                    icon="mdi-multimedia"
                 >
                     <span class="d-block">
                         Total Files
@@ -26,7 +26,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="folder_open"
+                    icon="mdi-folder-open"
                 >
                     <span class="d-block">
                         Total Folders
@@ -44,7 +44,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="people"
+                    icon="mdi-account-group"
                 >
                     <span class="d-block">
                         Total Users
@@ -62,7 +62,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="memory"
+                    icon="mdi-memory"
                 >
                     <span class="d-block">
                         Total Space Used
@@ -78,7 +78,7 @@
 
 <script>
 
-import WidgetCount from '@/drive/Pages/Dashboard/Widgets/Count.vue';
+import WidgetCount from './Widgets/Count.vue';
 
 export default {
     components: {

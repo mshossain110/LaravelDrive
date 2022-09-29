@@ -1,12 +1,8 @@
-
 export default {
     data () {
         return {
             currentUser: LD.user /* globals LD:true */
         };
-    },
-    created () {
-
     },
     computed: {
         fullname () {

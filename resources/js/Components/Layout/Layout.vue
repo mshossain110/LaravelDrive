@@ -48,7 +48,7 @@
             <VMain>
                 <VResponsive>
                     <VContainer>
-                        <RouterView />
+                        <router-view></router-view>
                     </VContainer>
                     <template v-if="snackbar.show">
                         <VSnackbar
@@ -60,21 +60,11 @@
                         >
                             {{ snackbar.message }}
                             <VBtn
-                                dark
                                 @click="hideSnackbar()"
                             >
                                 Close
                             </VBtn>
                         </VSnackbar>
-                    </template>
-
-                    <template v-if="!isAuthenticated">
-                        <VDialog
-                            :value="!isAuthenticated"
-                            persistent
-                            width="500"
-                        >
-                        </VDialog>
                     </template>
                 </VResponsive>
             </VMain>

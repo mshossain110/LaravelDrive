@@ -1,4 +1,4 @@
-import Dashboard from '@/drive/Pages/Dashboard/Dashboard.vue';
+import Dashboard from './Dashboard.vue';
 
 const DashRoute = {
     path: 'dashboard',
