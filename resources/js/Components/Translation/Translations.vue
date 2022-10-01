@@ -23,7 +23,7 @@
                 hide-details
                 dense
                 style="max-width: 150px; margin: 0 5px;"
-                append-icon="mdi-magnify"
+                append-icon="search"
                 placeholder="Serach..."
             />
             <VBtn
@@ -32,7 +32,7 @@
                 @click="searchForm = !searchForm"
             >
                 <VIcon small>
-                    mdi-magnify
+                    search
                 </VIcon>
             </VBtn>
             <VBtn
@@ -41,7 +41,7 @@
                 @click="newtranslation = !newtranslation"
             >
                 <VIcon small>
-                    mdi-pencil
+                    edit
                 </VIcon>
             </VBtn>
 
@@ -55,8 +55,7 @@
                         small
                         v-on="on"
                     >
-                        <VIcon small>
-                            mdi-dots-vertical
+                        <VIcon small icon="more_vert">
                         </VIcon>
                     </VBtn>
                 </template>

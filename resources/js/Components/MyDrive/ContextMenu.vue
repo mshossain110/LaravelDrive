@@ -1,6 +1,5 @@
 <template>
-    <VMenu
-        v-if="items.length"
+    <VOverlay
         v-model="showMenu"
         :position-x="x"
         :position-y="y"
@@ -20,7 +19,7 @@
                 <VListItemTitle>{{ item.title }}</VListItemTitle>
             </VListItem>
         </VList>
-    </VMenu>
+    </VOverlay>
 </template>
 
 <script>

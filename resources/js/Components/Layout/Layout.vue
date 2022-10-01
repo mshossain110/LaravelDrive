@@ -34,12 +34,12 @@
                         <VIcon
                             large
                             color="blue darken-2"
-                            icon="mdi-message-text"
+                            icon="chat"
                             ></VIcon>
                     </VBtn>
 
                     <VBtn icon>
-                        <VIcon icon="mdi-notifications"></VIcon>
+                        <VIcon icon="notifications"></VIcon>
                     </VBtn>
                 </template>
                 

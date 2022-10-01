@@ -12,9 +12,7 @@
                 small
                 @click="newLanguage = !newLanguage"
             >
-                <VIcon small>
-                    mdi-pencil
-                </VIcon>
+                <VIcon small icon="edit" />
             </VBtn>
         </VToolbar>
         <VExpandTransition>

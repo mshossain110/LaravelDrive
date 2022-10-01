@@ -1,3 +1,5 @@
+## Currently this application has smoe error for vuetify. When vuetify will release new versiton I will work again.
+
 ## LaravelDrive is a file storage system that allows store private file and share with users build wiht laravel and vue inspired by google drive. 
 
 ## LaravelDrive is minimum requirement like google drive.

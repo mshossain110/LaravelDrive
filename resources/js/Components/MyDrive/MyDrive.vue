@@ -57,32 +57,22 @@
 
 <script>
 import { mapState } from 'vuex';
-import FileUploader from './FileUploader.vue';
-import MediaItem from './mediaItem.vue';
-import MediaToolbar from './mediaToolbar.vue';
-import MediaInfo from './MediaInfo.vue';
+import { defineAsyncComponent } from 'vue';
 import Mixins from './mixin';
-import NewFolderForm from './NewFolderForm.vue';
-import ShareFile from './ShareFile.vue';
-import ShareLink from './ShareLink.vue';
-import RenameFile from './RenameFile.vue';
-import ContextMenu from './ContextMenu.vue';
-import MoveTo from './MoveTo.vue';
-import Preview from './Preview.vue';
 
 export default {
     components: {
-        FileUploader,
-        MediaItem,
-        MediaToolbar,
-        MediaInfo,
-        NewFolderForm,
-        RenameFile,
-        ContextMenu,
-        MoveTo,
-        ShareFile,
-        ShareLink,
-        Preview
+        FileUploader: defineAsyncComponent(() => import('./FileUploader.vue')),
+        MediaItem: defineAsyncComponent(() => import('./mediaItem.vue')),
+        MediaToolbar: defineAsyncComponent(() => import('./mediaToolbar.vue')),
+        MediaInfo: defineAsyncComponent(() => import('./MediaInfo.vue')),
+        NewFolderForm: defineAsyncComponent(() => import('./NewFolderForm.vue')),
+        RenameFile: defineAsyncComponent(() => import('./RenameFile.vue')),
+        ContextMenu: defineAsyncComponent(() => import('./ContextMenu.vue')),
+        MoveTo: defineAsyncComponent(() => import('./MoveTo.vue')),
+        ShareFile: defineAsyncComponent(() => import('./ShareFile.vue')),
+        ShareLink: defineAsyncComponent(() => import('./ShareLink.vue')),
+        Preview: defineAsyncComponent(() => import('./Preview.vue')),
     },
     mixins: [Mixins],
     data () {

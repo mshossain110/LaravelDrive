@@ -13,9 +13,7 @@
             :loading="loading"
             @click="disabled = !disabled"
         >
-            <VIcon small>
-                mdi-pencil
-            </VIcon>
+            <VIcon small icon="edit"></VIcon>
         </VBtn>
     </VForm>
 </template>

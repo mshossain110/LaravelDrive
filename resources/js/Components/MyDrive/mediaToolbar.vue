@@ -4,34 +4,35 @@
         dense
     >
         <VToolbarTitle>
-            <VIcon icon="mdi-multimedia"></VIcon>
+            <VIcon icon="perm_media"></VIcon>
             My Files
         <VMenu offset-y>
             <template v-slot:activator="{ props }">
                 <VBtn
                     icon
                     v-bind="props"
+                    class="d-inline"
                 >
-                    <VIcon icon="mdi-arrow-down"></VIcon>
+                    <VIcon icon="expand_circle_down"></VIcon>
                 </VBtn>
             </template>
 
             <VList>
                 <VListItem @click="openNewFolderModal()">
                     <VListItemTitle>
-                        <VIcon icon="mdi-folder-plus"></VIcon>
+                        <VIcon icon="create_new_folder"></VIcon>
                         New Folder
                     </VListItemTitle>
                 </VListItem>
                 <VListItem @click="uploadFolder">
                     <VListItemTitle>
-                        <VIcon icon="mdi-folder-arrow-up"></VIcon>
+                        <VIcon icon="drive_folder_upload"></VIcon>
                         Upload  Folder
                     </VListItemTitle>
                 </VListItem>
                 <VListItem @click="openDropZone">
                     <VListItemTitle>
-                        <VIcon icon="mdi-image-plus"></VIcon>
+                        <VIcon icon="upload_file"></VIcon>
                         Upload  Files
                     </VListItemTitle>
                 </VListItem>
@@ -46,30 +47,30 @@
             icon
             @click="openDropZone()"
         >
-            <VIcon icon="mdi-image-plus"></VIcon>
+            <VIcon icon="upload_file"></VIcon>
         </VBtn>
         <VBtn
             icon
             @click="openNewFolderModal()"
         >
-            <VIcon icon="mdi-folder-plus"></VIcon>
+            <VIcon icon="create_new_folder"></VIcon>
         </VBtn>
         <VBtn icon>
-            <VIcon icon="mdi-view-grid"></VIcon>
+            <VIcon icon="grid_view"></VIcon>
         </VBtn>
         <VBtn icon>
-            <VIcon icon="mdi-view-list"></VIcon>
+            <VIcon icon="view_list"></VIcon>
         </VBtn>
 
         <VBtn icon>
-            <VIcon icon="mdi-filter-variant"></VIcon>
+            <VIcon icon="filter_list"></VIcon>
         </VBtn>
         <VBtn
             icon
             :class="{'active': fileInfoSideBar, 'file-deselet': true}"
             @click="toggleSidebar()"
         >
-            <VIcon icon="mdi-information"></VIcon>
+            <VIcon icon="info"></VIcon>
         </VBtn>
     </VToolbar>
 </template>

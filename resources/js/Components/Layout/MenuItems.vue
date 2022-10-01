@@ -41,7 +41,7 @@
                     :disabled="item.disabled"
                 >
                     <template v-slot:prepend v-if="child.icon">
-                        <VIcon :icon="child.icon"></VIcon>
+                        <VIcon :icon="child.icon" class="mr-4"></VIcon>
                     </template>
 
                     <VListItemTitle>
@@ -57,7 +57,7 @@
                 :disabled="item.disabled"
             >
                 <template v-slot:prepend v-if="item.icon">
-                    <VIcon :icon="item.icon"></VIcon>
+                    <VIcon :icon="item.icon" class="mr-4"></VIcon>
                 </template>
 
                 <VListItemTitle>
@@ -77,19 +77,19 @@ export default {
     data () {
         return {
             items: [
-                { icon: 'mdi-view-dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
+                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
                 { divider: true },
                 { heading: 'Users', permission: true },
-                { icon: 'mdi-account-group', text: 'Users', name: 'users', disabled: false },
+                { icon: 'group', text: 'Users', name: 'users', disabled: false },
                 // { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false, permission: this.hasPermission('role.view') },
                 { divider: true },
                 // { favorit: true },
                 { heading: 'My Drive' },
-                { icon: 'mdi-multimedia', text: 'My Files', name: 'media', disabled: false },
-                { icon: 'mdi-account-group', text: 'Shared with me', name: 'shared', disabled: false },
-                // { icon: 'mdi-watch-later', text: 'Recent', name: 'recent', disabled: true },
-                { icon: 'mdi-star', text: 'Starred', name: 'starred', disabled: false },
-                { icon: 'mdi-delete-forever', text: 'Trash', name: 'trash', disabled: false },
+                { icon: 'photo_library', text: 'My Files', name: 'media', disabled: false },
+                { icon: 'co_present', text: 'Shared with me', name: 'shared', disabled: false },
+                // { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
+                { icon: 'auto_awesome', text: 'Starred', name: 'starred', disabled: false },
+                { icon: 'delete', text: 'Trash', name: 'trash', disabled: false },
                 // { divider: true },
                 // { heading: 'Admin Settings' },
                 // { icon: 'translate', text: 'Translation', name: 'translation', disabled: false }

@@ -8,7 +8,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="mdi-multimedia"
+                    icon="perm_media"
                 >
                     <span class="d-block">
                         Total Files
@@ -26,7 +26,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="mdi-folder-open"
+                    icon="folder_open"
                 >
                     <span class="d-block">
                         Total Folders
@@ -44,7 +44,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="mdi-account-group"
+                    icon="people"
                 >
                     <span class="d-block">
                         Total Users
@@ -62,7 +62,7 @@
             >
                 <WidgetCount
                     class="ml-3"
-                    icon="mdi-memory"
+                    icon="memory"
                 >
                     <span class="d-block">
                         Total Space Used
