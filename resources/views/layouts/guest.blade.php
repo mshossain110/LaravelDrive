@@ -8,122 +8,180 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+
+        <!-- Styles -->
+        @vite(['resources/css/app.css'])
 
         <style>
+            *, *::before, *::after { box-sizing: border-box; }
+
             body {
-                background-color: #F3EBF6;
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #f3ebf6 0%, #e8d5f5 100%);
                 font-family: 'Nunito', sans-serif;
             }
-    
-    .main {
-        background-color: #FFFFFF;
-        width: 400px;
-        height: 400px;
-        margin: 7em auto;
-        border-radius: 1.5em;
-        box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
-    }
-    
-    .sign {
-        padding-top: 40px;
-        color: #8C55AA;
-        font-family: 'Ubuntu', sans-serif;
-        font-weight: bold;
-        font-size: 23px;
-    }
-    
-    .un {
-    width: 76%;
-    color: rgb(38, 50, 56);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-    background: rgba(136, 126, 126, 0.04);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    outline: none;
-    box-sizing: border-box;
-    border: 2px solid rgba(0, 0, 0, 0.02);
-    margin-bottom: 50px;
-    margin-left: 46px;
-    text-align: center;
-    margin-bottom: 27px;
-    font-family: 'Ubuntu', sans-serif;
-    }
-    
-    form.form1 {
-        padding-top: 40px;
-    }
-    
-    .pass {
-            width: 76%;
-    color: rgb(38, 50, 56);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-    background: rgba(136, 126, 126, 0.04);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    outline: none;
-    box-sizing: border-box;
-    border: 2px solid rgba(0, 0, 0, 0.02);
-    margin-bottom: 50px;
-    margin-left: 46px;
-    text-align: center;
-    margin-bottom: 27px;
-    font-family: 'Ubuntu', sans-serif;
-    }
-    
-   
-    .un:focus, .pass:focus {
-        border: 2px solid rgba(0, 0, 0, 0.18) !important;
-        
-    }
-    
-    .submit {
-      cursor: pointer;
-        border-radius: 5em;
-        color: #fff;
-        background: linear-gradient(to right, #9C27B0, #E040FB);
-        border: 0;
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-bottom: 10px;
-        padding-top: 10px;
-        font-family: 'Ubuntu', sans-serif;
-        margin-left: 35%;
-        font-size: 13px;
-        box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
-    }
-    
-    .forgot {
-        text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-        color: #E1BEE7;
-        padding-top: 15px;
-    }
-    
-    a {
-        text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-        color: #E1BEE7;
-        text-decoration: none
-    }
-    
-    @media (max-width: 600px) {
-        .main {
-            border-radius: 0px;
-        }
-        
-        
 
+            .auth-card {
+                background: #ffffff;
+                width: 100%;
+                max-width: 420px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(140, 85, 170, 0.18);
+                padding: 40px 40px 36px;
+                margin: 24px;
+            }
 
+            .auth-logo {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 28px;
+            }
+
+            .auth-logo svg {
+                width: 52px;
+                height: 52px;
+                fill: #9C27B0;
+            }
+
+            .auth-title {
+                text-align: center;
+                font-size: 22px;
+                font-weight: 800;
+                color: #4a235a;
+                margin: 0 0 6px;
+            }
+
+            .auth-subtitle {
+                text-align: center;
+                font-size: 13px;
+                color: #9e7aad;
+                margin: 0 0 28px;
+            }
+
+            .auth-alert {
+                background: #fef3cd;
+                border: 1px solid #fcd34d;
+                color: #92400e;
+                border-radius: 10px;
+                padding: 10px 14px;
+                font-size: 13px;
+                margin-bottom: 18px;
+            }
+
+            .auth-alert.success {
+                background: #d1fae5;
+                border-color: #6ee7b7;
+                color: #065f46;
+            }
+
+            .auth-alert.error {
+                background: #fee2e2;
+                border-color: #fca5a5;
+                color: #991b1b;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-label {
+                display: block;
+                font-size: 13px;
+                font-weight: 700;
+                color: #6b3a7d;
+                margin-bottom: 6px;
+                letter-spacing: 0.4px;
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 11px 16px;
+                border: 2px solid #e9d5f0;
+                border-radius: 12px;
+                font-size: 14px;
+                font-family: 'Nunito', sans-serif;
+                color: #2d1b36;
+                background: #faf5fc;
+                outline: none;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+
+            .form-input:focus {
+                border-color: #9C27B0;
+                box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.12);
+                background: #fff;
+            }
+
+            .form-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 24px;
+                margin-top: 4px;
+            }
+
+            .form-check {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                font-size: 13px;
+                color: #7a5a88;
+                cursor: pointer;
+            }
+
+            .form-check input[type=checkbox] {
+                accent-color: #9C27B0;
+                width: 15px;
+                height: 15px;
+                cursor: pointer;
+            }
+
+            .auth-link {
+                font-size: 13px;
+                color: #9C27B0;
+                text-decoration: none;
+                font-weight: 700;
+            }
+
+            .auth-link:hover { text-decoration: underline; }
+
+            .btn-primary {
+                width: 100%;
+                padding: 13px;
+                background: linear-gradient(135deg, #9C27B0, #ce66e0);
+                color: #fff;
+                border: none;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 800;
+                font-family: 'Nunito', sans-serif;
+                cursor: pointer;
+                letter-spacing: 0.5px;
+                box-shadow: 0 4px 14px rgba(156, 39, 176, 0.35);
+                transition: opacity 0.2s, transform 0.1s;
+            }
+
+            .btn-primary:hover  { opacity: 0.92; }
+            .btn-primary:active { transform: scale(0.98); }
+
+            .auth-footer {
+                text-align: center;
+                margin-top: 22px;
+                font-size: 13px;
+                color: #9e7aad;
+            }
+
+            @media (max-width: 480px) {
+                .auth-card { padding: 30px 24px 28px; margin: 16px; }
+            }
         </style>
     </head>
     <body>
-        <div>
-            {{ $slot }}
-        </div>
+        {{ $slot }}
     </body>
 </html>

@@ -1,56 +1,65 @@
 <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
+    <div class="auth-card">
+        <!-- Logo -->
+        <div class="auth-logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <x-application-logo />
             </a>
-        </x-slot>
+        </div>
+
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in to your {{ config('app.name') }} account</p>
 
         <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+        @if (session('status'))
+            <div class="auth-alert success">{{ session('status') }}</div>
+        @endif
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        @if ($errors->any())
+            <div class="auth-alert error">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email address</label>
+                <input id="email" class="form-input" type="email" name="email"
+                       value="{{ old('email') }}" required autofocus
+                       placeholder="you@example.com" />
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input id="password" class="form-input" type="password" name="password"
+                       required autocomplete="current-password"
+                       placeholder="••••••••" />
             </div>
 
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+            <!-- Remember me / Forgot password -->
+            <div class="form-row">
+                <label class="form-check" for="remember_me">
+                    <input id="remember_me" type="checkbox" name="remember">
+                    Remember me
                 </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+                    <a class="auth-link" href="{{ route('password.request') }}">Forgot password?</a>
                 @endif
-
-                <x-button class="ml-3">
-                    {{ __('Log in') }}
-                </x-button>
             </div>
+
+            <button type="submit" class="btn-primary">Sign in</button>
         </form>
-    </x-auth-card>
+
+        <p class="auth-footer">
+            Don't have an account?
+            <a class="auth-link" href="{{ route('register') }}">Create one</a>
+        </p>
+    </div>
 </x-guest-layout>

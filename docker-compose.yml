@@ -1,0 +1,59 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laraveldrive_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laraveldrive
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: laraveldrive_nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - laraveldrive
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: laraveldrive_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_USER: ${DB_USERNAME:-laravel}
+    ports:
+      - "${DB_PORT_FORWARD:-3306}:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laraveldrive
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-secret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  laraveldrive:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
