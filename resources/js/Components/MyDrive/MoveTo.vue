@@ -1,6 +1,7 @@
 <template>
     <VDialog
-        v-model="open"
+        :model-value="open"
+        @update:model-value="$emit('update:open', $event)"
         class="mpu"
         persistent
         width="500"
@@ -69,6 +70,7 @@ export default {
         validator: 'new'
     },
     mixins: [Mixin],
+    emits: ['update:open'],
     props: {
         open: {
             type: Boolean,

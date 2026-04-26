@@ -11,8 +11,6 @@ class ShareableLink extends Model
     //
     protected $guarded = ['id'];
 
-    protected $dates = ['expires_at'];
-
     protected $fillable = [
         'hash',
         'user_id',
@@ -26,7 +24,8 @@ class ShareableLink extends Model
     protected $casts = [
         'id' => 'integer',
         'allow_download' => 'boolean',
-        'allow_edit' => 'boolean'
+        'allow_edit' => 'boolean',
+        'expires_at' => 'datetime'
     ];
 
     protected $hidden = [
