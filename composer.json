@@ -4,14 +4,19 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/hsndmr/laravel-chunk-upload"
+        }
+    ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.8",
         "intervention/image": "^3.0",
-        "laravel/framework": "^11.0",
+        "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9",
-        "pion/laravel-chunk-upload": "^1.5",
+        "pion/laravel-chunk-upload": "dev-laravel-13-support",
         "spatie/laravel-permission": "^6.0"
     },
     "require-dev": {
