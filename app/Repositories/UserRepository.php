@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 //use App\Scopes\StatusScope;
 
@@ -85,7 +86,7 @@ class UserRepository
      */
     public function store($input)
     {
-        $input['password'] = bcrypt($input['password']);
+        $input['password'] = Hash::make($input['password']);
         return $this->save($this->model, $input);
     }
 
@@ -112,7 +113,7 @@ class UserRepository
      */
     public function changePassword($user, $password)
     {
-        return $user->update(['password' => bcrypt($password)]);
+        return $user->update(['password' => Hash::make($password)]);
     }
 
     /**

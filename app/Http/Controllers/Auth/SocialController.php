@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
-use App\UserMeta;
+use App\Models\User;
+use App\Models\UserMeta;
 use App\Traits\CaptureIpTrait;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class SocialController extends Controller
 {
@@ -21,7 +23,7 @@ class SocialController extends Controller
      *
      * @return Redirect
      */
-    public function getSocialRedirect($provider)
+    public function getSocialRedirect(Request $request, $provider)
     {
         $providerKey = config('services.'.$provider);
 
@@ -40,9 +42,9 @@ class SocialController extends Controller
      *
      * @return Redirect
      */
-    public function getSocialHandle($provider)
+    public function getSocialHandle(Request $request, $provider)
     {
-        if (Input::get('denied') != '') {
+        if ($request->input('denied') != '') {
             return redirect()->to('login')
                 ->with('status', 'danger')
                 ->with('message', "$provider denied");
@@ -58,7 +60,7 @@ class SocialController extends Controller
         $email = $socialUserObject->email;
 
         if (!$socialUserObject->email) {
-            $email = 'missing'.\Str::random(10).'@'.\Str::random(10).'.example.org';
+            $email = 'missing'.Str::random(10).'@'.Str::random(10).'.example.org';
         }
 
         if (empty($userCheck)) {
@@ -91,7 +93,7 @@ class SocialController extends Controller
                     'firstname'         => $fullname[0],
                     'lastname'          => $fullname[1],
                     'email'             => $email,
-                    'password'          => bcrypt(\Str::random(40)),
+                    'password'          => Hash::make(Str::random(40)),
                     'avatar'            => $socialUserObject->getAvatar(),
                     'status'            => User::$status[1],
                     'email_verified_at' => Carbon::now(),
@@ -156,7 +158,7 @@ class SocialController extends Controller
      */
     public function generateUserName($username)
     {
-        return $username.'_'.\Str::random(10);
+        return $username.'_'.Str::random(10);
     }
 
     

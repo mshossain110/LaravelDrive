@@ -158,12 +158,12 @@ class File extends Model
 
     public function sharedWith()
     {
-        return $this->belongsToMany('App\User', 'file_user', 'file_id', 'user_id')->withPivot(['permissions', 'created_at', 'updated_at', 'owner']);
+        return $this->belongsToMany(User::class, 'file_user', 'file_id', 'user_id')->withPivot(['permissions', 'created_at', 'updated_at', 'owner']);
     }
 
     public function uploader()
     {
-        return $this->belongsTo('App\User', 'uploaded_by');
+        return $this->belongsTo(User::class, 'uploaded_by');
     }
 
      /*
