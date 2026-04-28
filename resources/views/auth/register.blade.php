@@ -1,59 +1,65 @@
 <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
+    <div class="auth-card">
+        <!-- Logo -->
+        <div class="auth-logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <x-application-logo />
             </a>
-        </x-slot>
+        </div>
+
+        <h1 class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Get started with {{ config('app.name') }} for free</p>
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        @if ($errors->any())
+            <div class="auth-alert error">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
             <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
-
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            <div class="form-group">
+                <label class="form-label" for="name">Full name</label>
+                <input id="name" class="form-input" type="text" name="name"
+                       value="{{ old('name') }}" required autofocus
+                       placeholder="John Doe" />
             </div>
 
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email address</label>
+                <input id="email" class="form-input" type="email" name="email"
+                       value="{{ old('email') }}" required
+                       placeholder="you@example.com" />
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input id="password" class="form-input" type="password" name="password"
+                       required autocomplete="new-password"
+                       placeholder="Create a password" />
             </div>
 
             <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
+            <div class="form-group">
+                <label class="form-label" for="password_confirmation">Confirm password</label>
+                <input id="password_confirmation" class="form-input" type="password"
+                       name="password_confirmation" required
+                       placeholder="Confirm your password" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
-            </div>
+            <button type="submit" class="btn-primary">Create Account</button>
         </form>
-    </x-auth-card>
+
+        <p class="auth-footer">
+            Already have an account?
+            <a class="auth-link" href="{{ route('login') }}">Sign in</a>
+        </p>
+    </div>
 </x-guest-layout>

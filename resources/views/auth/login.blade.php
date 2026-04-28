@@ -8,7 +8,7 @@
         </div>
 
         <h1 class="auth-title">Welcome back</h1>
-        <p class="auth-subtitle">Sign in to your {{ config('app.name') }} account</p>
+        <p class="auth-subtitle">Sign in to continue to {{ config('app.name') }}</p>
 
         <!-- Session Status -->
         @if (session('status'))
@@ -40,7 +40,7 @@
                 <label class="form-label" for="password">Password</label>
                 <input id="password" class="form-input" type="password" name="password"
                        required autocomplete="current-password"
-                       placeholder="••••••••" />
+                       placeholder="Enter your password" />
             </div>
 
             <!-- Remember me / Forgot password -->

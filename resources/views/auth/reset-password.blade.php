@@ -1,13 +1,26 @@
 <x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+    <div class="auth-card">
+        <!-- Icon -->
+        <div class="auth-icon">
+            <div class="auth-icon-circle">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+            </div>
+        </div>
+
+        <h1 class="auth-title">Set new password</h1>
+        <p class="auth-subtitle">Your new password must be different from previously used passwords.</p>
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+        @if ($errors->any())
+            <div class="auth-alert error">
+                @foreach ($errors->all() as $error)
+                    <div>{{ $error }}</div>
+                @endforeach
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
@@ -16,33 +29,33 @@
             <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
             <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+            <div class="form-group">
+                <label class="form-label" for="email">Email address</label>
+                <input id="email" class="form-input" type="email" name="email"
+                       value="{{ old('email', $request->email) }}" required autofocus
+                       placeholder="you@example.com" />
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required />
+            <div class="form-group">
+                <label class="form-label" for="password">New password</label>
+                <input id="password" class="form-input" type="password" name="password"
+                       required placeholder="Enter new password" />
             </div>
 
             <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password_confirmation" required />
+            <div class="form-group">
+                <label class="form-label" for="password_confirmation">Confirm new password</label>
+                <input id="password_confirmation" class="form-input" type="password"
+                       name="password_confirmation" required
+                       placeholder="Confirm new password" />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Reset Password') }}
-                </x-button>
-            </div>
+            <button type="submit" class="btn-primary">Reset Password</button>
         </form>
-    </x-auth-card>
+
+        <p class="auth-footer">
+            <a class="auth-link" href="{{ route('login') }}">Back to sign in</a>
+        </p>
+    </div>
 </x-guest-layout>
