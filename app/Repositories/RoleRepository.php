@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use Auth;
 use App\Models\User;
 use App\Models\Role;
 

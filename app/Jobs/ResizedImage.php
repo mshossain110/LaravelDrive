@@ -20,9 +20,9 @@ class ResizedImage implements ShouldQueue
     use SerializesModels;
 
     /**
-     * App\File object.
+     * File model instance.
      *
-     * @var App\File;
+     * @var \App\Models\File
      */
     protected $file;
 

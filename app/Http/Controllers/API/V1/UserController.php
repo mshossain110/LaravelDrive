@@ -97,7 +97,7 @@ class UserController extends ApiController
      *
      * @param $id
      * @param Request $request
-     * @return \App\User
+     * @return \App\Models\User
      */
     public function status($id, Request $request)
     {

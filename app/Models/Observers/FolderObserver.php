@@ -10,7 +10,7 @@ class FolderObserver
     /**
     * Handle the Folder "creating" event.
     *
-    * @param  \App\File  $folder
+    * @param  \App\Models\Folder  $folder
     * @return void
     */
     public function creating(Folder $folder)
@@ -22,7 +22,7 @@ class FolderObserver
     /**
      * Handle the Folder "updated" event.
      *
-     * @param  \App\Folder  $folder
+     * @param  \App\Models\Folder  $folder
      * @return void
      */
     public function updated(Folder $folder)
@@ -33,7 +33,7 @@ class FolderObserver
     /**
      * Handle the Folder "deleted" event.
      *
-     * @param  \App\Folder  $folder
+     * @param  \App\Models\Folder  $folder
      * @return void
      */
     public function deleting(Folder $folder)
@@ -45,7 +45,7 @@ class FolderObserver
     /**
      * Handle the Folder "restored" event.
      *
-     * @param  \App\Folder  $folder
+     * @param  \App\Models\Folder  $folder
      * @return void
      */
     public function restored(Folder $folder)
@@ -56,7 +56,7 @@ class FolderObserver
     /**
      * Handle the Folder "force deleted" event.
      *
-     * @param  \App\Folder  $folder
+     * @param  \App\Models\Folder  $folder
      * @return void
      */
     public function forceDeleted(Folder $folder)

@@ -77,7 +77,7 @@ class Folder extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Tag', 'taggables', 'taggable_id', 'tag_id');
+        return $this->belongsToMany(Tag::class, 'taggables', 'taggable_id', 'tag_id');
     }
 
     public function getStaredAttribute()

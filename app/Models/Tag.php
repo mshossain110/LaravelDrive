@@ -22,7 +22,7 @@ class Tag extends Model
      */
     public function files()
     {
-        return $this->morphedByMany('App\File', 'taggable');
+        return $this->morphedByMany(File::class, 'taggable');
     }
 
     /**
