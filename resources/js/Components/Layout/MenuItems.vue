@@ -1,102 +1,129 @@
 <template>
-    <VList
-    >
-        <template v-for="(item, i) in items">
-            <FavoriteFolders
-                v-if="item.favorit"
-                :key="i"
-            />
-            <VListSubheader 
+    <nav class="space-y-1 px-3">
+        <template v-for="(item, i) in items" :key="i">
+            <!-- Favorite folders group -->
+            <FavoriteFolders v-if="item.favorit" />
+
+            <!-- Section heading -->
+            <p
                 v-else-if="item.heading"
-                :key="'h-'+i"
+                class="mt-5 mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
             >
                 {{ item.heading }}
-            </VListSubheader>
-            <VDivider
-                v-else-if="item.divider"
-                :key="'d-' + i"
-                class="my-4"
-            />
-            <VListGroup
-                v-else-if="item.children"
-                :key="'g' + i"
-                v-model="item.model"
-                :prepend-icon="item.icon"
-                no-action
-            >
-                
-                <VListItem
-                    :to="{name:item.name }"
-                    :disabled="item.disabled"
+            </p>
+
+            <!-- Divider -->
+            <hr v-else-if="item.divider" class="my-3 border-gray-200" />
+
+            <!-- Group with children -->
+            <div v-else-if="item.children">
+                <button
+                    class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                    @click="item.model = !item.model"
                 >
-                    <VListItemTitle>
-                        {{ item.text }}
-                    </VListItemTitle>
-                </VListItem>
+                    <component :is="iconMap[item.icon]" v-if="iconMap[item.icon]" class="h-5 w-5 text-gray-400" />
+                    <span class="flex-1 text-left">{{ item.text }}</span>
+                    <ChevronDownIcon
+                        :class="['h-4 w-4 text-gray-400 transition-transform', item.model ? 'rotate-180' : '']"
+                    />
+                </button>
+                <div v-show="item.model" class="mt-1 ml-4 space-y-0.5">
+                    <router-link
+                        v-for="(child, ci) in item.children"
+                        :key="ci"
+                        :to="{ name: child.name }"
+                        custom
+                        v-slot="{ href, navigate, isActive }"
+                    >
+                        <a
+                            :href="href"
+                            :class="[
+                                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                                isActive
+                                    ? 'bg-brand-50 font-medium text-brand-700'
+                                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+                            ]"
+                            @click="navigate"
+                        >
+                            <component :is="iconMap[child.icon]" v-if="iconMap[child.icon]" class="h-5 w-5" />
+                            <span>{{ child.text }}</span>
+                        </a>
+                    </router-link>
+                </div>
+            </div>
 
-                <VListItem
-                    v-for="(child, ci) in item.children"
-                    :key="ci"
-                    :to="{name:child.name }"
-                    :disabled="item.disabled"
-                >
-                    <template v-slot:prepend v-if="child.icon">
-                        <VIcon :icon="child.icon" class="mr-4"></VIcon>
-                    </template>
-
-                    <VListItemTitle>
-                        {{ child.text }}
-                    </VListItemTitle>
-                </VListItem>
-            </VListGroup>
-
-            <VListItem
+            <!-- Regular menu item -->
+            <router-link
                 v-else
-                :key="'i' + i"
-                :to="{name:item.name }"
-                :disabled="item.disabled"
+                :to="{ name: item.name }"
+                custom
+                v-slot="{ href, navigate, isActive }"
             >
-                <template v-slot:prepend v-if="item.icon">
-                    <VIcon :icon="item.icon" class="mr-4"></VIcon>
-                </template>
-
-                <VListItemTitle>
-                    {{ item.text }}
-                </VListItemTitle>
-            </VListItem>
+                <a
+                    :href="href"
+                    :class="[
+                        'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                        item.disabled ? 'pointer-events-none opacity-40' : '',
+                        isActive
+                            ? 'bg-brand-50 font-medium text-brand-700'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                    ]"
+                    @click="navigate"
+                >
+                    <component :is="iconMap[item.icon]" v-if="iconMap[item.icon]" class="h-5 w-5 shrink-0" :class="isActive ? 'text-brand-600' : 'text-gray-400'" />
+                    <span>{{ item.text }}</span>
+                </a>
+            </router-link>
         </template>
-    </VList>
+    </nav>
 </template>
 
-<script>
+<script setup lang="ts">
+import { reactive, type Component } from 'vue';
+import {
+    Squares2X2Icon,
+    UsersIcon,
+    PhotoIcon,
+    UserGroupIcon,
+    StarIcon,
+    TrashIcon,
+    ChevronDownIcon,
+} from '@heroicons/vue/24/outline';
 import FavoriteFolders from './FavoriteFolders.vue';
-export default {
-    components: {
-        FavoriteFolders
-    },
-    data () {
-        return {
-            items: [
-                { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
-                { divider: true },
-                { heading: 'Users', permission: true },
-                { icon: 'group', text: 'Users', name: 'users', disabled: false },
-                // { icon: 'fingerprint', text: 'Roles', name: 'users-role', disabled: false, permission: this.hasPermission('role.view') },
-                { divider: true },
-                // { favorit: true },
-                { heading: 'My Drive' },
-                { icon: 'photo_library', text: 'My Files', name: 'media', disabled: false },
-                { icon: 'co_present', text: 'Shared with me', name: 'shared', disabled: false },
-                // { icon: 'watch_later', text: 'Recent', name: 'recent', disabled: true },
-                { icon: 'auto_awesome', text: 'Starred', name: 'starred', disabled: false },
-                { icon: 'delete', text: 'Trash', name: 'trash', disabled: false },
-                // { divider: true },
-                // { heading: 'Admin Settings' },
-                // { icon: 'translate', text: 'Translation', name: 'translation', disabled: false }
-                // { icon: 'settings', text: 'Settings', name: 'settings', disabled: true }
-            ]
-            //.filter(i => typeof i.permission === 'undefined' || i.permission)
-        };
-    },
+
+interface MenuItem {
+    icon?: string;
+    text?: string;
+    name?: string;
+    disabled?: boolean;
+    permission?: boolean;
+    divider?: boolean;
+    heading?: string;
+    favorit?: boolean;
+    children?: MenuItem[];
+    model?: boolean;
+}
+
+const iconMap: Record<string, Component> = {
+    dashboard: Squares2X2Icon,
+    group: UsersIcon,
+    photo_library: PhotoIcon,
+    co_present: UserGroupIcon,
+    auto_awesome: StarIcon,
+    delete: TrashIcon,
+    star: StarIcon,
 };
+
+const items = reactive<MenuItem[]>([
+    { icon: 'dashboard', text: 'Dashboard', name: 'dashboard', disabled: false, permission: true },
+    { divider: true },
+    { heading: 'Users', permission: true },
+    { icon: 'group', text: 'Users', name: 'users', disabled: false },
+    { divider: true },
+    { heading: 'My Drive' },
+    { icon: 'photo_library', text: 'My Files', name: 'media', disabled: false },
+    { icon: 'co_present', text: 'Shared with me', name: 'shared', disabled: false },
+    { icon: 'auto_awesome', text: 'Starred', name: 'starred', disabled: false },
+    { icon: 'delete', text: 'Trash', name: 'trash', disabled: false },
+]);
 </script>

@@ -1,104 +1,122 @@
 <template>
-    <VApp
-        id="ld"
-    >
-        <VLayout>
-            <VNavigationDrawer
-                v-model="drawer"
-            >
+    <div id="ld" class="flex h-screen bg-gray-50">
+        <!-- Mobile sidebar overlay -->
+        <div
+            v-if="mobileOpen"
+            class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+            @click="mobileOpen = false"
+        />
+
+        <!-- Sidebar -->
+        <aside
+            :class="[
+                'fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-white border-r border-gray-200 transition-transform duration-200 ease-in-out lg:static lg:translate-x-0',
+                mobileOpen ? 'translate-x-0' : '-translate-x-full'
+            ]"
+        >
+            <!-- Brand -->
+            <div class="flex h-16 items-center gap-2 border-b border-gray-200 px-5">
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold text-gray-900">LaravelDrive</span>
+            </div>
+
+            <!-- Menu -->
+            <div class="flex-1 overflow-y-auto py-3">
                 <MenuItems />
-            </VNavigationDrawer>
+            </div>
 
-            <VAppBar
-                color="header"
-            >
-                <template v-slot:prepend>
-                    <VAppBarNavIcon @click.stop="drawer = !drawer"></VAppBarNavIcon>
-                </template>
+            <!-- User info at bottom -->
+            <UserInfo />
+        </aside>
 
+        <!-- Main content area -->
+        <div class="flex flex-1 flex-col overflow-hidden">
+            <!-- Top bar -->
+            <header class="flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 lg:px-6">
+                <!-- Mobile hamburger -->
+                <button
+                    class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+                    @click="mobileOpen = !mobileOpen"
+                >
+                    <Bars3Icon class="h-6 w-6" />
+                </button>
 
-                <VTextField
-                    flat
-                    solo
-                    filled
-                    hide-details
-                    prepend-inner-icon="search"
-                    placeholder="Search"
-                    class="hidden-sm-and-down la-search"
-                />
+                <!-- Search -->
+                <div class="relative hidden flex-1 sm:block sm:max-w-md">
+                    <MagnifyingGlassIcon class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Search files & folders…"
+                        class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2 pl-10 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500"
+                    />
+                </div>
 
-                <VSpacer />
+                <div class="flex-1 sm:hidden" />
 
-                <template v-slot:append>
-                    <VBtn icon>
-                        <VIcon
-                            large
-                            color="blue darken-2"
-                            icon="chat"
-                            ></VIcon>
-                    </VBtn>
+                <!-- Right actions -->
+                <div class="flex items-center gap-1">
+                    <button class="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100">
+                        <ChatBubbleLeftIcon class="h-5 w-5" />
+                    </button>
+                    <button class="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100">
+                        <BellIcon class="h-5 w-5" />
+                        <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
+                    </button>
+                </div>
+            </header>
 
-                    <VBtn icon>
-                        <VIcon icon="notifications"></VIcon>
-                    </VBtn>
-                </template>
-                
-            </VAppBar>
+            <!-- Page content -->
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6">
+                <router-view />
+            </main>
+        </div>
 
-            <VMain>
-                <VResponsive>
-                    <VContainer>
-                        <router-view></router-view>
-                    </VContainer>
-                    <template v-if="snackbar.show">
-                        <VSnackbar
-                            v-model="snackbar.show"
-                            :color="snackbar.color"
-                            :right="true"
-                            :bottom="true"
-                            :timeout="6000"
-                        >
-                            {{ snackbar.message }}
-                            <VBtn
-                                @click="hideSnackbar()"
-                            >
-                                Close
-                            </VBtn>
-                        </VSnackbar>
-                    </template>
-                </VResponsive>
-            </VMain>
-        </VLayout>
-
-    </VApp>
+        <!-- Snackbar -->
+        <AppSnackbar
+            v-model="snackbar.show"
+            :type="snackbarType"
+        >
+            {{ snackbar.message }}
+        </AppSnackbar>
+    </div>
 </template>
 
-<script>
-import MenuItems from './MenuItems.vue'
-export default {
-    components: {
-        MenuItems
-    },
-    props: {
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import {
+    Bars3Icon,
+    MagnifyingGlassIcon,
+    ChatBubbleLeftIcon,
+    BellIcon,
+} from '@heroicons/vue/24/outline';
+import MenuItems from './MenuItems.vue';
+import UserInfo from './UserInfo.vue';
+import AppSnackbar from '@/Components/UI/AppSnackbar.vue';
 
-    },
-    data: () => (
-        {
-            dialog: false,
-            drawer: null,
-            isAuthenticated: false,
-            snackbar: {
-                show: false,
-                color: '#f00',
-                message: 'Hello',
-            }
-        }
-    ),
-};
-</script>
+type SnackbarColor = 'success' | 'error' | 'info';
 
-<style>
-.la-search.v-text-field--box.v-text-field--single-line input{
-    margin-top: 0px;
+interface Snackbar {
+    show: boolean;
+    color: string;
+    message: string;
 }
-</style>
+
+const mobileOpen = ref(false);
+
+const snackbar = ref<Snackbar>({
+    show: false,
+    color: '#f00',
+    message: '',
+});
+
+const snackbarType = computed((): SnackbarColor => {
+    const c = snackbar.value.color;
+    if (c.includes('green') || c === 'success') return 'success';
+    if (c.includes('red') || c === 'error') return 'error';
+    return 'info';
+});
+</script>

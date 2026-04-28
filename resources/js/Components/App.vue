@@ -4,12 +4,6 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import Layout from '@/Components/Layout/Layout.vue';
-
-export default {
-    components: {
-        Layout
-    }
-};
 </script>

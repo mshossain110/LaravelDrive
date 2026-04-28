@@ -1,106 +1,32 @@
 <template>
-    <div class="d-block">
-        <VRow dense>
-            <VCol
-                cols="12"
-                sm="6"
-                md="3"
-            >
-                <WidgetCount
-                    class="ml-3"
-                    icon="perm_media"
-                >
-                    <span class="d-block">
-                        Total Files
-                    </span>
-                    <span class="d-block">
-                        3796
-                    </span>
-                </WidgetCount>
-            </VCol>
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p class="mt-1 text-sm text-gray-500">Overview of your drive storage</p>
 
-            <VCol
-                cols="12"
-                sm="6"
-                md="3"
-            >
-                <WidgetCount
-                    class="ml-3"
-                    icon="folder_open"
-                >
-                    <span class="d-block">
-                        Total Folders
-                    </span>
-                    <span class="d-block">
-                        56
-                    </span>
-                </WidgetCount>
-            </VCol>
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <WidgetCount icon="perm_media">
+                <span class="block text-xs font-medium uppercase tracking-wide text-gray-500">Total Files</span>
+                <span class="block text-xl font-bold text-gray-900">3,796</span>
+            </WidgetCount>
 
-            <VCol
-                cols="12"
-                sm="6"
-                md="3"
-            >
-                <WidgetCount
-                    class="ml-3"
-                    icon="people"
-                >
-                    <span class="d-block">
-                        Total Users
-                    </span>
-                    <span class="d-block">
-                        23
-                    </span>
-                </WidgetCount>
-            </VCol>
+            <WidgetCount icon="folder_open">
+                <span class="block text-xs font-medium uppercase tracking-wide text-gray-500">Total Folders</span>
+                <span class="block text-xl font-bold text-gray-900">56</span>
+            </WidgetCount>
 
-            <VCol
-                cols="12"
-                sm="6"
-                md="3"
-            >
-                <WidgetCount
-                    class="ml-3"
-                    icon="memory"
-                >
-                    <span class="d-block">
-                        Total Space Used
-                    </span>
-                    <span>
-                        650.3 MB
-                    </span>
-                </WidgetCount>
-            </VCol>
-        </VRow>
+            <WidgetCount icon="people">
+                <span class="block text-xs font-medium uppercase tracking-wide text-gray-500">Total Users</span>
+                <span class="block text-xl font-bold text-gray-900">23</span>
+            </WidgetCount>
+
+            <WidgetCount icon="memory">
+                <span class="block text-xs font-medium uppercase tracking-wide text-gray-500">Total Space Used</span>
+                <span class="block text-xl font-bold text-gray-900">650.3 MB</span>
+            </WidgetCount>
+        </div>
     </div>
 </template>
 
-<script>
-
+<script setup lang="ts">
 import WidgetCount from './Widgets/Count.vue';
-
-export default {
-    components: {
-        WidgetCount
-    },
-    data () {
-        return {
-
-        };
-    },
-    computed: {
-
-    },
-    created () {
-
-    },
-    methods: {
-
-    }
-};
 </script>
-
-<style>
-
-</style>

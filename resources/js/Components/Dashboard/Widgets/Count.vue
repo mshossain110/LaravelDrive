@@ -1,54 +1,37 @@
 <template>
-    <VCard>
-        <VRow no-gutters>
-            <VCol
-                cols="3"
-                class="counter-icon"
-            >
-                <VIcon
-                    v-if="icon"
-                >
-                    {{ icon }}
-                </VIcon>
-            </VCol>
-            <VCol cols="9">
-                <VCardTitle
-                    class="d-block body-1"
-                >
-                    <slot />
-                </VCardTitle>
-            </VCol>
-        </VRow>
-    </VCard>
+    <div class="flex items-stretch rounded-xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden">
+        <div class="flex w-16 shrink-0 items-center justify-center bg-brand-50">
+            <component :is="iconComponent" v-if="iconComponent" class="h-7 w-7 text-brand-600" />
+        </div>
+        <div class="flex-1 px-4 py-3">
+            <slot />
+        </div>
+    </div>
 </template>
 
-<script>
-export default {
-    props: {
-        icon: {
-            type: String,
-            default: ''
-        },
-        image: {
-            type: String,
-            default: ''
-        }
-    },
-    data () {
-        return {
+<script setup lang="ts">
+import { computed, type Component } from 'vue';
+import {
+    PhotoIcon,
+    FolderOpenIcon,
+    UsersIcon,
+    CircleStackIcon,
+} from '@heroicons/vue/24/outline';
 
-        };
-    }
+interface Props {
+    icon?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    icon: '',
+});
+
+const iconMap: Record<string, Component> = {
+    perm_media: PhotoIcon,
+    folder_open: FolderOpenIcon,
+    people: UsersIcon,
+    memory: CircleStackIcon,
 };
-</script>
 
-<style>
-.counter-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center
-}
-.counter-icon .v-icon {
-    font-size: 30px;
-}
-</style>
+const iconComponent = computed(() => iconMap[props.icon] ?? null);
+</script>
