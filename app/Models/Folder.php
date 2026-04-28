@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Observers\FolderObserver;
 use App\Models\Traits\HandlesPaths;
 use App\Models\Traits\HashesId;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(FolderObserver::class)]
 class Folder extends Model
 {
     use HandlesPaths;
@@ -49,16 +51,7 @@ class Folder extends Model
     {
         return parent::newQuery($except_deleted)->where('type', '=', 'folder')->stared();
     }
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-        Folder::observe(FolderObserver::class);
-    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

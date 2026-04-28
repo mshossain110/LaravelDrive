@@ -10,7 +10,9 @@ use App\Models\Observers\FileObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(FileObserver::class)]
 class File extends Model
 {
     use HandlesPaths;
@@ -62,18 +64,6 @@ class File extends Model
         'hash',
         'stared'
     ];
-
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-        File::observe(FileObserver::class);
-    }
 
     public function newQuery($except_deleted = true)
     {
