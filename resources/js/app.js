@@ -1,5 +1,4 @@
 import './bootstrap';
-import Vuetify from './Vuetify';
 import { createApp } from 'vue';
 import mitt from "mitt";
 import App from '@/Components/App.vue';
@@ -12,7 +11,6 @@ const app = createApp(App)
 
 app.config.devtools = true;
 
-app.use(Vuetify);
 app.use(router)
 app.use(store)
 app.mixin(mixin)

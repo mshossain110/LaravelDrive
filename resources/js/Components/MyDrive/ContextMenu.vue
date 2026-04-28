@@ -1,251 +1,141 @@
 <template>
-    <VOverlay
-        v-model="showMenu"
-        :position-x="x"
-        :position-y="y"
-        absolute
-        offset-y
-    >
-        <VList id="contextmenu">
-            <VListItem
-                v-for="(item, index) in items"
-                :key="index"
-                ripple
-                @click="item.action"
+    <Teleport to="body">
+        <Transition
+            enter-active-class="transition ease-out duration-100"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+        >
+            <div
+                v-if="showMenu"
+                class="fixed z-50"
+                :style="{ left: x + 'px', top: y + 'px' }"
             >
-                <VListItemAction v-if="item.icon">
-                    <VIcon>{{ item.icon }}</VIcon>
-                </VListItemAction>
-                <VListItemTitle>{{ item.title }}</VListItemTitle>
-            </VListItem>
-        </VList>
-    </VOverlay>
+                <!-- Backdrop -->
+                <div class="fixed inset-0" @click="showMenu = false" />
+
+                <!-- Menu -->
+                <div class="relative w-56 rounded-lg bg-white py-1.5 shadow-xl ring-1 ring-gray-200">
+                    <button
+                        v-for="(item, index) in items"
+                        :key="index"
+                        class="flex w-full items-center gap-3 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        @click="item.action(); showMenu = false"
+                    >
+                        <component :is="item.iconComponent" class="h-4 w-4 text-gray-400" />
+                        <span>{{ item.title }}</span>
+                    </button>
+                </div>
+            </div>
+        </Transition>
+    </Teleport>
 </template>
 
-<script>
-import { mapState } from 'vuex';
-import Mixins from './mixin';
+<script setup lang="ts">
+import { ref, computed, watch, getCurrentInstance, type Component } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import {
+    EyeIcon,
+    UsersIcon,
+    LinkIcon,
+    StarIcon,
+    ArrowRightIcon,
+    PencilIcon,
+    DocumentDuplicateIcon,
+    ArrowDownTrayIcon,
+    TrashIcon,
+    FolderPlusIcon,
+    ArrowUpTrayIcon,
+    FolderOpenIcon,
+    ArrowPathIcon,
+    XCircleIcon,
+} from '@heroicons/vue/24/outline';
 
-export default {
-    mixins: [Mixins],
-    props: {
-        value: {
-            type: Boolean
-        },
-        x: {
-            type: Number,
-            default: 0
-        },
-        y: {
-            type: Number,
-            default: 0
-        },
-        file: {
-            type: Object,
-            default () {
-                return {
+interface FileItem {
+    id?: number;
+    type?: string;
+    stared?: boolean;
+    deleted_at?: string | null;
+    [key: string]: unknown;
+}
 
-                };
-            }
-        }
-    },
-    data () {
-        return {
-            showMenu: this.value
-        };
-    },
-    computed: {
-        ...mapState('Media', ['selectedFilesId']),
-        items () {
-            // eslint-disable-next-line no-prototype-builtins
-            if (this.file.hasOwnProperty('id') && this.file.deleted_at === null) {
-                if (this.file.type === 'folder') {
-                    return this.menuitems.filter(i => i.show === 'items').filter(i => i.title !== 'Preview');
-                }
-                return this.menuitems.filter(i => i.show === 'items');
-                // eslint-disable-next-line no-prototype-builtins
-            } else if (this.file.hasOwnProperty('id') && this.file.deleted_at !== null) {
-                return this.menuitems.filter(i => i.show === 'trash');
-            } else if (this.$route.name === 'media' || this.$route.name === 'singleFolder') {
-                return this.menuitems.filter(i => i.show === 'back');
-            }
+interface MenuItem {
+    title: string;
+    iconComponent: Component;
+    show: string;
+    action: () => void;
+}
 
-            return [];
-        },
+const props = withDefaults(defineProps<{
+    modelValue?: boolean;
+    x?: number;
+    y?: number;
+    file?: FileItem;
+}>(), {
+    modelValue: false,
+    x: 0,
+    y: 0,
+    file: () => ({}),
+});
 
-        menuitems () {
-            return [
-                {
-                    title: 'Preview',
-                    icon: 'mdi-preview',
-                    show: 'items',
-                    action: this.preview
-                },
-                {
-                    title: 'Share',
-                    icon: 'supervisor_account',
-                    show: 'items',
-                    action: this.shareFiles
-                },
-                {
-                    title: 'Get shareable link',
-                    icon: 'link',
-                    show: 'items',
-                    action: this.shareLink
-                },
-                {
-                    title: this.file.stared ? 'Removed from star' : 'Add a star',
-                    icon: 'grade',
-                    show: 'items',
-                    action: this.manageStar
-                },
-                {
-                    title: 'Move to',
-                    icon: 'call_missed_outgoing',
-                    show: 'items',
-                    action: this.moveTo
-                },
-                {
-                    title: 'Rename',
-                    icon: 'edit',
-                    show: 'items',
-                    action: this.openRenameModel
-                },
-                {
-                    title: 'Make a copy',
-                    icon: 'file_copy',
-                    show: 'items',
-                    action: this.copyFiles
-                },
-                {
-                    title: 'Download',
-                    icon: 'cloud_download',
-                    show: 'items',
-                    action: this.downloadFile
-                },
-                {
-                    title: 'Delete',
-                    icon: 'delete',
-                    show: 'items',
-                    action: this.deleteItems
-                },
-                {
-                    title: 'New Folder',
-                    icon: 'create_new_folder',
-                    show: 'back',
-                    action: this.openNewFolderModal
-                },
-                {
-                    title: 'Upload files',
-                    icon: 'cloud_upload',
-                    show: 'back',
-                    action: this.openDropZone
-                },
-                {
-                    title: 'Upload Folder',
-                    icon: 'folder_open',
-                    show: 'back',
-                    action: this.uploadFolder
-                },
-                {
-                    title: 'Restore files',
-                    icon: 'restore',
-                    show: 'trash',
-                    action: this.restore
-                },
-                {
-                    title: 'Delete Forever',
-                    icon: 'delete_forever',
-                    show: 'trash',
-                    action: this.deleteForever
-                }
-            ];
-        }
-    },
-    watch: {
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>();
 
-        value (newVal) {
-            this.showMenu = false;
-            this.$nextTick(() => {
-                this.showMenu = newVal;
-            });
-        },
-        x () {
-            this.showMenu = false;
-            this.$nextTick(() => {
-                this.showMenu = true;
-            });
-        },
-        y () {
-            this.showMenu = false;
-            this.$nextTick(() => {
-                this.showMenu = true;
-            });
-        }
-    },
-    methods: {
-        openDropZone () {
-            this.emmiter.emit('openDropZone');
-        },
-        uploadFolder () {
-            this.emmiter.$emit('uploadFolder');
-        },
-        moveTo () {
-            this.$store.commit('Media/moveToemodal', true);
-        },
-        shareFiles () {
-            this.$store.commit('Media/shareFileModal', true);
-        },
-        shareLink () {
-            this.$store.commit('Media/shareLinkModal', true);
-        },
-        manageStar () {
-            // eslint-disable-next-line no-prototype-builtins
-            if (this.file.hasOwnProperty('id') && !this.file.stared) {
-                this.$store.dispatch('Media/addStar', { ids: this.selectedFilesId });
-            } else {
-                this.$store.dispatch('Media/removeStar', { ids: this.selectedFilesId });
-            }
-        },
-        openRenameModel () {
-            this.$store.commit('Media/renamefilemodal', true);
-        },
+const store = useStore();
+const route = useRoute();
+const instance = getCurrentInstance();
+const emmiter = instance?.appContext.config.globalProperties.emmiter;
 
-        deleteItems () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId });
-        },
-        copyFiles () {
-            this.$store.dispatch('Media/copyFile', { ids: this.selectedFilesId });
-        },
-        downloadFile () {
-            this.$store.dispatch('Media/downloadFile', { ids: this.selectedFilesId });
-        },
-        restore () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'restore' });
-        },
-        deleteForever () {
-            this.$store.dispatch('Media/deleteItem', { ids: this.selectedFilesId, action: 'deleteforever' });
-        },
-        preview () {
-            this.$store.commit('Media/previewModal', true);
-        }
+const showMenu = ref(props.modelValue);
+const selectedFilesId = computed<number[]>(() => store.state.Media.selectedFilesId);
+
+watch(() => props.modelValue, (val) => {
+    showMenu.value = false;
+    setTimeout(() => { showMenu.value = val; }, 0);
+});
+watch(() => props.x, () => {
+    showMenu.value = false;
+    setTimeout(() => { showMenu.value = true; }, 0);
+});
+watch(showMenu, (v) => emit('update:modelValue', v));
+
+const menuitems = computed((): MenuItem[] => [
+    { title: 'Preview', iconComponent: EyeIcon, show: 'items', action: () => store.commit('Media/previewModal', true) },
+    { title: 'Share', iconComponent: UsersIcon, show: 'items', action: () => store.commit('Media/shareFileModal', true) },
+    { title: 'Get shareable link', iconComponent: LinkIcon, show: 'items', action: () => store.commit('Media/shareLinkModal', true) },
+    { title: props.file?.stared ? 'Remove from star' : 'Add a star', iconComponent: StarIcon, show: 'items', action: manageStar },
+    { title: 'Move to', iconComponent: ArrowRightIcon, show: 'items', action: () => store.commit('Media/moveToemodal', true) },
+    { title: 'Rename', iconComponent: PencilIcon, show: 'items', action: () => store.commit('Media/renamefilemodal', true) },
+    { title: 'Make a copy', iconComponent: DocumentDuplicateIcon, show: 'items', action: () => store.dispatch('Media/copyFile', { ids: selectedFilesId.value }) },
+    { title: 'Download', iconComponent: ArrowDownTrayIcon, show: 'items', action: () => store.dispatch('Media/downloadFile', { ids: selectedFilesId.value }) },
+    { title: 'Delete', iconComponent: TrashIcon, show: 'items', action: () => store.dispatch('Media/deleteItem', { ids: selectedFilesId.value }) },
+    { title: 'New Folder', iconComponent: FolderPlusIcon, show: 'back', action: () => store.commit('Media/newFolderModal', true) },
+    { title: 'Upload files', iconComponent: ArrowUpTrayIcon, show: 'back', action: () => emmiter?.emit('openDropZone') },
+    { title: 'Upload Folder', iconComponent: FolderOpenIcon, show: 'back', action: () => emmiter?.emit('uploadFolder') },
+    { title: 'Restore files', iconComponent: ArrowPathIcon, show: 'trash', action: () => store.dispatch('Media/deleteItem', { ids: selectedFilesId.value, action: 'restore' }) },
+    { title: 'Delete Forever', iconComponent: XCircleIcon, show: 'trash', action: () => store.dispatch('Media/deleteItem', { ids: selectedFilesId.value, action: 'deleteforever' }) },
+]);
+
+const items = computed(() => {
+    const f = props.file;
+    if (f?.id !== undefined && f.deleted_at === null) {
+        const fileItems = menuitems.value.filter(i => i.show === 'items');
+        return f.type === 'folder' ? fileItems.filter(i => i.title !== 'Preview') : fileItems;
+    } else if (f?.id !== undefined && f.deleted_at !== null) {
+        return menuitems.value.filter(i => i.show === 'trash');
+    } else if (route.name === 'media' || route.name === 'singleFolder') {
+        return menuitems.value.filter(i => i.show === 'back');
     }
-};
+    return [];
+});
+
+function manageStar() {
+    if (props.file?.id !== undefined && !props.file.stared) {
+        store.dispatch('Media/addStar', { ids: selectedFilesId.value });
+    } else {
+        store.dispatch('Media/removeStar', { ids: selectedFilesId.value });
+    }
+}
 </script>
-
-<style>
-    #contextmenu {
-        width: 300px;
-        padding: 10px;
-    }
-    #contextmenu .v-list-item.theme--light:hover {
-        background: #f3f3f3;
-    }
-    #contextmenu .v-list-item__action {
-        min-width: 36px;
-    }
-    #contextmenu .v-list-item {
-        height: 32px;
-        cursor: pointer;
-    }
-</style>

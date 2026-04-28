@@ -1,28 +1,18 @@
 <template>
-    <VRow>
-        <VCol cols="3">
+    <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 md:col-span-3">
             <Languages v-model="locale" />
-        </VCol>
-        <VCol cols="9">
+        </div>
+        <div class="col-span-12 md:col-span-9">
             <Translations :locale="locale" />
-        </VCol>
-    </VRow>
+        </div>
+    </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue';
 import Languages from './Languages';
 import Translations from './Translations';
-export default {
-    components: {
-        Languages,
-        Translations
-    },
-    data: () => ({
-        locale: 'en'
-    })
-};
+
+const locale = ref('en');
 </script>
-
-<style>
-
-</style>

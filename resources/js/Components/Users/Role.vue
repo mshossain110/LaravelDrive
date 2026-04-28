@@ -1,33 +1,30 @@
 <template>
     <div>
-        <VListItem
-            :to="{name: 'role-permissions', params: { id: role.id }}"
-            ripple
+        <router-link
+            :to="{ name: 'role-permissions', params: { id: role.id } }"
+            class="flex items-center justify-between px-6 py-3 hover:bg-gray-50 transition-colors"
         >
-            <VListItemContent>
-                <VListItemTitle>{{ role.name }}</VListItemTitle>
-                <VListItemSubtitle>
-                    {{ role.description }}
-                </VListItemSubtitle>
-            </VListItemContent>
-            <VListItemAction class="role-action">
-                <VIcon
+            <div class="min-w-0 flex-1">
+                <div class="text-sm font-medium text-gray-900">{{ role.name }}</div>
+                <div class="truncate text-xs text-gray-500">{{ role.description }}</div>
+            </div>
+            <div class="ml-4 flex items-center gap-2">
+                <button
                     v-if="hasPermission('role.update')"
-                    small
-                    class="mr-2"
-                    @click="roleEdit = !roleEdit"
+                    class="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    @click.prevent="roleEdit = !roleEdit"
                 >
-                    edit
-                </VIcon>
-                <VIcon
+                    <PencilIcon class="h-4 w-4" />
+                </button>
+                <button
                     v-if="hasPermission('role.delete')"
-                    small
-                    @click="deleteRole(role.id)"
+                    class="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                    @click.prevent="deleteRole(role.id)"
                 >
-                    delete
-                </VIcon>
-            </VListItemAction>
-        </VListItem>
+                    <TrashIcon class="h-4 w-4" />
+                </button>
+            </div>
+        </router-link>
         <RoleForm
             v-if="roleEdit && hasPermission('role.update')"
             :role="role"
@@ -36,32 +33,18 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { PencilIcon, TrashIcon } from '@heroicons/vue/24/outline';
 import RoleForm from './RoleForm.vue';
 
-export default {
+const props = defineProps<{ role: { id: number; name: string; description: string } }>();
 
-    components: {
-        RoleForm
-    },
-    props: {
-        role: {
-            type: Object,
-            required: true
-        }
-    },
-    data () {
-        return {
-            roleEdit: false
-        };
-    },
-    computed: {
+const store = useStore();
+const roleEdit = ref(false);
 
-    },
-    methods: {
-        deleteRole (id) {
-            this.$store.dispatch('Users/deleteRole', id);
-        }
-    }
-};
+function deleteRole(id: number) {
+    store.dispatch('Users/deleteRole', id);
+}
 </script>

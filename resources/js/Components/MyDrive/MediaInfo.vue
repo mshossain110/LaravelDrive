@@ -1,236 +1,118 @@
 <template>
-    <VNavigationDrawer
-        class="media-info file-deselet"
-        :model-value="fileInfoSideBar"
-        absolute
-        right
-    >
-        <div
-            v-if="hasItem"
-            class="mi-fh"
-        >
-            <span
-                class="fn-i-i"
-                :style="{ color: mediaIcon.color }"
-                size="15"
-                tile
-                v-html="mediaIcon.icon"
-            />
-            <h3>{{ selectedMedia.name }}</h3>
+    <aside class="absolute inset-y-0 right-0 z-10 w-80 border-l border-gray-200 bg-white shadow-lg">
+        <!-- Header -->
+        <div v-if="hasItem" class="flex items-center gap-3 border-b border-gray-200 px-4 py-3">
+            <component :is="iconComponent" class="h-5 w-5 shrink-0" :class="iconColor" />
+            <h3 class="truncate text-sm font-semibold text-gray-900">{{ selectedMedia.name }}</h3>
+        </div>
+        <div v-else class="flex items-center gap-3 border-b border-gray-200 px-4 py-3">
+            <FolderIcon class="h-5 w-5 text-amber-500" />
+            <h3 class="text-sm font-semibold text-gray-900">My Files</h3>
         </div>
 
-        <div
-            v-else
-            class="mi-fh pa-3"
-        >
-            <span
-                class="fn-i-i"
-                :style="{ color: mediaIcon.color }"
-                size="15"
-                tile
-                v-html="mediaIcon.icon"
-            />
-            <h3>My Files </h3>
-        </div>
-
-        <div class="la-toggle-bn">
-            <a
-                v-if="tabActive == 1"
-                href="#"
-                :class="{'active': tabActive == 1 }"
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200">
+            <button
+                class="flex-1 py-2.5 text-center text-xs font-medium transition-colors"
+                :class="tabActive === 1 ? 'border-b-2 border-brand-600 text-brand-700' : 'text-gray-500 hover:text-gray-700'"
+                @click="tabActive = 1"
             >
                 Details
-            </a>
-            <a
-                v-if="tabActive == 1"
-                href="#"
-                :class="{'active': tabActive == 2 }"
+            </button>
+            <button
+                class="flex-1 py-2.5 text-center text-xs font-medium transition-colors"
+                :class="tabActive === 2 ? 'border-b-2 border-brand-600 text-brand-700' : 'text-gray-500 hover:text-gray-700'"
+                @click="tabActive = 2"
             >
                 Activities
-            </a>
+            </button>
         </div>
 
-        <div
-            v-if="hasItem"
-            class="details pa-3"
-        >
-            <VImg
+        <!-- File details -->
+        <div v-if="hasItem" class="overflow-y-auto p-4" style="max-height: calc(100% - 110px)">
+            <img
+                v-if="isImageFile"
                 :src="selectedMedia.public_path"
-                :lazy-src="selectedMedia.public_path"
+                :alt="selectedMedia.name"
+                class="mb-4 w-full rounded-lg object-cover"
+                loading="lazy"
             />
 
-            <div class="las-info-list">
-                <div class="las-ii">
-                    <span class="la-ik">
-                        File Name
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.name }}
-                    </span>
+            <dl class="space-y-3">
+                <div v-for="detail in details" :key="detail.label" class="flex gap-3">
+                    <dt class="w-24 shrink-0 text-xs text-gray-500">{{ detail.label }}</dt>
+                    <dd class="break-all text-xs text-gray-900">{{ detail.value }}</dd>
                 </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Type
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.type }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Size
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.file_size }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Storate Used
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.file_size }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Location
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.url }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Owner
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.file_name }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Created
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.created_at.date }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Modified
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.updated_at.date }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        Description
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.description }}
-                    </span>
-                </div>
-                <div class="las-ii">
-                    <span class="la-ik">
-                        File Name
-                    </span>
-                    <span class="la-iv">
-                        {{ selectedMedia.file_name }}
-                    </span>
-                </div>
-            </div>
+            </dl>
         </div>
 
-        <div
-            v-else
-            class="no-item pa-3"
-        >
-            <VIcon
-                color="gray"
-                large
-            >
-                home
-            </VIcon>
-
-            <h4>Select a file or folder to view its details.</h4>
+        <!-- Empty state -->
+        <div v-else class="flex flex-col items-center justify-center px-4 py-16 text-center">
+            <DocumentIcon class="mb-3 h-12 w-12 text-gray-300" />
+            <p class="text-sm text-gray-500">Select a file or folder to view its details.</p>
         </div>
-    </VNavigationDrawer>
+    </aside>
 </template>
 
-<script>
-/* eslint-disable vue/no-v-html */
-import { mapState } from 'vuex';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import {
+    FolderIcon,
+    DocumentIcon,
+    DocumentTextIcon,
+    PhotoIcon,
+    FilmIcon,
+    MusicalNoteIcon,
+    ArchiveBoxIcon,
+} from '@heroicons/vue/24/outline';
+import type { Component } from 'vue';
 
-import Mixins from './mixin';
+const store = useStore();
+const tabActive = ref(1);
 
-export default {
-    mixins: [Mixins],
-    data () {
-        return {
-            tabActive: 1
-        };
-    },
-    computed: {
-        ...mapState('Media', ['fileInfoSideBar', 'selectedMedia']),
-        mediaIcon () {
-            if (this.hasItem) {
-                return this.getMediaIcon(this.selectedMedia.extension);
-            } else {
-                return this.getMediaIcon('folder');
-            }
-        },
-        hasItem () {
-            // eslint-disable-next-line no-prototype-builtins
-            return this.selectedMedia.hasOwnProperty('id');
-        }
-    },
-    methods: {
+const selectedMedia = computed(() => store.state.Media.selectedMedia);
 
-    }
-};
+const hasItem = computed(() => selectedMedia.value?.id !== undefined);
+
+const imageTypes = ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'];
+
+const isImageFile = computed(() => imageTypes.includes(selectedMedia.value?.extension));
+
+const iconComponent = computed((): Component => {
+    const ext = selectedMedia.value?.extension;
+    const type = selectedMedia.value?.type;
+    if (type === 'folder') return FolderIcon;
+    if (imageTypes.includes(ext)) return PhotoIcon;
+    if (['pdf', 'txt', 'doc', 'docx'].includes(ext)) return DocumentTextIcon;
+    if (['mp4', 'webm', 'mov'].includes(ext)) return FilmIcon;
+    if (['mp3', 'ogg'].includes(ext)) return MusicalNoteIcon;
+    if (['zip', 'rar', '7z'].includes(ext)) return ArchiveBoxIcon;
+    return DocumentIcon;
+});
+
+const iconColor = computed((): string => {
+    const ext = selectedMedia.value?.extension;
+    const type = selectedMedia.value?.type;
+    if (type === 'folder') return 'text-amber-500';
+    if (imageTypes.includes(ext)) return 'text-emerald-500';
+    if (['pdf'].includes(ext)) return 'text-red-500';
+    return 'text-gray-400';
+});
+
+const details = computed(() => {
+    const m = selectedMedia.value;
+    if (!m?.id) return [];
+    return [
+        { label: 'File Name', value: m.name },
+        { label: 'Type', value: m.type },
+        { label: 'Size', value: m.file_size },
+        { label: 'Storage Used', value: m.file_size },
+        { label: 'Location', value: m.url },
+        { label: 'Owner', value: m.file_name },
+        { label: 'Created', value: m.created_at?.date },
+        { label: 'Modified', value: m.updated_at?.date },
+        { label: 'Description', value: m.description },
+    ].filter(d => d.value);
+});
 </script>
-<style>
-    /* .media-info {
-        border-top: 1px solid #ddd;
-        .mi-fh {
-            padding:20px 0px;
-            h3 {
-                display: inline;
-            }
-        }
-
-        .la-toggle-bn {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 1px solid #ddd;
-            a {
-                padding: 10px 20px;
-                display: inline-block;
-                font-size: 16px;
-                &.active,
-                &:hover {
-                    text-decoration: none;
-                    border-bottom: 3px solid rgb(45, 111, 173);
-                }
-            }
-        }
-        .las-info-list {
-            margin-top: 20px;
-            .las-ii {
-                display: flex;
-                justify-content: flex-start;
-                align-items: self-start;
-                padding: 7px 0px;
-                text-overflow: clip;
-                word-break: break-word;
-                overflow: hidden;
-                span.la-ik {
-                    flex: 0 0 120px;
-                    color: #757373;
-                }
-            }
-        }
-    } */
-</style>

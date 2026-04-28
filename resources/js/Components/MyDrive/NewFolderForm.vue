@@ -1,93 +1,51 @@
 <template>
-    <VDialog
-        :model-value="open"
-        class="mpu"
-        width="500"
-        persistent
-    >
+    <AppModal :open="open" title="New Folder" max-width="sm" @close="close">
         <form @submit.prevent="onSubmit">
-            <VCard>
-                <VCardTitle
-                    class="headline grey lighten-2"
-                >
-                    New Folder
-                </VCardTitle>
-
-                <VCardText>
-                    <ValidationProvider
-                        v-slot="{ errors }"
-                        name="Name"
-                        :rules="'required|min:6'"
-                    >
-                        <VTextField
-                            v-model="name"
-                            :error-messages="errors"
-                            label="Name"
-                            required
-                        />
-                    </ValidationProvider>
-                </VCardText>
-                <VDivider />
-                <VCardActions>
-                    <VBtn
-                        color="primary"
-                        type="submit"
-                    >
-                        Craete
-                    </VBtn>
-                    <VBtn
-                        color="error"
-                        @click="close"
-                    >
-                        Cancel
-                    </VBtn>
-                </VCardActions>
-            </VCard>
+            <div class="px-6 py-4">
+                <label for="folder-name" class="block text-sm font-medium text-gray-700">Folder name</label>
+                <input
+                    id="folder-name"
+                    v-model="name"
+                    type="text"
+                    required
+                    minlength="3"
+                    class="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                    placeholder="Enter folder name"
+                />
+            </div>
+            <div class="flex justify-end gap-2 border-t border-gray-200 px-6 py-3">
+                <button type="button" class="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100" @click="close">Cancel</button>
+                <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700">Create</button>
+            </div>
         </form>
-    </VDialog>
+    </AppModal>
 </template>
 
-<script>
-import Mixin from './mixin';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import AppModal from '@/Components/UI/AppModal.vue';
 
-export default {
-    mixins: [Mixin],
-    props: {
-        open: {
-            type: Boolean,
-            default: false
-        }
-    },
-    data () {
-        return {
-            name: ''
-        };
-    },
-    computed: {
+defineProps<{ open: boolean }>();
 
-    },
-    methods: {
-        onSubmit () {
-            const item = {
-                name: this.name,
-                parent_id: this.currentFolderId
-            };
+const store = useStore();
+const route = useRoute();
+const name = ref('');
 
-            this.$store.dispatch('Media/addFolder', item)
-                .then(() => {
-                    this.close();
-                });
-        },
-        close () {
-            this.$store.commit('Media/newFolderModal', false);
-            this.name = '';
-        }
-    }
-};
-</script>
+const currentFolderId = computed(() => {
+    const hash = route.params.folderId as string;
+    const folders = store.state.Media.folders;
+    const f = folders.find((m: any) => m.hash === hash);
+    return f ? f.id : 0;
+});
 
-<style>
-.mpu .v-card__actions {
-    border-top: 1px solid #ddd;
+function onSubmit() {
+    store.dispatch('Media/addFolder', { name: name.value, parent_id: currentFolderId.value })
+        .then(() => close());
 }
-</style>
+function close() {
+    store.commit('Media/newFolderModal', false);
+    name.value = '';
+}
+</script>

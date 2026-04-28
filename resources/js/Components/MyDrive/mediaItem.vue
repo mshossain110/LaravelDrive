@@ -2,215 +2,108 @@
 <template>
     <!-- eslint-disable vue/no-v-html  -->
     <div
-        class="media-item"
-        :class="{ 'selected': isSelected }"
+        class="group relative w-full cursor-pointer select-none"
+        :class="isSelected ? 'ring-2 ring-brand-500 rounded-lg' : ''"
     >
-        <div class="card-inner">
-            <div class="la-file-name">
+        <div class="overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
+            <!-- Thumbnail area -->
+            <div class="relative flex h-[166px] items-center justify-center bg-gray-50">
+                <img
+                    v-if="isImage"
+                    :src="media.public_path"
+                    :alt="media.name"
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                />
                 <div
-                    class="fi"
-                    :class="mediaIcon.type"
-                    :style="{ color: mediaIcon.color }"
+                    v-else
+                    class="flex h-full w-full items-center justify-center"
                 >
-                    <div
-                        v-if="isImage"
-                        class="la-fii"
-                    >
-                        <VImg
-                            v-if="isImage"
-                            :src="media.public_path"
-                            height="166"
-                            :lazy-src="media.public_path"
-                        />
-                    </div>
-                    <div
-                        v-else
-                        class="la-fia"
-                    >
-                        <VAvatar
-                            size="166"
-                            tile
-                            v-html="mediaIcon.icon"
-                        />
-                    </div>
+                    <component :is="fileIconComponent" class="h-16 w-16" :class="fileIconColor" />
                 </div>
 
-                <div class="fn">
-                    <div class="fn-i">
-                        <span
-                            class="fn-i-i"
-                            :style="{ color: mediaIcon.color }"
-                            size="15"
-                            tile
-                            v-html="mediaIcon.icon"
-                        />
-                        <div class="fn-i-t">
-                            <span
-                                v-if="!media.edit"
-                                class="filename"
-                                v-text="media.name"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <span
+                <!-- Star badge -->
+                <StarIconSolid
                     v-if="media.stared"
-                    class="fstared material-icons"
-                    size="15"
-                    tile
-                >
-                    star
-                </span>
+                    class="absolute right-2 top-2 h-5 w-5 text-amber-400 drop-shadow"
+                />
+            </div>
+
+            <!-- Name bar -->
+            <div class="flex items-center gap-2 border-t border-gray-100 px-3 py-2.5">
+                <component :is="fileIconComponent" class="h-4 w-4 shrink-0" :class="fileIconColor" />
+                <span class="truncate text-sm text-gray-700">{{ media.name }}</span>
             </div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, type Component } from 'vue';
+import { useStore } from 'vuex';
+import {
+    PhotoIcon,
+    DocumentTextIcon,
+    FilmIcon,
+    MusicalNoteIcon,
+    FolderIcon,
+    DocumentIcon,
+    ArchiveBoxIcon,
+    CodeBracketIcon,
+} from '@heroicons/vue/24/outline';
+import { StarIcon as StarIconSolid } from '@heroicons/vue/24/solid';
 
-import Mixins from './mixin';
-import { mapState } from 'vuex';
+interface MediaFile {
+    id: number;
+    name: string;
+    extension: string;
+    type: string;
+    public_path: string;
+    stared: boolean;
+    edit?: boolean;
+}
 
-export default {
-    mixins: [Mixins],
-    props: {
-        media: {
-            type: Object,
-            required: true
-        },
-        editable: Boolean
-    },
-    data () {
-        return {
-            error: '',
-            submitting: false
-        };
-    },
-    computed: {
-        ...mapState('Media', ['selectedFilesId', 'selectedMedia']),
-        mediaIcon () {
-            return this.getMediaIcon(this.media.extension);
-        },
-        fileUrl () {
-            return this.media.public_path;
-        },
-        isSelected () {
-            return this.selectedFilesId.findIndex(x => x === this.media.id) !== -1;
-        },
-        isImage () {
-            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.media.extension) !== -1;
-        },
-        ispdf () {
-            return ['pdf', 'txt'].indexOf(this.media.extension) !== -1;
-        },
-        isVideo () {
-            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.media.extension) !== -1;
-        },
-        isAudio () {
-            return ['mp3', 'ogg'].indexOf(this.media.extension) !== -1;
-        }
-    },
-    methods: {
-        renameMedia () {
-            if (this.submitting) {
-                return;
-            }
+const props = defineProps<{
+    media: MediaFile;
+}>();
 
-            this.submitting = true;
+const store = useStore();
 
-            if (this.media.name === '') {
-                this.$store.commit('setSnackbar',
-                    {
-                        message: 'Folder Name should not be null.',
-                        status: '',
-                        color: 'error',
-                        show: true
-                    },
-                    { root: true });
-                this.$refs.medaiName.focus();
-                this.submitting = false;
-                return;
-            }
+const selectedFilesId = computed<number[]>(() => store.state.Media.selectedFilesId);
 
-            this.$emit('rename', this.media);
-        }
+const isSelected = computed(() => selectedFilesId.value.includes(props.media.id));
 
-    }
-};
+const isImage = computed(() =>
+    ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].includes(props.media.extension)
+);
+
+const imageTypes = ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'];
+const videoTypes = ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'];
+const audioTypes = ['mp3', 'ogg'];
+const archiveTypes = ['zip', 'rar', '7z', 'tar', 'gz'];
+const codeTypes = ['css', 'html', 'javascript', 'js', 'ts', 'xml', 'json'];
+
+const fileIconComponent = computed((): Component => {
+    const ext = props.media.extension;
+    if (props.media.type === 'folder') return FolderIcon;
+    if (imageTypes.includes(ext)) return PhotoIcon;
+    if (['pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'csv'].includes(ext)) return DocumentTextIcon;
+    if (videoTypes.includes(ext)) return FilmIcon;
+    if (audioTypes.includes(ext)) return MusicalNoteIcon;
+    if (archiveTypes.includes(ext)) return ArchiveBoxIcon;
+    if (codeTypes.includes(ext)) return CodeBracketIcon;
+    return DocumentIcon;
+});
+
+const fileIconColor = computed((): string => {
+    const ext = props.media.extension;
+    if (props.media.type === 'folder') return 'text-amber-500';
+    if (imageTypes.includes(ext)) return 'text-emerald-500';
+    if (['pdf'].includes(ext)) return 'text-red-500';
+    if (['doc', 'docx'].includes(ext)) return 'text-blue-600';
+    if (['xls', 'xlsx', 'csv'].includes(ext)) return 'text-green-600';
+    if (videoTypes.includes(ext)) return 'text-purple-500';
+    if (audioTypes.includes(ext)) return 'text-orange-500';
+    return 'text-gray-400';
+});
 </script>
-
-<style lang="css">
-/* #filecontainer .media-item {
-    .card-inner {
-        border: 1px solid #e8eaed;
-        -webkit-border-radius: 6px;
-        border-radius: 6px;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        position: relative;
-        width: 100%;
-    }
-    &.selected  .card-inner {
-        border: 1px solid #226cdb;
-    }
-    .la-fia {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .fn {
-        height: 48px;
-        width: 100%;
-        border-radius: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        .fn-i {
-            display: flex;
-            padding: 5px;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100%;
-            .fn-i-i {
-                padding: 0px 10px;
-                span {
-                    font-size: 16px;
-                    vertical-align: middle;
-                }
-                [class^="flaticon-"]:before,
-                [class^="flaticon-"]:after,
-                [class*=" flaticon-"]:before,
-                [class*=" flaticon-"]:after {
-                    font-size: 16px;
-                    margin: 0;
-                }
-            }
-            .fn-i-t {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                padding-right: 10px;
-            }
-        }
-    }
-    .fi .lafi{
-        font-size: 90px;
-
-        &[class^="flaticon-"]:before,
-        &[class^="flaticon-"]:after,
-        &[class*=" flaticon-"]:before,
-        &[class*=" flaticon-"]:after {
-            font-size: 90px;
-            margin: 0;
-        }
-    }
-    span.fstared {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        color: #d4a002;
-    }
-} */
-
-</style>

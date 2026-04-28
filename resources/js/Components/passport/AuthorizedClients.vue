@@ -1,99 +1,47 @@
-<style scoped>
-    .action-link {
-        cursor: pointer;
-    }
-</style>
-
 <template>
-    <div>
-        <div v-if="tokens.length > 0">
-            <div class="card card-default">
-                <div class="card-header">
-                    Authorized Applications
-                </div>
+    <div v-if="tokens.length > 0" class="overflow-hidden rounded-xl bg-white shadow-sm">
+        <div class="border-b border-gray-200 px-6 py-4">
+            <h2 class="text-base font-semibold text-gray-900">Authorized Applications</h2>
+        </div>
 
-                <div class="card-body">
-                    <!-- Authorized Tokens -->
-                    <table class="table table-borderless mb-0">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Scopes</th>
-                                <th />
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr
-                                v-for="token in tokens"
-                                :key="token.id"
-                            >
-                                <!-- Client Name -->
-                                <td style="vertical-align: middle;">
-                                    {{ token.client.name }}
-                                </td>
-
-                                <!-- Scopes -->
-                                <td style="vertical-align: middle;">
-                                    <span v-if="token.scopes.length > 0">
-                                        {{ token.scopes.join(', ') }}
-                                    </span>
-                                </td>
-
-                                <!-- Revoke Button -->
-                                <td style="vertical-align: middle;">
-                                    <a
-                                        class="action-link text-danger"
-                                        @click="revoke(token)"
-                                    >
-                                        Revoke
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="p-6">
+            <table class="w-full text-left text-sm">
+                <thead class="border-b border-gray-200 text-xs uppercase text-gray-500">
+                    <tr>
+                        <th class="px-3 py-3">Name</th>
+                        <th class="px-3 py-3">Scopes</th>
+                        <th class="px-3 py-3" />
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr v-for="token in tokens" :key="token.id" class="hover:bg-gray-50">
+                        <td class="px-3 py-3 align-middle">{{ token.client.name }}</td>
+                        <td class="px-3 py-3 align-middle">
+                            <span v-if="token.scopes.length > 0">{{ token.scopes.join(', ') }}</span>
+                        </td>
+                        <td class="px-3 py-3 align-middle">
+                            <button class="text-sm font-medium text-red-600 hover:text-red-700" @click="revoke(token)">Revoke</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    /*
-         * The component's data.
-         */
     data () {
         return {
             tokens: []
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready () {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted () {
-        this.prepareComponent();
+        this.getTokens();
     },
 
     methods: {
-        /**
-             * Prepare the component (Vue 2.x).
-             */
-        prepareComponent () {
-            this.getTokens();
-        },
-
-        /**
-             * Get all of the authorized tokens for the user.
-             */
         getTokens () {
             axios.get('/oauth/tokens')
                 .then(response => {
@@ -101,12 +49,9 @@ export default {
                 });
         },
 
-        /**
-             * Revoke the given token.
-             */
         revoke (token) {
             axios.delete('/oauth/tokens/' + token.id)
-                .then(response => {
+                .then(() => {
                     this.getTokens();
                 });
         }

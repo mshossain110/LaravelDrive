@@ -7,10 +7,8 @@
             ref="myVueDropzone"
             :options="dropzoneOptions"
             :style="dropzonestyle"
-
             @vdropzone-files-added="fileAdded"
             @vdropzone-success="success"
-
             @vdropzone-processing="processing"
             @vdropzone-chunks-uploaded="chunksUploaded"
             @vdropzone-upload-progress="uploadProgress"
@@ -19,70 +17,62 @@
             @vdropzone-drag-leave="deactive"
         />
 
-        <VCard
+        <!-- Upload progress panel -->
+        <div
             v-if="filesAddedpoppu"
-            class="upload-file-list elevation-8"
+            class="fixed bottom-5 right-5 z-50 w-[420px] overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-gray-200"
         >
-            <VToolbar
-                color="red derken-2"
-            >
-                <VToolbarTitle class="white--text">
-                    Uploading files
-                </VToolbarTitle>
+            <!-- Header -->
+            <div class="flex items-center gap-2 bg-brand-600 px-4 py-2.5">
+                <span class="flex-1 text-sm font-medium text-white">Uploading files</span>
+                <button class="rounded p-1 text-white/80 hover:text-white" @click="expandLess = !expandLess">
+                    <ChevronUpIcon v-if="expandLess" class="h-4 w-4" />
+                    <ChevronDownIcon v-else class="h-4 w-4" />
+                </button>
+                <button class="rounded p-1 text-white/80 hover:text-white" @click="filesAddedpoppu = false">
+                    <XMarkIcon class="h-4 w-4" />
+                </button>
+            </div>
 
-                <VSpacer />
-
-                <VBtn
-                    icon
-                    @click="expandLess =!expandLess "
+            <!-- File list -->
+            <div v-show="expandLess" class="max-h-60 divide-y divide-gray-100 overflow-y-auto">
+                <div
+                    v-for="file in fileList"
+                    :key="file.size"
+                    class="flex items-center gap-3 px-4 py-2.5"
                 >
-                    <VIcon v-if="!expandLess">
-                        expand_less
-                    </VIcon>
-                    <VIcon v-if="expandLess">
-                        expand_more
-                    </VIcon>
-                </VBtn>
-
-                <VBtn
-                    icon
-                    @click="filesAddedpoppu = false"
-                >
-                    <VIcon>close</VIcon>
-                </VBtn>
-            </VToolbar>
-
-            <VCardText v-show="expandLess">
-                <ul>
-                    <li
-                        v-for="file in fileList"
-                        :key="file.size"
-                    >
-                        <div class="file-name">
-                            <span
-                                class="fn-i-i"
-                                :style="{ color: mediaIcon(file.type).color }"
-                                size="15"
-                                v-html="mediaIcon(file.type).icon"
-                            />
-                            <span>{{ file.name }}</span>
-                        </div>
-
-                        <VProgressCircular :model-value="file.ldporgress" />
-                    </li>
-                </ul>
-            </VCardText>
-        </VCard>
+                    <DocumentIcon class="h-5 w-5 shrink-0 text-gray-400" />
+                    <span class="flex-1 truncate text-sm text-gray-700">{{ file.name }}</span>
+                    <!-- Progress ring -->
+                    <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke-width="2" stroke="currentColor" fill="none" class="text-gray-200" />
+                        <circle
+                            cx="12" cy="12" r="10" stroke-width="2" stroke="currentColor" fill="none"
+                            class="text-brand-600"
+                            :stroke-dasharray="62.83"
+                            :stroke-dashoffset="62.83 - (62.83 * (file.ldporgress || 0)) / 100"
+                            stroke-linecap="round"
+                            transform="rotate(-90 12 12)"
+                        />
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import Dropzone from '@/Components/dropzone';
+import { ChevronUpIcon, ChevronDownIcon, XMarkIcon, DocumentIcon } from '@heroicons/vue/24/outline';
 import Mixins from './mixin';
 
 export default {
     components: {
-        Dropzone
+        Dropzone,
+        ChevronUpIcon,
+        ChevronDownIcon,
+        XMarkIcon,
+        DocumentIcon,
     },
     mixins: [Mixins],
     props: {
@@ -113,31 +103,24 @@ export default {
                 forceChunking: true,
                 maxFilesize: 400000000,
                 chunkSize: 1000000,
-                // If true, the individual chunks of a file are being uploaded simultaneously.
                 parallelChunkUploads: true,
-                retryChunks: true, // retry chunks on failure
+                retryChunks: true,
                 retryChunksLimit: 3
             };
         },
         dropzonestyle () {
             return this.value ? { display: 'block', opacity: 1 } : { display: 'none', opacity: 0 };
         }
-
     },
     mounted () {
         this.emmiter.on('openDropZone', () => {
             this.openUploader();
         });
-
         this.emmiter.on('uploadFolder', () => {
             this.uploadFolder();
         });
     },
     methods: {
-        progressCount (file) {
-            const up = file.upload;
-            return (up.progress / up.total) * 100;
-        },
         mediaIcon (type) {
             const filetype = type.split('/');
             return this.getMediaIcon(filetype[1]);
@@ -151,7 +134,7 @@ export default {
             event.preventDefault();
             this.$emit('input', false);
         },
-        uploadProgress (file, progress, bytesSent) {
+        uploadProgress (file, progress) {
             const i = this.fileList.findIndex(f => f.size === file.size);
             this.fileList[i].ldporgress = progress;
             this.fileList[i] = Object.assign(file, this.fileList[i]);
@@ -162,7 +145,6 @@ export default {
         },
         fileAdded (files) {
             this.filesAddedpoppu = true;
-            // loop through files
             for (var i = 0; i < files.length; i++) {
                 files[i].ldporgress = 0;
                 this.fileList.push(files[i]);
@@ -175,7 +157,6 @@ export default {
         chunksUploaded (file, done) {
             done();
         },
-
         sending (file, xhr, formData) {
             let path = file.fullPath || file.webkitRelativePath || file.mozRelativePath;
             if (typeof path === 'undefined') {
@@ -196,36 +177,3 @@ export default {
     }
 };
 </script>
-
-<style>
-.v-card.upload-file-list{
-    position: absolute;
-    bottom: 20px;
-    width: 500px;
-    right: 0;
-}
-
-.v-card.upload-file-list ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-.v-card.upload-file-list ul li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-}
-.v-card.upload-file-list ul li .file-name {
-    max-width: 80%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.v-card.upload-file-list ul li [class^="flaticon-"]:before,
-.v-card.upload-file-list ul li [class*=" flaticon-"]:before,
-.v-card.upload-file-list ul li [class^="flaticon-"]:after,
-.v-card.upload-file-list ul li [class*=" flaticon-"]:after {
-    margin-left: 0 !important;
-}
-</style>

@@ -1,19 +1,14 @@
 <template>
-    <VSheet class="d-block">
-        <VSheet
+    <div>
+        <div
             v-if="isLoaded"
-            fill-height
-            :class="{'my-file': true, 'sidebar-open': fileInfoSideBar}"
+            class="relative mt-4"
+            :class="{ 'mr-80': fileInfoSideBar }"
             @dragenter="activeDropzone($event)"
             @contextmenu="showContextMenu"
         >
-            <VSheet
-                id="filecontainer"
-                row
-                wrap
-            >
-                <VSheet
-                    class="d-flex"
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                <div
                     v-for="img in sharedItems"
                     :key="img.id"
                     @contextmenu="showContextMenu2($event, img)"
@@ -21,31 +16,38 @@
                     @touchstart="OnClickItem($event, img)"
                 >
                     <MediaItem :media="img" />
-                </VSheet>
-            </VSheet>
+                </div>
+            </div>
+
+            <div v-if="!sharedItems.length" class="flex flex-col items-center justify-center py-20 text-center">
+                <svg class="mb-4 h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <p class="text-sm text-gray-500">No files shared with you</p>
+            </div>
 
             <MediaInfo v-if="fileInfoSideBar" />
             <FileUploader v-model="fileUploader" />
-            <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
             <ContextMenu
                 v-model="cm.show"
                 :x="cm.x"
                 :y="cm.y"
                 :file="cm.file"
             />
-        </VSheet>
-        <template v-if="newFolderModal">
-            <NewFolderForm :open="newFolderModal" />
-        </template>
-        <template v-if="shareFileModal">
-            <ShareFile :open="shareFileModal" />
-        </template>
-        <template v-if="renamefilemodal">
-            <RenameFile :open="renamefilemodal" />
-        </template>
+        </div>
 
+        <div v-else class="flex items-center justify-center py-20">
+            <svg class="h-8 w-8 animate-spin text-brand-600" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+        </div>
+
+        <NewFolderForm v-if="newFolderModal" :open="newFolderModal" />
+        <ShareFile v-if="shareFileModal" :open="shareFileModal" />
+        <RenameFile v-if="renamefilemodal" :open="renamefilemodal" />
         <MoveTo />
-    </VSheet>
+    </div>
 </template>
 
 <script>
@@ -89,7 +91,7 @@ export default {
         }
     },
     watch: {
-        '$route' (to, from) {
+        '$route' (to) {
             this.selfMddiaItems(to);
         }
     },
@@ -98,17 +100,12 @@ export default {
     },
     mounted () {
         document.addEventListener('click', (event) => {
-            const element = event.target.closest('button.media-info-button');
-
-            if (element) {
-                return;
-            }
-
+            if (event.target.closest('button.media-info-button')) return;
             this.deselect();
         });
         this.scroll();
     },
-    destroyed () {
+    unmounted () {
         this.$store.commit('Media/emptySharedItems');
     },
     methods: {
@@ -120,7 +117,6 @@ export default {
             if (route.query.page) {
                 params.page = route.query.page;
             }
-
             this.$store.dispatch('Media/getSharedItems', params)
                 .then(() => {
                     this.isfilesLoaded = true;
@@ -134,140 +130,43 @@ export default {
         },
         showContextMenu (e, item) {
             e.preventDefault();
-
-            if (this.fileCm) {
-                this.fileCm = false;
-                return;
-            }
-
-            this.cm = {
-                show: true,
-                x: e.clientX,
-                y: e.clientY,
-                file: item
-            };
+            if (this.fileCm) { this.fileCm = false; return; }
+            this.cm = { show: true, x: e.clientX, y: e.clientY, file: item };
         },
         showContextMenu2 (e, item) {
             e.preventDefault();
             this.fileCm = true;
-            this.cm = {
-                show: true,
-                x: e.clientX,
-                y: e.clientY,
-                file: item
-            };
+            this.cm = { show: true, x: e.clientX, y: e.clientY, file: item };
             this.OnClickItem(e, item);
         },
         OnClickItem (event, item) {
             this.clickedOnItem = true;
             const isMultiSelect = event.ctrlKey || event.metaKey;
-
             if (!isMultiSelect && item.type === 'folder' && !this.fileCm) {
                 this.pushChiled(item);
             }
-
-            this.$store.commit('Media/selectFiles', { isMultiSelect: isMultiSelect, id: item.id });
+            this.$store.commit('Media/selectFiles', { isMultiSelect, id: item.id });
             this.$store.commit('Media/selectMediaItem', item);
         },
         pushChiled (item) {
-            const name = 'sharedFolder';
-            this.$router.push({
-                name: name,
-                params: {
-                    folderId: item.hash
-                }
-            });
+            this.$router.push({ name: 'sharedFolder', params: { folderId: item.hash } });
         },
         deselect () {
-            if (this.clickedOnItem) {
-                this.clickedOnItem = false;
-                return;
-            }
-
+            if (this.clickedOnItem) { this.clickedOnItem = false; return; }
             this.$store.commit('Media/deselectFile');
         },
         scroll () {
             window.onscroll = () => {
-                if (this.scrollLoading) {
-                    return;
-                }
+                if (this.scrollLoading) return;
                 const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight + 50 > document.documentElement.offsetHeight;
-
                 if (bottomOfWindow) {
                     const page = (this.$route.query.page || 1) + 1;
-                    if (page > this.sharedPagination.total_pages) {
-                        return;
-                    }
-
+                    if (page > this.sharedPagination.total_pages) return;
                     this.scrollLoading = true;
-
-                    this.$router.replace({
-                        name: this.$route.name,
-                        params: this.$route.params,
-                        query: {
-                            page: page
-                        }
-                    });
+                    this.$router.replace({ name: this.$route.name, params: this.$route.params, query: { page } });
                 }
             };
         }
-
     }
 };
 </script>
-
-<style>
-div#laraveladmin {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    display: none;
-    opacity: 0;
-}
-.media-item .v-card__actions button.v-btn {
-    width: 12px;
-    height: 12px;
-
-}
-.media-item .v-card__actions button.v-btn .v-icon {
-    font-size: 12px;
-}
-.la-pt .v-toolbar__title {
-    font-size: 18px;
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: normal;
-}
-.la-pt .v-icon {
-    font-size: 18px;
-}
-.la-pt .v-menu {
-    margin-left: -14px;
-}
-.my-file {
-    position: relative;
-    display: block;
-    overflow: hidden;
-}
-#filecontainer {
-    margin: 0;
-    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#filecontainer .flex {
-    width: calc(20% - 20px);
-    margin-top: 16px;
-    margin-right: 20px;
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-    max-width: 210px;
-    min-width: 120px;
-}
-.sidebar-open #filecontainer {
-    margin-right: 300px;
-}
-.sidebar-open #filecontainer .flex {
-    width: calc(25% - 20px);
-}
-</style>

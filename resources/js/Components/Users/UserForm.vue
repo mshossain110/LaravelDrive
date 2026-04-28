@@ -1,142 +1,98 @@
 <template>
-    <VCard>
-        <form @submit.prevent="submit()">
-            <VCardTitle>
-                <span
-                    v-if="user.id"
-                    class="headline"
-                >
-                    Update User
-                </span>
-                <span
-                    v-else
-                    class="headline"
-                >
-                    New User
-                </span>
-            </VCardTitle>
+    <form @submit.prevent="submit()" class="space-y-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">First Name</label>
+                <input
+                    v-model="user.firstname"
+                    type="text"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+            </div>
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Last Name</label>
+                <input
+                    v-model="user.lastname"
+                    type="text"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+            </div>
+        </div>
 
-            <VCardText>
-                <VContainer grid-list-md>
-                    <VRow>
-                        <VCol>
-                            <VTextField
-                                v-model="user.firstname"
-                                label="First Name"
-                            />
-                        </VCol>
-                        <VCol>
-                            <VTextField
-                                v-model="user.lastname"
-                                label="Last Name"
-                            />
-                        </VCol>
-                        <VCol>
-                            <ValidationProvider
-                                v-slot="{ errors }"
-                                :rules="'required|min:6'"
-                            >
-                                <VTextField
-                                    v-model="user.name"
-                                    :counter="6"
-                                    :disabled="Boolean(user.id)"
-                                    :error-messages="errors"
-                                    label="User Name*"
-                                    required
-                                />
-                            </ValidationProvider>
-                        </VCol>
-                        <VCol >
-                            <ValidationProvider
-                                v-slot="{ errors }"
-                                :rules="'required|email'"
-                            >
-                                <VTextField
-                                    v-model="user.email"
-                                    :disabled="Boolean(user.id)"
-                                    :error-messages="errors"
-                                    label="E-mail*"
-                                    required
-                                />
-                            </ValidationProvider>
-                        </VCol>
+        <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">User Name *</label>
+            <input
+                v-model="user.name"
+                type="text"
+                :disabled="Boolean(user.id)"
+                required
+                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:bg-gray-100 disabled:text-gray-500"
+            />
+        </div>
 
-                        <VCol>
-                            <ValidationProvider
-                                v-slot="{ errors }"
-                                :rules="{ required: !user.id, min: 6 }"
-                                vid="password"
-                            >
-                                <VTextField
-                                    ref="password"
-                                    v-model="user.password"
-                                    :error-messages="errors"
-                                    name="password"
-                                    type="password"
-                                    label="Password"
-                                />
-                            </validationprovider>
-                        </VCol>
-                        <VCol>
-                            <ValidationProvider
-                                v-slot="{ errors }"
-                                :rules="{ required: !user.id, confirmed: 'password' }"
-                            >
-                                <VTextField
-                                    v-model="user.password_confirmation"
-                                    name="password_confirmation"
-                                    :error-messages="errors"
-                                    type="password"
-                                    label="Confirmed Password"
-                                />
-                            </ValidationProvider>
-                        </VCol>
+        <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">E-mail *</label>
+            <input
+                v-model="user.email"
+                type="email"
+                :disabled="Boolean(user.id)"
+                required
+                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:bg-gray-100 disabled:text-gray-500"
+            />
+        </div>
 
-                        <VCol>
-                            <label class="typo__label">
-                                Permissions
-                            </label>
-                            <Multiselect
-                                v-model="user.permissions"
-                                :options="permissions"
-                                :multiple="true"
-                                :group-select="true"
-                                :searchable="false"
-                                group-values="permissions"
-                                group-label="model"
-                                placeholder="Add Permissions"
-                            >
-                                <span slot="noResult">
-                                    Oops! No Permissions found.
-                                    Consider changing the search query.
-                                </span>
-                            </Multiselect>
-                        </VCol>
-                    </VRow>
-                </VContainer>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Password</label>
+                <input
+                    ref="password"
+                    v-model="user.password"
+                    type="password"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+            </div>
+            <div>
+                <label class="mb-1 block text-sm font-medium text-gray-700">Confirm Password</label>
+                <input
+                    v-model="user.password_confirmation"
+                    type="password"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+            </div>
+        </div>
 
-                <small>*indicates required field</small>
-            </VCardText>
-            <VDivider />
-            <VCardActions>
-                <VSpacer />
-                <VBtn
-                    color="blue darken-1"
-                    text
-                    @click.native="$emit('close', false)"
-                >
-                    Close
-                </VBtn>
-                <VBtn
-                    color="blue darken-1"
-                    text
-                    type="submit"
-                >
-                    Save
-                </VBtn>
-            </VCardActions>
-        </form>
-    </VCard>
+        <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">Permissions</label>
+            <Multiselect
+                v-model="user.permissions"
+                :options="permissions"
+                :multiple="true"
+                :group-select="true"
+                :searchable="false"
+                group-values="permissions"
+                group-label="model"
+                placeholder="Add Permissions"
+            />
+        </div>
+
+        <p class="text-xs text-gray-500">* indicates required field</p>
+
+        <div class="flex justify-end gap-3 border-t border-gray-100 pt-4">
+            <button
+                type="button"
+                class="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                @click="$emit('close', false)"
+            >
+                Close
+            </button>
+            <button
+                type="submit"
+                class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+            >
+                Save
+            </button>
+        </div>
+    </form>
 </template>
 
 <script>
@@ -165,10 +121,7 @@ export default {
             }
         }
     },
-
-    data: () => ({
-
-    }),
+    data: () => ({}),
     computed: {
         ...mapState('Users', ['permissions'])
     },

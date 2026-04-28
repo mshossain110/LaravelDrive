@@ -1,31 +1,26 @@
 <template>
-    <VForm
-        class="role-form"
-        @submit.prevent="submitRole()"
-    >
-        <VCol
-            cols="12"
-        >
-            <VTextField
+    <form class="border border-gray-200 bg-white p-4" @submit.prevent="submitRole()">
+        <div class="mb-3">
+            <input
                 v-model="role.name"
+                type="text"
                 placeholder="Add Role"
-                full-width
-                hide-details
-                light
-                flat
+                class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 @focus="showFullForm()"
             />
-        </VCol>
-        <template
-            v-if="showForm"
-            transition="slide-y-transition"
-        >
-            <VCol
-                cols="12"
-            >
-                <textarea v-model="role.description">Description </textarea>
-            </VCol>
-            <VCol cols="12">
+        </div>
+
+        <template v-if="showForm">
+            <div class="mb-3">
+                <textarea
+                    v-model="role.description"
+                    placeholder="Description"
+                    rows="3"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                />
+            </div>
+
+            <div class="mb-3">
                 <Multiselect
                     v-model="role.permissions"
                     :options="permissions"
@@ -35,38 +30,28 @@
                     group-values="permissions"
                     group-label="model"
                     placeholder="Add Permissions"
-                >
-                    <span slot="noResult">
-                        Oops! No Permissions found.
-                        Consider changing the search query.
-                    </span>
-                </Multiselect>
-            </VCol>
-            <VCol cols="12">
-                <VBtn
-                    :loading="loading"
-                    color="primery"
+                />
+            </div>
+
+            <div class="flex gap-2">
+                <button
                     type="submit"
-                    depressed
-                    ripple
-                    small
-                    right
+                    :disabled="loading"
+                    class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-50"
                 >
-                    Submit
-                </VBtn>
-                <VBtn
-                    color="error"
-                    depressed
-                    ripple
-                    small
-                    right
+                    <span v-if="loading">Saving...</span>
+                    <span v-else>Submit</span>
+                </button>
+                <button
+                    type="button"
+                    class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
                     @click="hideFullForm()"
                 >
-                    close
-                </VBtn>
-            </VCol>
+                    Close
+                </button>
+            </div>
         </template>
-    </VForm>
+    </form>
 </template>
 
 <script>
@@ -76,9 +61,6 @@ import { mapState } from 'vuex';
 export default {
     components: {
         Multiselect
-    },
-    $_veeValidate: {
-        validator: 'new'
     },
     props: {
         role: {
@@ -98,7 +80,6 @@ export default {
             default: true
         }
     },
-
     data () {
         return {
             loading: false,
@@ -125,13 +106,10 @@ export default {
                 this.$store.dispatch('Users/addRole', role)
                     .then(() => {
                         this.loading = false;
-
                         this.$emit('close', 'true');
                         this.showForm = false;
                     })
-                    .catch(() => {
-                        this.loading = false;
-                    });
+                    .catch(() => { this.loading = false; });
             } else {
                 this.$store.dispatch('Users/updateRole', role)
                     .then(() => {
@@ -139,9 +117,7 @@ export default {
                         this.$emit('close', 'true');
                         this.showForm = false;
                     })
-                    .catch(() => {
-                        this.loading = false;
-                    });
+                    .catch(() => { this.loading = false; });
             }
         },
         showFullForm () {
@@ -154,28 +130,3 @@ export default {
     }
 };
 </script>
-
-<style lang="css">
-form.role-form {
-    background: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-.role-form .v-input__control {
-    border: 1px solid #ddd;
-    padding: 5px 0 !important;
-}
-.role-form textarea {
-    border: 1px solid #ddd;
-    margin: 10px 0px;
-    width: 100%;
-    padding: 5px;
-}
-.role-form button {
-    margin-top: 13px;
-    right: 8px;
-}
-.role-form .multiselect__tags {
-    border-radius: 0;
-}
-</style>

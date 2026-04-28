@@ -262,13 +262,13 @@ Behavior: auto-dismiss, stacked, bottom-right position
 ## Migration Checklist
 
 - [x] **Phase 0** — Fix config, install deps, create UI directory
-- [ ] **Phase 1** — Layout shell (4 files)
-- [ ] **Phase 2** — Dashboard (2 files)
-- [ ] **Phase 3** — MyDrive file management (14 files)
-- [ ] **Phase 4** — Users & Roles (8 files)
-- [ ] **Phase 5** — Translations (6 files)
-- [ ] **Phase 6** — Passport/OAuth (3 files)
-- [ ] **Phase 7** — Cleanup & remove Vuetify
+- [x] **Phase 1** — Layout shell (4 files)
+- [x] **Phase 2** — Dashboard (2 files)
+- [x] **Phase 3** — MyDrive file management (14 files)
+- [x] **Phase 4** — Users & Roles (8 files)
+- [x] **Phase 5** — Translations (6 files)
+- [x] **Phase 6** — Passport/OAuth (3 files)
+- [x] **Phase 7** — Cleanup & remove Vuetify
 
 ---
 

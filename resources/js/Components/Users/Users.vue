@@ -1,79 +1,49 @@
 <template>
-    <VRow
-        class="d-block"
-    >
-        <VCol cols="12">
-            <VToolbar
-                flat
-                class="ub-h"
-                color="secondary"
-            >
-                <VToolbarTitle class="headline">
-                    <VIcon>people</VIcon>
-                    Users
-                </VToolbarTitle>
-
-                <VSpacer />
-
-                <VBtn
+    <div>
+        <!-- Toolbar -->
+        <div class="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
+            <h1 class="flex items-center gap-2 text-lg font-semibold text-gray-800">
+                <UsersIcon class="h-5 w-5" />
+                Users
+            </h1>
+            <div class="flex items-center gap-1">
+                <button
                     v-if="hasPermission('user.create')"
-                    icon
+                    class="rounded-lg p-2 text-gray-600 hover:bg-gray-100"
                     @click="openform = true"
                 >
-                    <VIcon>person_add</VIcon>
-                </VBtn>
+                    <UserPlusIcon class="h-5 w-5" />
+                </button>
+                <button class="rounded-lg p-2 text-gray-600 hover:bg-gray-100">
+                    <ArrowPathIcon class="h-5 w-5" />
+                </button>
+            </div>
+        </div>
 
-                <VBtn icon>
-                    <VIcon>apps</VIcon>
-                </VBtn>
-
-                <VBtn icon>
-                    <VIcon>refresh</VIcon>
-                </VBtn>
-
-                <VBtn icon>
-                    <VIcon>more_vert</VIcon>
-                </VBtn>
-            </VToolbar>
-        </VCol>
-
-        <VCol cols="12">
+        <!-- Table -->
+        <div class="p-4">
             <UsersTable />
-        </VCol>
+        </div>
 
-        <VDialog
+        <!-- Create User Modal -->
+        <AppModal
             v-if="hasPermission('user.create')"
-            v-model="openform"
+            :open="openform"
+            title="New User"
             max-width="500px"
+            @close="openform = false"
         >
             <UserForm @close="openform = false" />
-        </VDialog>
-    </VRow>
+        </AppModal>
+    </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { UsersIcon, UserPlusIcon, ArrowPathIcon } from '@heroicons/vue/24/outline';
 import UsersTable from './UsersTable.vue';
 import UserForm from './UserForm.vue';
+import AppModal from '@/Components/UI/AppModal.vue';
 
-export default {
-    components: {
-        UsersTable,
-        UserForm
-    },
-    data () {
-        return {
-            openform: false
-        };
-    },
-    computed: {
-    },
-    methods: {
-    }
-};
+const openform = ref(false);
 </script>
-
-<style>
-    .ub-h .v-toolbar__content {
-        border-bottom: 1px solid #ddd;
-    }
-</style>

@@ -1,17 +1,17 @@
 <template>
-    <VSheet class="d-block">
-        <VSheet class="d-block">
-            <MediaToolbar />
-        </VSheet>
+    <div>
+        <MediaToolbar />
 
-        <VContainer
+        <div
             v-if="isLoaded"
-            :class="{'my-file position-relative': true, 'sidebar-open': fileInfoSideBar}"
+            class="relative mt-4"
+            :class="{ 'mr-80': fileInfoSideBar }"
             @dragenter="activeDropzone($event)"
             @contextmenu="showContextMenu"
         >
-                <VSheet
-                    class="d-flex"
+            <!-- File grid -->
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                <div
                     v-for="img in mediaItems"
                     :key="img.id"
                     @contextmenu="showContextMenu2($event, img)"
@@ -19,40 +19,43 @@
                     @touchstart="OnClickItem($event, img)"
                 >
                     <MediaItem :media="img" />
-                </VSheet>
+                </div>
+            </div>
+
+            <!-- Empty state -->
+            <div v-if="!mediaItems.length" class="flex flex-col items-center justify-center py-20 text-center">
+                <svg class="mb-4 h-16 w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+                <p class="text-sm text-gray-500">This folder is empty</p>
+                <p class="mt-1 text-xs text-gray-400">Drop files here or use the toolbar to upload</p>
+            </div>
 
             <MediaInfo v-if="fileInfoSideBar" />
             <FileUploader v-model="fileUploader" />
-            <!-- <context-menu v-model="cm.show" :x="cm.x" :y="cm.y" /> -->
             <ContextMenu
                 v-model="cm.show"
                 :x="cm.x"
                 :y="cm.y"
                 :file="cm.file"
             />
-        </VContainer>
+        </div>
 
-        <template v-if="newFolderModal">
-            <NewFolderForm :open="newFolderModal" />
-        </template>
+        <!-- Loading -->
+        <div v-else class="flex items-center justify-center py-20">
+            <svg class="h-8 w-8 animate-spin text-brand-600" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+        </div>
 
-        <template v-if="shareFileModal">
-            <ShareFile :open="shareFileModal" />
-        </template>
-
-        <template v-if="shareLinkModal">
-            <ShareLink :open="shareLinkModal" />
-        </template>
-        <template v-if="renamefilemodal">
-            <RenameFile :open="renamefilemodal" />
-        </template>
-        <template v-if="moveToemodal">
-            <MoveTo :open="moveToemodal" />
-        </template>
-        <template v-if="previewModal">
-            <Preview :open="previewModal" />
-        </template>
-    </VSheet>
+        <NewFolderForm v-if="newFolderModal" :open="newFolderModal" />
+        <ShareFile v-if="shareFileModal" :open="shareFileModal" />
+        <ShareLink v-if="shareLinkModal" :open="shareLinkModal" />
+        <RenameFile v-if="renamefilemodal" :open="renamefilemodal" />
+        <MoveTo v-if="moveToemodal" :open="moveToemodal" />
+        <Preview v-if="previewModal" :open="previewModal" />
+    </div>
 </template>
 
 <script>
@@ -90,14 +93,9 @@ export default {
         isLoaded () {
             return this.isfilesLoaded && this.isfolderLoaded;
         },
-        containerStyle () {
-            return {
-                height: `${window.innerHeight - 150}px`
-            };
-        }
     },
     watch: {
-        '$route' (to, from) {
+        '$route' (to) {
             this.selfMddiaItems(to);
         }
     },
@@ -107,17 +105,12 @@ export default {
     },
     mounted () {
         document.addEventListener('click', (event) => {
-            const element = event.target.closest('.file-deselet');
-
-            if (element) {
-                return element;
-            }
-
+            if (event.target.closest('.file-deselet')) return;
             this.deselect();
         });
         this.scroll();
     },
-    destroyed () {
+    unmounted () {
         this.$store.commit('Media/emptyMediaItems');
     },
     methods: {
@@ -129,7 +122,6 @@ export default {
             if (route.query.page) {
                 params.page = route.query.page;
             }
-
             this.$store.dispatch('Media/getMediaItems', params)
                 .then(() => {
                     this.isfilesLoaded = true;
@@ -143,39 +135,22 @@ export default {
         },
         showContextMenu (e, item) {
             e.preventDefault();
-
-            if (this.fileCm) {
-                this.fileCm = false;
-                return;
-            }
-
-            this.cm = {
-                show: true,
-                x: e.clientX,
-                y: e.clientY,
-                file: item
-            };
+            if (this.fileCm) { this.fileCm = false; return; }
+            this.cm = { show: true, x: e.clientX, y: e.clientY, file: item };
         },
         showContextMenu2 (e, item) {
             e.preventDefault();
             this.fileCm = true;
-            this.cm = {
-                show: true,
-                x: e.clientX,
-                y: e.clientY,
-                file: item
-            };
+            this.cm = { show: true, x: e.clientX, y: e.clientY, file: item };
             this.OnClickItem(e, item);
         },
         OnClickItem (event, item) {
             this.clickedOnItem = true;
             const isMultiSelect = event.ctrlKey || event.metaKey;
-
             if (!isMultiSelect && item.type === 'folder' && !this.fileCm) {
                 this.pushChiled(item);
             }
-
-            this.$store.commit('Media/selectFiles', { isMultiSelect: isMultiSelect, id: item.id });
+            this.$store.commit('Media/selectFiles', { isMultiSelect, id: item.id });
             this.$store.commit('Media/selectMediaItem', item);
         },
         pushChiled (item) {
@@ -183,104 +158,24 @@ export default {
             if (this.$route.name === 'trash' || this.$route.name === 'trashFolder') {
                 name = 'trashFolder';
             }
-            this.$router.push({
-                name: name,
-                params: {
-                    folderId: item.hash
-                }
-            });
+            this.$router.push({ name, params: { folderId: item.hash } });
         },
         deselect () {
-            if (this.clickedOnItem) {
-                this.clickedOnItem = false;
-                return;
-            }
-
+            if (this.clickedOnItem) { this.clickedOnItem = false; return; }
             this.$store.commit('Media/deselectFile');
         },
         scroll () {
             window.onscroll = () => {
-                if (this.scrollLoading) {
-                    return;
-                }
+                if (this.scrollLoading) return;
                 const bottomOfWindow = document.documentElement.scrollTop + window.innerHeight + 50 > document.documentElement.offsetHeight;
-
                 if (bottomOfWindow) {
                     const page = (this.$route.query.page || 1) + 1;
-                    if (page > this.pagination.total) {
-                        return;
-                    }
-
+                    if (page > this.pagination.total) return;
                     this.scrollLoading = true;
-
-                    this.$router.replace({
-                        name: this.$route.name,
-                        params: this.$route.params,
-                        query: {
-                            page: page
-                        }
-                    });
+                    this.$router.replace({ name: this.$route.name, params: this.$route.params, query: { page } });
                 }
             };
         }
-
     }
 };
 </script>
-
-<style>
-div#laraveladmin {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    display: none;
-    opacity: 0;
-}
-.media-item .v-card__actions button.v-btn {
-    width: 12px;
-    height: 12px;
-
-}
-.media-item .v-card__actions button.v-btn .v-icon {
-    font-size: 12px;
-}
-.la-pt .v-toolbar__title {
-    font-size: 18px;
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: normal;
-}
-.la-pt .v-icon {
-    font-size: 18px;
-}
-.la-pt .v-menu {
-    margin-left: -14px;
-}
-.my-file {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    height: calc(100vh - 10rem);
-}
-#filecontainer {
-    margin: 0;
-    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#filecontainer .flex {
-    width: calc(20% - 20px);
-    margin-top: 16px;
-    margin-right: 20px;
-    display: inline-block;
-    position: relative;
-    vertical-align: top;
-    max-width: 210px;
-    min-width: 120px;
-}
-.sidebar-open #filecontainer {
-    margin-right: 300px;
-}
-.sidebar-open #filecontainer .flex {
-    width: calc(25% - 20px);
-}
-</style>

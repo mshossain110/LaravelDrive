@@ -1,132 +1,105 @@
 <template>
-    <VLayout
-        row
-        justify-center
-    >
-        <VDialog
-            :model-value="open"
-            fullscreen
-            transition="dialog-bottom-transition"
+    <Teleport to="body">
+        <div
+            v-if="open"
+            class="fixed inset-0 z-50 flex flex-col bg-black/90 file-deselet"
+            @click="clickCard"
         >
-            <VCard
-                class="preview-card file-deselet"
-                @click="clickCard"
-            >
-                <VToolbar
-                    color="primary"
+            <!-- Toolbar -->
+            <div class="preview-toolbar flex items-center justify-between bg-brand-600 px-4 py-3 text-white">
+                <button
+                    class="rounded-full p-2 hover:bg-white/20"
+                    @click.stop="closePreview()"
                 >
-                    <VBtn
-                        icon
-                        @click="closePreview()"
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="flex items-center gap-2">
+                    <button
+                        class="rounded-full p-2 hover:bg-white/20"
+                        @click.stop="downloadFile()"
                     >
-                        <VIcon>close</VIcon>
-                    </VBtn>
-                    <VSpacer />
-                    <VToolbarItems>
-                        <VBtn
-                            text
-                            @click="downloadFile()"
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </button>
+                    <div class="relative">
+                        <button
+                            class="rounded-full p-2 hover:bg-white/20"
+                            @click.stop="showContextMenu"
                         >
-                            <VIcon>cloud_download</VIcon>
-                        </VBtn>
-                    </VToolbarItems>
-                    <VToolbarItems style="position: relative;">
-                        <VBtn
-                            text
-                            @click="showContextMenu"
-                        >
-                            <VIcon>more_vert</VIcon>
-                        </VBtn>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                            </svg>
+                        </button>
                         <ContextMenu
                             v-model="showMenu"
                             :x="menuPos.x"
                             :y="menuPos.y"
                             :file="selectedMedia"
                         />
-                    </VToolbarItems>
-                </VToolbar>
+                    </div>
+                </div>
+            </div>
 
-                <VCard
-                    v-if="ispdf"
-                    class="pdf-preview"
+            <!-- PDF -->
+            <div v-if="ispdf" class="flex-1 bg-white">
+                <object
+                    :type="selectedMedia.mime"
+                    :data="fileUrl"
+                    class="h-full w-full"
                 >
-                    <object
-                        :type="selectedMedia.mime"
-                        :data="fileUrl"
-                        internalinstanceid="8"
+                    <a :href="fileUrl" class="text-blue-400 underline">Download the file.</a>
+                </object>
+            </div>
+
+            <!-- Image -->
+            <div
+                v-else-if="isImage"
+                class="image-preview flex flex-1 items-center justify-center"
+            >
+                <img
+                    :src="selectedMedia.public_path"
+                    class="max-h-[80vh] max-w-full object-contain"
+                    alt="Preview"
+                />
+            </div>
+
+            <!-- Video -->
+            <div
+                v-else-if="isVideo"
+                class="video-preview flex flex-1 items-center justify-center"
+            >
+                <video id="player" playsinline controls class="max-h-[80vh] max-w-full">
+                    <source :src="fileUrl" :type="selectedMedia.mime" />
+                </video>
+            </div>
+
+            <!-- Audio -->
+            <div
+                v-else-if="isAudio"
+                class="video-preview flex flex-1 items-center justify-center"
+            >
+                <audio id="player" controls>
+                    <source :src="fileUrl" :type="selectedMedia.mime" />
+                </audio>
+            </div>
+
+            <!-- No preview -->
+            <div v-else class="flex flex-1 items-center justify-center">
+                <div class="rounded-xl bg-white p-8 text-center shadow-lg">
+                    <h4 class="mb-4 text-lg font-medium text-gray-700">No file preview available.</h4>
+                    <button
+                        class="rounded-lg bg-brand-600 px-6 py-2 text-white hover:bg-brand-700"
+                        @click.stop="downloadFile()"
                     >
-                        <a
-                            trans=""
-                            :href="fileUrl"
-                        >
-                            Download the file.
-                        </a>
-                    </object>
-                </VCard>
-
-                <VCard
-                    v-else-if="isImage"
-                    class="image-preview"
-                >
-                    <VImg
-                        :src="selectedMedia.public_path"
-                        aspect-ratio="2.75"
-                        contain
-                        width="70"
-                    />
-                </VCard>
-
-                <VCard
-                    v-else-if="isVideo"
-                    class="video-preview"
-                >
-                    <video
-                        id="player"
-                        playsinline
-                        controls
-                    >
-                        <source
-                            :src="fileUrl"
-                            :type="selectedMedia.mime"
-                        >
-
-                        <!-- Captions are optional -->
-
-                    </video>
-                </VCard>
-
-                <VCard
-                    v-else-if="isAudio"
-                    class="video-preview"
-                >
-                    <audio
-                        id="player"
-                        controls
-                    >
-                        <source
-                            :src="fileUrl"
-                            :type="selectedMedia.mime"
-                        >
-                    </audio>
-                </VCard>
-
-                <VCard
-                    v-else
-                    class="no-preview"
-                >
-                    <VCardTitle primary-title>
-                        <h4>No file preview available.</h4>
-                        <VBtn
-                            color="primary"
-                            @click="downloadFile()"
-                        >
-                            Download
-                        </VBtn>
-                    </VCardTitle>
-                </VCard>
-            </VCard>
-        </VDialog>
-    </VLayout>
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </Teleport>
 </template>
 
 <script>
@@ -154,11 +127,8 @@ export default {
     },
     computed: {
         ...mapState('Media', ['mediaItems', 'selectedMedia', 'selectedFilesId']),
-
         filesCanPreview () {
-            return this.mediaItems.filter(m => {
-                return m.type !== 'folder';
-            });
+            return this.mediaItems.filter(m => m.type !== 'folder');
         },
         currentImage () {
             const hash = this.$route.params.hash;
@@ -168,22 +138,20 @@ export default {
             return window.location.origin + '/' + this.selectedMedia.url;
         },
         isImage () {
-            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].indexOf(this.selectedMedia.extension) !== -1;
+            return ['gif', 'ico', 'jpeg', 'jpg', 'png', 'svg', 'bmp', 'dib'].includes(this.selectedMedia.extension);
         },
         ispdf () {
-            return ['pdf', 'txt'].indexOf(this.selectedMedia.extension) !== -1;
+            return ['pdf', 'txt'].includes(this.selectedMedia.extension);
         },
         isVideo () {
-            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].indexOf(this.selectedMedia.extension) !== -1;
+            return ['mp4', 'webm', '3gp', 'flv', 'ogg', 'ogv', 'mov', 'wmv', 'mpeg'].includes(this.selectedMedia.extension);
         },
         isAudio () {
-            return ['mp3', 'ogg'].indexOf(this.selectedMedia.extension) !== -1;
+            return ['mp3', 'ogg'].includes(this.selectedMedia.extension);
         }
-
     },
     mounted () {
         PanZoom('.image-preview');
-        // eslint-disable-next-line no-new
         new Plyr('#player');
     },
     methods: {
@@ -191,17 +159,9 @@ export default {
             this.$store.commit('Media/previewModal', false);
         },
         clickCard (event) {
-            if (event.target.closest('.v-toolbar__content')) {
-                return;
-            }
-            if (event.target.closest('.v-responsive__content')) {
-                return;
-            }
-
-            if (event.target.closest('.video-preview')) {
-                return;
-            }
-
+            if (event.target.closest('.preview-toolbar')) return;
+            if (event.target.closest('.image-preview img')) return;
+            if (event.target.closest('.video-preview')) return;
             this.closePreview();
         },
         downloadFile () {
@@ -215,53 +175,3 @@ export default {
     }
 };
 </script>
-<style>
-.v-card.preview-card .v-card {
-    background: transparent !important;
-}
-.v-card.preview-card {
-    background-color: rgba(0,0,0, 0.8) !important;
-}
-
-.v-card.preview-card .image-preview {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    box-shadow: none;
-}
-
-.v-card.preview-card .v-toolbar {
-    z-index: 9999;
-}
-.v-card.preview-card .v-card.no-preview{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.v-card.preview-card .v-card.no-preview .v-card__title{
-    width: 300px;
-    background: #fff;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-}
-.pdf-preview object {
-    width: 100%;
-    height: 100vh;
-}
-.video-preview {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-}
-
-.v-card.preview-card .v-card.pdf-preview {
-    background: #FFF !important;
-}
-</style>

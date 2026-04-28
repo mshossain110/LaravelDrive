@@ -1,176 +1,141 @@
 <template>
-    <VDialog
-        v-model="openpoupu"
-        class="mpu"
-        max-width="700"
-    >
-        <form
-            class="file-deselet"
-            @submit.prevent="onSubmit"
-        >
-            <VCard class="dl-share-modal">
-                <VCardTitle
-                    class="headline grey lighten-2"
-                >
-                    Share File
-                </VCardTitle>
-
-                <VCardText>
-                    <VSheet>
-                        <VSheet class="d-flex">
-                            <VCombobox
-                                v-model="users"
-                                :items="people"
-                                class="file-deselet"
-                                :loading="isLoading"
-                                :search-input.sync="search"
-                                placeholder="Search User to Share"
-                                item-value="id"
-                                item-text="name"
-                                cache-items
-                                deletable-chips
-                                no-filter
-                                multiple
-                                chips
-                                clearable
-                                hide-details
-                                :menu-props="{contentClass: 'file-deselet'}"
-                            >
-                                <template
-                                    slot="selection"
-                                    slot-scope="data"
+    <AppModal :open="openpoupu" title="Share File" max-width="700px" @close="close">
+        <form class="file-deselet" @submit.prevent="onSubmit">
+            <div class="space-y-4 p-4">
+                <!-- User search -->
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <div class="min-h-[48px] rounded-lg border border-gray-300 p-2 focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500">
+                            <!-- Selected chips -->
+                            <div class="mb-1 flex flex-wrap gap-1">
+                                <span
+                                    v-for="user in users"
+                                    :key="user.id"
+                                    class="inline-flex items-center gap-1 rounded-full bg-brand-100 px-3 py-1 text-sm text-brand-800"
                                 >
-                                    <VChip
-                                        v-if="data.item.id"
-                                        :key="data.item.id"
-                                        :input-value="data.selected"
-                                        :disabled="data.disabled"
-                                        class="v-chip--select-multi file-deselet"
-                                    >
-                                        <VAvatar
-                                            class="accent white--text"
-                                            v-text="data.item.name.slice(0, 1).toUpperCase()"
-                                        />
-                                        {{ data.item.name }}
-                                        <VIcon
-                                            small
-                                            @click="remove(data.item)"
-                                        >
-                                            close
-                                        </VIcon>
-                                    </VChip>
-                                </template>
-
-                                <template slot="append-outer">
-                                    <VMenu
-                                        transition="slide-x-transition"
-                                        max-width="300"
-                                        bottom
-                                    >
-                                        <template v-slot:activator="{ on }">
-                                            <VBtn
-                                                outlined
-                                                color="indigo"
-                                                v-on="on"
-                                            >
-                                                <VIcon>edit</VIcon><VIcon>keyboard_arrow_down</VIcon>
-                                            </VBtn>
-                                        </template>
-
-                                        <VList
-                                            two-line
-                                            class="file-deselet"
-                                        >
-                                            <VListItem
-                                                v-for="(item, i) in permissions"
-                                                :key="i"
-                                                @click="permission = item.id"
-                                            >
-                                                <VListItemAction>
-                                                    <VIcon v-if="permission == item.id">
-                                                        check_circle
-                                                    </VIcon>
-                                                    <VSpacer v-else />
-                                                </VListItemAction>
-                                                <VListItemContent>
-                                                    <VListItemTitle>{{ item.title }}</VListItemTitle>
-                                                    <VListItemSubtitle>{{ item.descrption }}</VListItemSubtitle>
-                                                </VListItemContent>
-                                            </VListItem>
-                                        </VList>
-                                    </VMenu>
-                                </template>
-                            </VCombobox>
-                        </VSheet>
-                        <VSheet class="d-flex" >
-                            <VBtn
-                                color="success"
-                                type="submit"
-                            >
-                                Add
-                            </VBtn>
-                        </VSheet>
-                    </VSheet>
-
-                    <VSheet align-center>
-                        <VSheet class="d-flex mt-3">
-                            <div
-                                v-if="selectedMedia.id"
-                                class="owner-of-file"
-                            >
-                                <div class="subheading">
-                                    Owner of File
-                                </div>
-                                <div class="inner">
-                                    <VImg
-                                        :src="selectedMedia.uploader.avatar.avatar"
-                                    />
-                                    <div class="owen-name">
-                                        {{ selectedMedia.uploader.display_name }} <br>
-                                        {{ selectedMedia.uploader.email }}
-                                    </div>
-                                </div>
+                                    <span class="flex h-5 w-5 items-center justify-center rounded-full bg-brand-600 text-[10px] font-bold text-white">
+                                        {{ user.name?.slice(0, 1).toUpperCase() }}
+                                    </span>
+                                    {{ user.name }}
+                                    <button type="button" class="ml-1 text-brand-600 hover:text-brand-800" @click="remove(user)">
+                                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </span>
                             </div>
-                            <VDivider />
-                        </VSheet>
-                    </VSheet>
+                            <!-- Search input -->
+                            <input
+                                v-model="search"
+                                type="text"
+                                class="w-full border-0 p-0 text-sm focus:outline-none focus:ring-0"
+                                placeholder="Search User to Share"
+                            />
+                        </div>
+                        <!-- Dropdown results -->
+                        <div v-if="people.length && search" class="relative">
+                            <ul class="absolute z-10 mt-1 max-h-48 w-full overflow-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+                                <li
+                                    v-for="person in filteredPeople"
+                                    :key="person.id"
+                                    class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-100"
+                                    @click="selectUser(person)"
+                                >
+                                    {{ person.name }} ({{ person.email }})
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-                    <VSheet align-center>
-                        <VSheet
-                            v-for="u in sharedwith"
-                            :key="u.id"
-                            xs12
-                            class="d-flex mt-1"
+                    <!-- Permission dropdown -->
+                    <div class="relative">
+                        <button
+                            type="button"
+                            class="flex h-12 items-center gap-1 rounded-lg border border-gray-300 px-3 text-sm text-gray-700 hover:bg-gray-50"
+                            @click="showPermMenu = !showPermMenu"
                         >
-                            <div class="owner-of-file">
-                                <div class="subheading">
-                                    Share File with
-                                </div>
-                                <div class="inner">
-                                    <VImg
-                                        :src="u.avatar"
-                                    />
-                                    <div class="owen-name">
-                                        {{ u.display_name }} <br>
-                                        {{ u.email }}
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <ul
+                            v-if="showPermMenu"
+                            class="absolute right-0 z-20 mt-1 w-64 rounded-lg border border-gray-200 bg-white py-1 shadow-lg"
+                        >
+                            <li
+                                v-for="item in permissions"
+                                :key="item.id"
+                                class="cursor-pointer px-4 py-2 hover:bg-gray-50"
+                                @click="permission = item.id; showPermMenu = false"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <svg v-if="permission === item.id" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div v-else class="h-5 w-5" />
+                                    <div>
+                                        <div class="text-sm font-medium">{{ item.title }}</div>
+                                        <div class="text-xs text-gray-500">{{ item.descrption }}</div>
                                     </div>
                                 </div>
-                            </div>
-                        </VSheet>
-                        <VDivider />
-                    </VSheet>
-                </VCardText>
-            </VCard>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+                >
+                    Add
+                </button>
+
+                <!-- Owner -->
+                <div v-if="selectedMedia.id" class="border-t pt-4">
+                    <h4 class="mb-2 text-sm font-medium text-gray-600">Owner of File</h4>
+                    <div class="flex items-center gap-3">
+                        <img
+                            :src="selectedMedia.uploader?.avatar?.avatar"
+                            class="h-10 w-10 rounded-full object-cover"
+                            alt=""
+                        />
+                        <div>
+                            <div class="text-sm font-medium">{{ selectedMedia.uploader?.display_name }}</div>
+                            <div class="text-xs text-gray-500">{{ selectedMedia.uploader?.email }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shared with -->
+                <div v-if="sharedwith.length" class="border-t pt-4">
+                    <h4 class="mb-2 text-sm font-medium text-gray-600">Shared with</h4>
+                    <div
+                        v-for="u in sharedwith"
+                        :key="u.id"
+                        class="mb-2 flex items-center gap-3"
+                    >
+                        <img :src="u.avatar" class="h-10 w-10 rounded-full object-cover" alt="" />
+                        <div>
+                            <div class="text-sm font-medium">{{ u.display_name }}</div>
+                            <div class="text-xs text-gray-500">{{ u.email }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
-    </VDialog>
+    </AppModal>
 </template>
 
 <script>
 import Mixin from './mixin';
 import { mapState } from 'vuex';
+import AppModal from '@/Components/UI/AppModal.vue';
 
 export default {
-
+    components: { AppModal },
     mixins: [Mixin],
     props: {
         open: {
@@ -189,6 +154,7 @@ export default {
             isLoading: false,
             isUpdating: false,
             permission: 1,
+            showPermMenu: false,
             permissions: [
                 {
                     title: 'Can edit',
@@ -197,7 +163,6 @@ export default {
                 },
                 {
                     title: 'Can download',
-
                     id: 2,
                     descrption: 'People can view and download the item.'
                 },
@@ -210,25 +175,20 @@ export default {
         };
     },
     computed: {
-        ...mapState('Media', ['selectedFilesId', 'selectedMedia', 'shareFileModal'])
+        ...mapState('Media', ['selectedFilesId', 'selectedMedia', 'shareFileModal']),
+        filteredPeople () {
+            const selectedIds = this.users.map(u => u.id);
+            return this.people.filter(p => !selectedIds.includes(p.id));
+        }
     },
     watch: {
         search (val) {
-            if (!val) {
-                return;
-            }
+            if (!val) return;
             this.isLoading = true;
-
-            if (this.searchTimeOut) {
-                clearTimeout(this.searchTimeOut);
-            }
-
+            if (this.searchTimeOut) clearTimeout(this.searchTimeOut);
             this.searchTimeOut = setTimeout(() => {
-                // Lazily load input items
                 this.$store.dispatch('Users/searchUsers', { s: val })
-                    .then(res => {
-                        this.people = res.data;
-                    })
+                    .then(res => { this.people = res.data; })
                     .finally(() => (this.isLoading = false));
             }, 400);
         },
@@ -240,11 +200,15 @@ export default {
         this.getfileUser();
     },
     methods: {
+        selectUser (person) {
+            if (!this.users.find(u => u.id === person.id)) {
+                this.users.push(person);
+            }
+            this.search = '';
+            this.people = [];
+        },
         onSubmit () {
-            const userids = [];
-            this.users.map(u => {
-                if (u.id) { userids.push(u.id); }
-            });
+            const userids = this.users.filter(u => u.id).map(u => u.id);
             const param = {
                 userIds: userids,
                 fileids: this.selectedFilesId,
@@ -252,22 +216,18 @@ export default {
             };
             axios.post('/api/shares/add-users', param)
                 .then(res => {
-                    this.$store.commit('setSnackbar',
-                        {
-                            message: res.data.message,
-                            status: res.status,
-                            color: 'success',
-                            show: true
-                        },
-                        { root: true });
+                    this.$store.commit('setSnackbar', {
+                        message: res.data.message,
+                        status: res.status,
+                        color: 'success',
+                        show: true
+                    }, { root: true });
                     this.close();
                 });
         },
         getfileUser () {
             axios.get(`/api/shared/file/${this.selectedFilesId}/share-with`)
-                .then(res => {
-                    this.sharedwith = res.data.data;
-                });
+                .then(res => { this.sharedwith = res.data.data; });
         },
         close () {
             this.$store.commit('Media/shareFileModal', false);
@@ -279,38 +239,3 @@ export default {
     }
 };
 </script>
-
-<style>
-.dl-share-modal .v-autocomplete{
-    border: 1px solid #ddd;
-}
-.dl-share-modal .v-autocomplete.v-text-field > .v-input__control > .v-input__slot:before{
-    border-width: 0px !important;
-}
-.dl-share-modal .v-autocomplete.v-text-field .v-select__selections {
-    padding-left: 10px;
-}
-
-.dl-share-modal .v-menu__activator .v-btn.v-btn--outlined {
-    border-width: 1px 1px 1px;
-    border-color: #ddd;
-    border-style: solid;
-    background: transparent !important;
-    box-shadow: none;
-    margin: 4px 0;
-    height: 56px;
-    color: #4a4848 !important;
-}
-.inner {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 20px;
-}
-.inner .v-image {
-    width: 40px;
-    display: block;
-    max-width: 40px;
-    margin-right: 20px;
-}
-
-</style>

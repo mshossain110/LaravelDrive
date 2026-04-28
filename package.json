@@ -7,7 +7,6 @@
         "watch": "vite build --mode development --watch "
     },
     "devDependencies": {
-        "@mdi/font": "^7.4.47",
         "@tailwindcss/forms": "^0.5.11",
         "@types/lodash": "^4.17.24",
         "@vitejs/plugin-vue": "^5.0.4",
@@ -16,7 +15,6 @@
         "dropzone": "^6.0.0-beta.2",
         "laravel-vite-plugin": "^1.0.2",
         "lodash": "^4.17.21",
-        "material-design-icons-iconfont": "^6.7.0",
         "mitt": "^3.0.1",
         "plyr": "^3.7.8",
         "postcss": "^8.4.38",
@@ -27,7 +25,6 @@
         "vue-multiselect": "^3.0.0",
         "vue-router": "^4.3.0",
         "vue-tsc": "^3.2.7",
-        "vuetify": "^3.5.13",
         "vuex": "^4.1.0"
     },
     "dependencies": {
