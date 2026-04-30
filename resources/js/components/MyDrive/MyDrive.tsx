@@ -5,6 +5,7 @@ import MediaToolbar from './MediaToolbar';
 import MediaItem from './MediaItem';
 import MediaInfo from './MediaInfo';
 import FileUploader from './FileUploader';
+import type { FileUploaderHandle } from './FileUploader';
 import ContextMenu from './ContextMenu';
 import NewFolderForm from './NewFolderForm';
 import ShareFile from './ShareFile';
@@ -28,6 +29,7 @@ export default function MyDrive() {
     const [clickedOnItem, setClickedOnItem] = useState(false);
     const [cm, setCm] = useState<{ show: boolean; x: number; y: number; file?: Partial<MediaFile> }>({ show: false, x: 0, y: 0 });
     const fileCmRef = useRef(false);
+    const fileUploaderRef = useRef<FileUploaderHandle>(null);
 
     const { mediaItems, pagination, fileInfoSideBar, newFolderModal, shareFileModal, shareLinkModal, renameFileModal, moveToModal, previewModal, folders } = store;
 
@@ -128,8 +130,8 @@ export default function MyDrive() {
     return (
         <div>
             <MediaToolbar
-                onOpenDropZone={() => setFileUploader(true)}
-                onUploadFolder={() => setFileUploader(true)}
+                onUploadFiles={() => fileUploaderRef.current?.openFilePicker()}
+                onUploadFolder={() => fileUploaderRef.current?.openFolderPicker()}
             />
 
             {isLoaded ? (
@@ -166,15 +168,15 @@ export default function MyDrive() {
                     )}
 
                     {fileInfoSideBar && <MediaInfo />}
-                    <FileUploader active={fileUploader} onDeactivate={() => setFileUploader(false)} currentFolderId={currentFolderId} />
+                    <FileUploader ref={fileUploaderRef} active={fileUploader} onDeactivate={() => setFileUploader(false)} currentFolderId={currentFolderId} />
                     <ContextMenu
                         show={cm.show}
                         x={cm.x}
                         y={cm.y}
                         file={cm.file}
                         onClose={() => setCm({ show: false, x: 0, y: 0 })}
-                        onOpenDropZone={() => setFileUploader(true)}
-                        onUploadFolder={() => setFileUploader(true)}
+                        onUploadFiles={() => fileUploaderRef.current?.openFilePicker()}
+                        onUploadFolder={() => fileUploaderRef.current?.openFolderPicker()}
                     />
                 </div>
             ) : (

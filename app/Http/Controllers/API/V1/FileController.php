@@ -360,6 +360,6 @@ class FileController extends ApiController
      */
     public function storeLocalUpload(File $entry, UploadedFile $file, $file_name = null)
     {
-        $this->moveFile($entry, $file, 'public', 'local', $file_name);
+        $this->moveFile($entry, $file, 'public', 'public', $file_name);
     }
 }

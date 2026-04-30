@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMediaStore } from '@/stores/mediaStore';
 import { ChevronUpIcon, ChevronDownIcon, XMarkIcon, DocumentIcon } from '@heroicons/react/24/outline';
@@ -16,57 +16,48 @@ interface FileUploaderProps {
     currentFolderId: number;
 }
 
-export default function FileUploader({ active, onDeactivate, currentFolderId }: FileUploaderProps) {
+export interface FileUploaderHandle {
+    openFilePicker: () => void;
+    openFolderPicker: () => void;
+}
+
+const FileUploader = forwardRef<FileUploaderHandle, FileUploaderProps>(function FileUploader({ active, onDeactivate, currentFolderId }, ref) {
     const [filesAdded, setFilesAdded] = useState(false);
     const [expandLess, setExpandLess] = useState(true);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const setMediaItem = useMediaStore((s) => s.setMediaItems);
-    const mediaItems = useMediaStore((s) => s.mediaItems);
 
     const uploadFile = useCallback(async (file: File) => {
-        const chunkSize = 1000000; // 1MB
-        const totalChunks = Math.ceil(file.size / chunkSize);
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        formData.append('path', '/' + file.name);
+        formData.append('parent_id', String(currentFolderId));
 
-        for (let i = 0; i < totalChunks; i++) {
-            const start = i * chunkSize;
-            const end = Math.min(start + chunkSize, file.size);
-            const chunk = file.slice(start, end);
+        try {
+            const res = await api.post('/api/file', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                onUploadProgress: (progressEvent) => {
+                    const progress = (progressEvent.loaded / (progressEvent.total || 1)) * 100;
+                    setFileList((prev) =>
+                        prev.map((f) =>
+                            f.name === file.name ? { ...f, progress } : f
+                        )
+                    );
+                },
+            });
 
-            const formData = new FormData();
-            formData.append('file', chunk, file.name);
-            formData.append('path', '/' + file.name);
-            formData.append('parent_id', String(currentFolderId));
-            formData.append('is_last', i === totalChunks - 1 ? '1' : '0');
-            formData.append('chunk_index', String(i));
-            formData.append('total_chunks', String(totalChunks));
-
-            try {
-                const res = await api.post('/api/file', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: (progressEvent) => {
-                        const chunkProgress = progressEvent.loaded / (progressEvent.total || 1);
-                        const totalProgress = ((i + chunkProgress) / totalChunks) * 100;
-                        setFileList((prev) =>
-                            prev.map((f) =>
-                                f.name === file.name ? { ...f, progress: totalProgress } : f
-                            )
-                        );
-                    },
-                });
-
-                if (i === totalChunks - 1 && res.data?.data) {
-                    setMediaItem([res.data.data, ...mediaItems]);
-                }
-            } catch {
-                setFileList((prev) =>
-                    prev.map((f) =>
-                        f.name === file.name ? { ...f, progress: -1 } : f
-                    )
-                );
-                break;
+            if (res.data?.data) {
+                const current = useMediaStore.getState().mediaItems;
+                setMediaItem([res.data.data, ...current]);
             }
+        } catch {
+            setFileList((prev) =>
+                prev.map((f) =>
+                    f.name === file.name ? { ...f, progress: -1 } : f
+                )
+            );
         }
-    }, [currentFolderId, setMediaItem, mediaItems]);
+    }, [currentFolderId, setMediaItem]);
 
     const onDrop = useCallback(
         (acceptedFiles: File[]) => {
@@ -79,19 +70,48 @@ export default function FileUploader({ active, onDeactivate, currentFolderId }: 
         [uploadFile, onDeactivate]
     );
 
-    const { getRootProps, getInputProps, open } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         noClick: !active,
         noKeyboard: true,
     });
 
-    // Expose open method via ref for toolbar
-    const openRef = useRef(open);
-    openRef.current = open;
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const folderInputRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        openFilePicker: () => fileInputRef.current?.click(),
+        openFolderPicker: () => folderInputRef.current?.click(),
+    }));
+
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            onDrop(Array.from(files));
+        }
+        e.target.value = '';
+    };
 
     return (
         <>
-            {/* Dropzone overlay */}
+            {/* Hidden file inputs for native browser picker */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                multiple
+                onChange={handleFileInputChange}
+            />
+            <input
+                type="file"
+                ref={folderInputRef}
+                className="hidden"
+                // @ts-expect-error webkitdirectory is not in React's type definitions
+                webkitdirectory=""
+                onChange={handleFileInputChange}
+            />
+
+            {/* Dropzone overlay – only for drag-and-drop */}
             {active && (
                 <div
                     {...getRootProps()}
@@ -151,4 +171,6 @@ export default function FileUploader({ active, onDeactivate, currentFolderId }: 
             )}
         </>
     );
-}
+});
+
+export default FileUploader;

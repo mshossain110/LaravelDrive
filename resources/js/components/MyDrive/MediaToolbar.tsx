@@ -13,11 +13,11 @@ import {
 } from '@heroicons/react/24/outline';
 
 interface MediaToolbarProps {
-    onOpenDropZone?: () => void;
+    onUploadFiles?: () => void;
     onUploadFolder?: () => void;
 }
 
-export default function MediaToolbar({ onOpenDropZone, onUploadFolder }: MediaToolbarProps) {
+export default function MediaToolbar({ onUploadFiles, onUploadFolder }: MediaToolbarProps) {
     const [addMenu, setAddMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const fileInfoSideBar = useMediaStore((s) => s.fileInfoSideBar);
@@ -67,7 +67,7 @@ export default function MediaToolbar({ onOpenDropZone, onUploadFolder }: MediaTo
                             </button>
                             <button
                                 className="flex w-full items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                                onClick={() => { onOpenDropZone?.(); setAddMenu(false); }}
+                                onClick={() => { onUploadFiles?.(); setAddMenu(false); }}
                             >
                                 <ArrowUpTrayIcon className="h-4 w-4 text-gray-400" />
                                 Upload Files
@@ -79,7 +79,7 @@ export default function MediaToolbar({ onOpenDropZone, onUploadFolder }: MediaTo
 
             <div className="flex-1" />
 
-            <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="Upload files" onClick={onOpenDropZone}>
+            <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="Upload files" onClick={onUploadFiles}>
                 <ArrowUpTrayIcon className="h-5 w-5" />
             </button>
             <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="New folder" onClick={() => setNewFolderModal(true)}>
