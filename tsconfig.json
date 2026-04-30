@@ -4,7 +4,7 @@
         "module": "ESNext",
         "moduleResolution": "bundler",
         "strict": true,
-        "jsx": "preserve",
+        "jsx": "react-jsx",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "esModuleInterop": true,
@@ -18,8 +18,8 @@
     },
     "include": [
         "resources/js/**/*.ts",
-        "resources/js/**/*.d.ts",
-        "resources/js/**/*.vue"
+        "resources/js/**/*.tsx",
+        "resources/js/**/*.d.ts"
     ],
     "exclude": ["node_modules", "public"]
 }

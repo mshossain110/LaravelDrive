@@ -24,10 +24,18 @@
             'csftToken' => csrf_token(),
             'user'  => Auth::user(),
         ]);
+        window.LD.getUserPermissions = function() {
+            return LD.user.permissions || null;
+        };
+        window.LD.hasPermission = function(p) {
+            if (!LD.user.permissions || !LD.user.permissions.length) return false;
+            if (LD.user.permissions.indexOf('administrator') !== -1) return true;
+            return LD.user.permissions.indexOf(p) !== -1;
+        };
     </script>
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.tsx'])
 
 
 </head>
