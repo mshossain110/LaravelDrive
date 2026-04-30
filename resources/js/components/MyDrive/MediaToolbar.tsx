@@ -23,6 +23,8 @@ export default function MediaToolbar({ onUploadFiles, onUploadFolder }: MediaToo
     const fileInfoSideBar = useMediaStore((s) => s.fileInfoSideBar);
     const toggleSidebar = useMediaStore((s) => s.toggleSidebar);
     const setNewFolderModal = useMediaStore((s) => s.setNewFolderModal);
+    const viewMode = useMediaStore((s) => s.viewMode);
+    const setViewMode = useMediaStore((s) => s.setViewMode);
 
     useEffect(() => {
         const handler = (e: MouseEvent) => {
@@ -85,12 +87,15 @@ export default function MediaToolbar({ onUploadFiles, onUploadFolder }: MediaToo
             <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="New folder" onClick={() => setNewFolderModal(true)}>
                 <FolderPlusIcon className="h-5 w-5" />
             </button>
-            <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="Grid view">
-                <Squares2X2Icon className="h-5 w-5" />
-            </button>
-            <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="List view">
-                <Bars3BottomLeftIcon className="h-5 w-5" />
-            </button>
+            {viewMode === 'grid' ? (
+                <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="List view" onClick={() => setViewMode('list')}>
+                    <Bars3BottomLeftIcon className="h-5 w-5" />
+                </button>
+            ) : (
+                <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="Grid view" onClick={() => setViewMode('grid')}>
+                    <Squares2X2Icon className="h-5 w-5" />
+                </button>
+            )}
             <button className="rounded-lg p-2 text-gray-500 hover:bg-gray-100" title="Filter">
                 <FunnelIcon className="h-5 w-5" />
             </button>

@@ -59,7 +59,7 @@ export default function MediaInfo() {
         : [];
 
     return (
-        <aside className="absolute inset-y-0 right-0 z-10 w-80 border-l border-gray-200 bg-white shadow-lg">
+        <aside className="absolute inset-y-0 right-0 z-10 w-80 border-l border-gray-200 bg-white shadow-lg animate-[slideInLeft_200ms_ease-out]">
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3">
                 {hasItem ? (

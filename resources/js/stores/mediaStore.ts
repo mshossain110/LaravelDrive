@@ -31,6 +31,7 @@ interface MediaState {
     staredPagination: Pagination;
     sharedItems: MediaFile[];
     sharedPagination: Pagination;
+    viewMode: 'grid' | 'list';
     fileInfoSideBar: boolean;
     newFolderModal: boolean;
     shareFileModal: boolean;
@@ -48,6 +49,7 @@ interface MediaState {
     setPagination: (p: Pagination) => void;
     setFolders: (folders: Folder[]) => void;
     addFolderToList: (folder: MediaFile) => void;
+    setViewMode: (mode: 'grid' | 'list') => void;
     toggleSidebar: (val?: boolean | null) => void;
     selectMediaItem: (item: Partial<MediaFile>) => void;
     selectFiles: (id: number, isMultiSelect: boolean) => void;
@@ -122,6 +124,7 @@ export const useMediaStore = create<MediaState>((set, get) => ({
     staredPagination: {},
     sharedItems: [],
     sharedPagination: {},
+    viewMode: 'grid',
     fileInfoSideBar: false,
     newFolderModal: false,
     shareFileModal: false,
@@ -144,6 +147,7 @@ export const useMediaStore = create<MediaState>((set, get) => ({
             mediaItems: [folder, ...s.mediaItems],
             folders: [{ id: folder.id, name: folder.name, hash: folder.hash, parent_id: folder.parent_id, stared: false }, ...s.folders],
         })),
+    setViewMode: (mode) => set({ viewMode: mode }),
     toggleSidebar: (val) =>
         set((s) => ({ fileInfoSideBar: val ?? !s.fileInfoSideBar })),
     selectMediaItem: (item) => set({ selectedMedia: item }),

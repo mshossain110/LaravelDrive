@@ -26,12 +26,11 @@ export default function MyDrive() {
     const [isFolderLoaded, setIsFolderLoaded] = useState(false);
     const [fileUploader, setFileUploader] = useState(false);
     const [scrollLoading, setScrollLoading] = useState(false);
-    const [clickedOnItem, setClickedOnItem] = useState(false);
     const [cm, setCm] = useState<{ show: boolean; x: number; y: number; file?: Partial<MediaFile> }>({ show: false, x: 0, y: 0 });
     const fileCmRef = useRef(false);
     const fileUploaderRef = useRef<FileUploaderHandle>(null);
 
-    const { mediaItems, pagination, fileInfoSideBar, newFolderModal, shareFileModal, shareLinkModal, renameFileModal, moveToModal, previewModal, folders } = store;
+    const { mediaItems, pagination, fileInfoSideBar, viewMode, newFolderModal, shareFileModal, shareLinkModal, renameFileModal, moveToModal, previewModal, folders } = store;
 
     const currentFolderId = (() => {
         if (!folderId) return 0;
@@ -69,17 +68,14 @@ export default function MyDrive() {
         return () => { useMediaStore.getState().emptyMediaItems(); };
     }, []);
 
-    // Deselect on outside click
-    useEffect(() => {
-        const handler = (event: MouseEvent) => {
-            if ((event.target as HTMLElement).closest('.file-deselet')) return;
-            if (!clickedOnItem) store.deselectFile();
-            setClickedOnItem(false);
-        };
-        document.addEventListener('click', handler);
-        return () => document.removeEventListener('click', handler);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [clickedOnItem]);
+    const mediaFrameRef = useRef<HTMLDivElement>(null);
+
+    // Deselect only when clicking the media frame background directly
+    const handleFrameClick = (e: React.MouseEvent) => {
+        if (e.target === mediaFrameRef.current) {
+            store.deselectFile();
+        }
+    };
 
     // Infinite scroll
     useEffect(() => {
@@ -114,7 +110,6 @@ export default function MyDrive() {
     };
 
     const onClickItem = (event: React.MouseEvent | React.TouchEvent, item: MediaFile) => {
-        setClickedOnItem(true);
         const isMultiSelect = 'ctrlKey' in event && (event.ctrlKey || event.metaKey);
         if (!isMultiSelect && item.type === 'folder' && !fileCmRef.current) {
             let name = '/media/folder/' + item.hash;
@@ -136,26 +131,46 @@ export default function MyDrive() {
 
             {isLoaded ? (
                 <div
-                    className={`relative mt-4 min-h-[calc(100vh-10rem)] ${fileInfoSideBar ? 'mr-80' : ''}`}
+                    ref={mediaFrameRef}
+                    className="relative mt-4 min-h-[calc(100vh-10rem)]"
                     role="region"
+                    onClick={handleFrameClick}
                     onDragEnter={(e) => { e.stopPropagation(); e.preventDefault(); setFileUploader(true); }}
                     onContextMenu={showContextMenu}
                 >
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-                        {mediaItems.map((img) => (
-                            <div
-                                key={img.id}
-                                role="button"
-                                tabIndex={0}
-                                onContextMenu={(e) => showContextMenu2(e, img)}
-                                onClick={(e) => onClickItem(e, img)}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClickItem(e as unknown as React.MouseEvent, img); }}
-                                onTouchStart={(e) => onClickItem(e, img)}
-                            >
-                                <MediaItem media={img} />
-                            </div>
-                        ))}
-                    </div>
+                    {viewMode === 'grid' ? (
+                        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                            {mediaItems.map((img) => (
+                                <div
+                                    key={img.id}
+                                    role="button"
+                                    tabIndex={0}
+                                    onContextMenu={(e) => showContextMenu2(e, img)}
+                                    onClick={(e) => onClickItem(e, img)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClickItem(e as unknown as React.MouseEvent, img); }}
+                                    onTouchStart={(e) => onClickItem(e, img)}
+                                >
+                                    <MediaItem media={img} />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col gap-1">
+                            {mediaItems.map((img) => (
+                                <div
+                                    key={img.id}
+                                    role="button"
+                                    tabIndex={0}
+                                    onContextMenu={(e) => showContextMenu2(e, img)}
+                                    onClick={(e) => onClickItem(e, img)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClickItem(e as unknown as React.MouseEvent, img); }}
+                                    onTouchStart={(e) => onClickItem(e, img)}
+                                >
+                                    <MediaItem media={img} viewMode="list" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     {!mediaItems.length && (
                         <div className="flex flex-col items-center justify-center py-20 text-center">
