@@ -71,7 +71,7 @@ export default function ShareFile({ open }: ShareFileProps) {
     return (
         <AppModal open={open} onClose={close} title="Share File" maxWidth="lg">
             <form className="file-deselet" onSubmit={onSubmit}>
-                <div className="space-y-4 p-4">
+                <div className="space-y-4 overflow-visible p-4">
                     <div className="flex gap-2">
                         <div className="flex-1">
                             <div className="min-h-[48px] rounded-lg border border-gray-300 p-2 focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500">
@@ -156,10 +156,16 @@ export default function ShareFile({ open }: ShareFileProps) {
                         <div className="border-t pt-4">
                             <h4 className="mb-2 text-sm font-medium text-gray-600">Owner of File</h4>
                             <div className="flex items-center gap-3">
-                                <img src={selectedMedia.uploader?.avatar?.avatar} className="h-10 w-10 rounded-full object-cover" alt="" />
+                                {selectedMedia.uploader?.avatar?.avatar ? (
+                                    <img src={selectedMedia.uploader.avatar.avatar} className="h-10 w-10 rounded-full object-cover" alt="" />
+                                ) : (
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
+                                        {(selectedMedia.uploader?.display_name || selectedMedia.name || '?').slice(0, 1).toUpperCase()}
+                                    </span>
+                                )}
                                 <div>
-                                    <div className="text-sm font-medium">{selectedMedia.uploader?.display_name}</div>
-                                    <div className="text-xs text-gray-500">{selectedMedia.uploader?.email}</div>
+                                    <div className="text-sm font-medium text-gray-900">{selectedMedia.uploader?.display_name || 'You'}</div>
+                                    <div className="text-xs text-gray-500">{selectedMedia.uploader?.email || ''}</div>
                                 </div>
                             </div>
                         </div>

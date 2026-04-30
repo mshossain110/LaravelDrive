@@ -47,7 +47,7 @@ export default function AppModal({ open, onClose, title, maxWidth = 'md', childr
                             leaveTo="opacity-0 scale-95"
                         >
                             <DialogPanel
-                                className={`w-full transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all ${maxWidthClasses[maxWidth] || 'max-w-md'}`}
+                                className={`w-full transform rounded-2xl bg-white shadow-xl transition-all ${maxWidthClasses[maxWidth] || 'max-w-md'}`}
                             >
                                 {title && (
                                     <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
