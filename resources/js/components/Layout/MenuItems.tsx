@@ -13,6 +13,7 @@ import FavoriteFolders from './FavoriteFolders';
 import type { ComponentType } from 'react';
 
 interface MenuItem {
+    key?: string;
     icon?: string;
     text?: string;
     to?: string;
@@ -34,37 +35,37 @@ const iconMap: Record<string, ComponentType<{ className?: string }>> = {
 };
 
 const items: MenuItem[] = [
-    { icon: 'dashboard', text: 'Dashboard', to: '/dashboard' },
-    { divider: true },
-    { heading: 'Users' },
-    { icon: 'group', text: 'Users', to: '/users' },
-    { divider: true },
-    { heading: 'My Drive' },
-    { icon: 'photo_library', text: 'My Files', to: '/media' },
-    { icon: 'co_present', text: 'Shared with me', to: '/media/shared' },
-    { icon: 'auto_awesome', text: 'Starred', to: '/media/starred' },
-    { icon: 'delete', text: 'Trash', to: '/media/trash' },
+    { icon: 'dashboard', text: 'Dashboard', to: '/dashboard', key: 'dashboard' },
+    { divider: true, key: 'div-1' },
+    { heading: 'Users', key: 'head-users' },
+    { icon: 'group', text: 'Users', to: '/users', key: 'users' },
+    { divider: true, key: 'div-2' },
+    { heading: 'My Drive', key: 'head-drive' },
+    { icon: 'photo_library', text: 'My Files', to: '/media', key: 'files' },
+    { icon: 'co_present', text: 'Shared with me', to: '/media/shared', key: 'shared' },
+    { icon: 'auto_awesome', text: 'Starred', to: '/media/starred', key: 'starred' },
+    { icon: 'delete', text: 'Trash', to: '/media/trash', key: 'trash' },
 ];
 
 export default function MenuItems() {
     return (
         <nav className="space-y-1 px-3">
-            {items.map((item, i) => {
-                if (item.favorit) return <FavoriteFolders key={i} />;
+            {items.map((item) => {
+                if (item.favorit) return <FavoriteFolders key={item.key} />;
                 if (item.heading) {
                     return (
-                        <p key={i} className="mt-5 mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                        <p key={item.key} className="mt-5 mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
                             {item.heading}
                         </p>
                     );
                 }
-                if (item.divider) return <hr key={i} className="my-3 border-gray-200" />;
-                if (item.children) return <MenuGroup key={i} item={item} />;
+                if (item.divider) return <hr key={item.key} className="my-3 border-gray-200" />;
+                if (item.children) return <MenuGroup key={item.key} item={item} />;
 
                 const Icon = item.icon ? iconMap[item.icon] : null;
                 return (
                     <NavLink
-                        key={i}
+                        key={item.key}
                         to={item.to || '/'}
                         className={({ isActive }) =>
                             `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
@@ -89,7 +90,7 @@ export default function MenuItems() {
     );
 }
 
-function MenuGroup({ item }: { item: MenuItem }) {
+function MenuGroup({ item }: Readonly<{ item: MenuItem }>) {
     const [open, setOpen] = useState(false);
     const Icon = item.icon ? iconMap[item.icon] : null;
 
@@ -105,11 +106,11 @@ function MenuGroup({ item }: { item: MenuItem }) {
             </button>
             {open && (
                 <div className="mt-1 ml-4 space-y-0.5">
-                    {item.children?.map((child, ci) => {
+                    {item.children?.map((child) => {
                         const ChildIcon = child.icon ? iconMap[child.icon] : null;
                         return (
                             <NavLink
-                                key={ci}
+                                key={child.key ?? child.to}
                                 to={child.to || '/'}
                                 className={({ isActive }) =>
                                     `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import {
     ChevronUpIcon,
     Cog6ToothIcon,
-    ArrowRightOnRectangleIcon,
+    ArrowRightStartOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import api from '@/lib/axios';
 
@@ -10,7 +10,7 @@ export default function UserInfo() {
     const [menu, setMenu] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
-    const currentUser = window.LD?.user;
+    const currentUser = globalThis.LD?.user;
     const fullname = currentUser?.firstname || currentUser?.lastname
         ? `${currentUser.firstname ?? ''} ${currentUser.lastname ?? ''}`.trim()
         : currentUser?.name ?? '';
@@ -75,7 +75,7 @@ export default function UserInfo() {
                                 className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                                 onClick={logoutUser}
                             >
-                                <ArrowRightOnRectangleIcon className="h-4 w-4" />
+                                <ArrowRightStartOnRectangleIcon className="h-4 w-4" />
                                 Log out
                             </button>
                         </div>

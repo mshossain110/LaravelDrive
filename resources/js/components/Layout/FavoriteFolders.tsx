@@ -32,7 +32,7 @@ export default function FavoriteFolders() {
     );
 }
 
-function FolderLink({ folder }: { folder: { id: number; hash: string; name: string } }) {
+function FolderLink({ folder }: Readonly<{ folder: { id: number; hash: string; name: string } }>) {
     const match = useMatch(`/media/folder/${folder.hash}`);
     return (
         <Link

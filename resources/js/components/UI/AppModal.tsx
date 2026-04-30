@@ -19,7 +19,7 @@ const maxWidthClasses: Record<string, string> = {
     '2xl': 'max-w-2xl',
 };
 
-export default function AppModal({ open, onClose, title, maxWidth = 'md', children, footer }: AppModalProps) {
+export default function AppModal({ open, onClose, title, maxWidth = 'md', children, footer }: Readonly<AppModalProps>) {
     return (
         <Transition appear show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={onClose}>

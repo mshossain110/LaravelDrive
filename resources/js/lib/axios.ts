@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || window.location.origin,
+    baseURL: import.meta.env.VITE_API_URL || globalThis.location.origin,
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
     },
@@ -41,8 +41,8 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             csrfCookieFetched = false;
-            if (!window.location.pathname.includes('/login')) {
-                window.location.href = '/login';
+            if (!globalThis.location.pathname.includes('/login')) {
+                globalThis.location.href = '/login';
             }
         }
         return Promise.reject(error);

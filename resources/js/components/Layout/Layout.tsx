@@ -19,7 +19,11 @@ export default function Layout() {
             {mobileOpen && (
                 <div
                     className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="Close sidebar"
                     onClick={() => setMobileOpen(false)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setMobileOpen(false); }}
                 />
             )}
 

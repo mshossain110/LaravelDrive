@@ -145,7 +145,7 @@ export const useMediaStore = create<MediaState>((set, get) => ({
             folders: [{ id: folder.id, name: folder.name, hash: folder.hash, parent_id: folder.parent_id, stared: false }, ...s.folders],
         })),
     toggleSidebar: (val) =>
-        set((s) => ({ fileInfoSideBar: val !== null && val !== undefined ? val : !s.fileInfoSideBar })),
+        set((s) => ({ fileInfoSideBar: val ?? !s.fileInfoSideBar })),
     selectMediaItem: (item) => set({ selectedMedia: item }),
     selectFiles: (id, isMultiSelect) =>
         set((s) => ({
@@ -260,11 +260,10 @@ export const useMediaStore = create<MediaState>((set, get) => ({
         const disposition = res.headers['content-disposition'];
         if (disposition) {
             const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
-            if (matches?.[1]) filename = matches[1].replace(/['"]/g, '');
+            if (matches?.[1]) filename = matches[1].replaceAll(/['"]/g, '');
         }
         const blob = res.data;
-        const URL = window.URL || window.webkitURL;
-        const downloadUrl = URL.createObjectURL(blob);
+        const downloadUrl = globalThis.URL.createObjectURL(blob);
         if (filename) {
             const a = document.createElement('a');
             a.href = downloadUrl;
@@ -272,9 +271,9 @@ export const useMediaStore = create<MediaState>((set, get) => ({
             document.body.appendChild(a);
             a.target = '_blank';
             a.click();
-            document.body.removeChild(a);
+            a.remove();
         } else {
-            window.location.href = downloadUrl;
+            globalThis.location.href = downloadUrl;
         }
     },
 

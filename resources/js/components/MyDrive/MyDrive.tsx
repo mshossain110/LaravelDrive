@@ -134,7 +134,8 @@ export default function MyDrive() {
 
             {isLoaded ? (
                 <div
-                    className={`relative mt-4 ${fileInfoSideBar ? 'mr-80' : ''}`}
+                    className={`relative mt-4 min-h-[calc(100vh-10rem)] ${fileInfoSideBar ? 'mr-80' : ''}`}
+                    role="region"
                     onDragEnter={(e) => { e.stopPropagation(); e.preventDefault(); setFileUploader(true); }}
                     onContextMenu={showContextMenu}
                 >
@@ -142,8 +143,11 @@ export default function MyDrive() {
                         {mediaItems.map((img) => (
                             <div
                                 key={img.id}
+                                role="button"
+                                tabIndex={0}
                                 onContextMenu={(e) => showContextMenu2(e, img)}
                                 onClick={(e) => onClickItem(e, img)}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClickItem(e as unknown as React.MouseEvent, img); }}
                                 onTouchStart={(e) => onClickItem(e, img)}
                             >
                                 <MediaItem media={img} />
