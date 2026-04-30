@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
     Bars3Icon,
@@ -8,10 +8,19 @@ import {
 } from '@heroicons/react/24/outline';
 import MenuItems from './MenuItems';
 import UserInfo from './UserInfo';
+import NotificationPanel from './NotificationPanel';
+import { useNotificationStore } from '@/stores/notificationStore';
 import AppSnackbar from '@/components/UI/AppSnackbar';
 
 export default function Layout() {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const { unreadCount, panelOpen, setPanelOpen, fetchUnreadCount } = useNotificationStore();
+
+    useEffect(() => {
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000);
+        return () => clearInterval(interval);
+    }, [fetchUnreadCount]);
 
     return (
         <div id="ld" className="flex h-screen bg-gray-50">
@@ -78,10 +87,18 @@ export default function Layout() {
                         <button className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100">
                             <ChatBubbleLeftIcon className="h-5 w-5" />
                         </button>
-                        <button className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100">
-                            <BellIcon className="h-5 w-5" />
-                            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-                        </button>
+                        <div className="relative">
+                            <button
+                                className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100"
+                                onClick={() => setPanelOpen(!panelOpen)}
+                            >
+                                <BellIcon className="h-5 w-5" />
+                                {unreadCount > 0 && (
+                                    <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
+                                )}
+                            </button>
+                            <NotificationPanel />
+                        </div>
                     </div>
                 </header>
 

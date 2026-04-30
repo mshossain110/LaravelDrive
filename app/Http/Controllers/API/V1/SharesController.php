@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Models\File;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\FileShared;
 use App\Services\Shares\UpdateEntryUsers;
 use App\Services\Shares\AttachUsersToEntry;
 use App\Services\Shares\DetachUsersFromEntries;
@@ -99,6 +101,12 @@ class SharesController extends ApiController
             $fileids,
             $request->get('permissions')
         );
+
+        // Send notification to shared users
+        $sharedUsers = User::whereIn('id', $request->get('userIds'))->get();
+        foreach ($sharedUsers as $user) {
+            $user->notify(new FileShared(Auth::user(), $fileids));
+        }
 
         return $this->respondWithMessage("Files successfully shared with users.");
     }

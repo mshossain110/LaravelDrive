@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V1\DownloadController;
 use App\Http\Controllers\API\V1\MoveFileController;
 use App\Http\Controllers\API\V1\DeleteFileController;
 use App\Http\Controllers\API\V1\ShareableLinkController;
+use App\Http\Controllers\API\V1\NotificationController;
 use App\Http\Controllers\Translation\LanguageController;
 use App\Http\Controllers\Translation\LanguageTranslationController;
 
@@ -77,5 +78,11 @@ Route::group(
         Route::get('translation/{language}/translations', [LanguageTranslationController::class, 'index']);
         Route::post('translation/{language}/translations', [LanguageTranslationController::class, 'store']);
         Route::put('translation/{language}/translations', [LanguageTranslationController::class, 'update']);
+
+        // notifications
+        Route::get('notifications', [NotificationController::class, 'index']);
+        Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+        Route::patch('notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+        Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
     }
 );
