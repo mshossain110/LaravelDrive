@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useMediaStore } from '@/stores/mediaStore';
 import MediaToolbar from './MediaToolbar';
+import Breadcrumb from './Breadcrumb';
 import MediaItem from './MediaItem';
 import MediaInfo from './MediaInfo';
 import FileUploader from './FileUploader';
@@ -128,6 +129,7 @@ export default function MyDrive() {
                 onUploadFiles={() => fileUploaderRef.current?.openFilePicker()}
                 onUploadFolder={() => fileUploaderRef.current?.openFolderPicker()}
             />
+            <Breadcrumb />
 
             {isLoaded ? (
                 <div
